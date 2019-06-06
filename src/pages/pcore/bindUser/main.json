@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "用户登录",
+  "usingComponents": {
+    "i-toast": "/iview/toast/index",
+    "i-modal": "/iview/modal/index"
+  }
+}

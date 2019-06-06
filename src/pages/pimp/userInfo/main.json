@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "i-toast": "/iview/toast/index",
+    "i-modal": "/iview/modal/index"
+  },
+  "navigationBarTitleText": "用户信息"
+}

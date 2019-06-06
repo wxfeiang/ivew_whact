@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "支付订单",
+  "usingComponents": {
+    "i-toast": "/iview/toast/index",
+    "i-modal": "/iview/modal/index"
+  }
+}

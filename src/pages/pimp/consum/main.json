@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "i-toast": "/iview/toast/index",
+    "i-load-more": "/iview/load-more/index"
+  },
+  "navigationBarTitleText": "消费记录",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
+}

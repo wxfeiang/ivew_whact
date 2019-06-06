@@ -1,0 +1,77 @@
+{
+  "pages": ["pages/index/main", "pages/service/main", "pages/my/main"],
+  "subPackages": [
+    {
+      "root": "pages/pcore/",
+      "pages": [
+        "bindMain/main",
+        "bindNumber/main",
+        "bindVerify/main",
+        "bindUser/main",
+        "load/main",
+        "issue/main",
+        "issueAddress/main",
+        "issueUpload/main",
+        "issuePay/main",
+        "recharge/main"
+      ]
+    },
+    {
+      "root": "pages/pimp/",
+      "pages": [
+        "about/main",
+        "card/main",
+        "consum/main",
+        "etcOrder/main",
+        "help/main",
+        "orderDetail/main",
+        "userInfo/main",
+        "wallet/main"
+      ]
+    }
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于天气预报、一键救援服务"
+    }
+  },
+  "navigateToMiniProgramAppIdList": [
+    "wxbcad394b3d99dac9",
+    "wxbd687630cd02ce1d",
+    "wx5e73c65404eee268"
+  ],
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#009efb",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/main",
+        "iconPath": "/static/images/home.png",
+        "selectedIconPath": "/static/images/home-act.png"
+      },
+      {
+        "text": "服务网点",
+        "pagePath": "pages/service/main",
+        "iconPath": "/static/images/service.png",
+        "selectedIconPath": "/static/images/service-act.png"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/my/main",
+        "iconPath": "/static/images/my.png",
+        "selectedIconPath": "/static/images/my-act.png"
+      }
+    ],
+    "position": "bottom"
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#009efb",
+    "navigationBarTitleText": "甘肃高速e付",
+    "navigationBarTextStyle": "white",
+    "onReachBottomDistance": 50
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "预约发行",
+  "usingComponents": {
+    "i-toast": "/iview/toast/index"
+  }
+}

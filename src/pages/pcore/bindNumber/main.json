@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "i-toast": "/iview/toast/index"
+  },
+  "navigationBarTitleText": "车辆绑定"
+}
