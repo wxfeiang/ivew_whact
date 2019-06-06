@@ -42,6 +42,7 @@ import { $Toast } from '@/utils/iview';
           <input
             class="ninput"
             v-model="uAd.plateNo"
+            disabled="true"
             type="text"
             mode="wrapped"
             maxlength="10"
@@ -1099,6 +1100,14 @@ export default {
           type: 'warning',
           duration: 4,
           content: '请输入邮政编码!'
+        })
+        return false
+      }
+      if (!this.uAd.address) {
+        $Toast({
+          type: 'warning',
+          duration: 4,
+          content: '请输入详细地址!'
         })
         return false
       }
