@@ -46,7 +46,7 @@
         </div>
         <div class="bind-carnumber-content-item-sub">
           <div class="bind-carnumber-content-item-sub-release">
-            <div class="bind-carnumber-content-item-sub-release-title" @click="trafficList(item)">
+            <div class="bind-carnumber-content-item-sub-release-title" @click="cardList(item)">
               <i class="icon iconfont icon-cheliangxinxi imgs"></i>
             </div>
             <div class="bind-carnumber-content-item-sub-release-func" @click="carRelease(item)">
@@ -140,9 +140,9 @@ export default {
     releasCancel() {
       this.showdReleas = false
     },
-    trafficList(item) {
+    cardList(item) {
       wx.navigateTo({
-        url: `../../pimp/traffic/main?vehicle=${item.plateNo}`
+        url: '../../pimp/card/main'
       })
     },
     openChange(item, index) {

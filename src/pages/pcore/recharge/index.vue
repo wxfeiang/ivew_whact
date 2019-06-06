@@ -249,12 +249,13 @@ export default {
         })
       }
     },
-    paymentNotice (resultParams) {
+    async paymentNotice (resultParams) {
       try {
-        paymentResult(resultParams)
+        let mReturn = await paymentResult(resultParams)
         this.balanceQuery()
       } catch (err) {
         console.log(`paymentNotice error: ${err}`)
+        this.balanceQuery()
       }
     },
     async balanceQuery () {
