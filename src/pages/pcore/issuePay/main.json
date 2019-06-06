@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "支付订单",
+  "navigationBarTitleText": "在线支付",
   "usingComponents": {
     "i-toast": "/iview/toast/index",
     "i-modal": "/iview/modal/index"

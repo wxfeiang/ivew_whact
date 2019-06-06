@@ -2,7 +2,7 @@
   <div class="service">
     <div class="service-icon">
       <image src="/static/images/logo.png" class="img"></image>
-      <span class="version">v0.8.6</span>
+      <span class="version">v0.8.8</span>
     </div>
     <div class="service-content">
       <div class="allrow">

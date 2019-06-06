@@ -153,8 +153,6 @@ export default {
       this.showMask = true
     },
     async toUnifiedOrder () {
-      // TODO: 金额写死1分钱
-      this.rechargeMoney = '0.01'
       wx.showLoading({title: '加载中', mask: true})
       try {
         let params = {
@@ -183,7 +181,7 @@ export default {
           $Toast({
             type: 'error',
             duration: 4,
-            content: '支付失败: 未返回prepayId!'
+            content: '支付失败:未返回数据!'
           })
         }
       } catch (err) {

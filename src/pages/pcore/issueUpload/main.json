@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "预约发行",
+  "navigationBarTitleText": "证件上传",
   "usingComponents": {
     "i-toast": "/iview/toast/index"
   }

@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "预约发行",
+  "navigationBarTitleText": "在线发行",
   "usingComponents": {
     "i-toast": "/iview/toast/index",
     "i-modal": "/iview/modal/index"
