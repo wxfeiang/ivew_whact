@@ -106,30 +106,30 @@ export default {
             this.orderDetail.ems = iReturn.data.ems
           } else {
             this.hasData = false
-            console.log('没有审核信息数据' + JSON.stringify(iReturn.data))
+            console.log('暂无订单信息数据' + JSON.stringify(iReturn.data))
             $Toast({
               type: 'error',
               duration: 4,
-              content: `没有审核信息数据`
+              content: `暂无订单信息数据`
             })
           }
         } else {
           this.hasData = false
-          console.log('获取审核信息失败,未返回数据' + JSON.stringify(iReturn.data))
+          console.log('获取订单信息失败,未返回数据' + JSON.stringify(iReturn.data))
           $Toast({
             type: 'error',
             duration: 4,
-            content: `获取审核信息失败,未返回数据`
+            content: `获取订单信息失败,未返回数据`
           })
         }
       } catch (err) {
         this.hasData = false
-        console.log('获取审核信息异常' + JSON.stringify(err))
+        console.log('获取订单信息异常' + JSON.stringify(err))
         wx.hideLoading()
         $Toast({
           type: 'error',
           duration: 4,
-          content: `获取审核信息异常 ${JSON.stringify(err)}`
+          content: `获取订单信息异常 ${JSON.stringify(err)}`
         })
       }
     },
