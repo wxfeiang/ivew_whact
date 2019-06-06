@@ -205,6 +205,7 @@ export default {
         // this.ocrData.idCard.frontData = upReturn
         console.log('idReturn:  ' + JSON.stringify(idReturn))
         let oReturn = await this.toOCRID(idReturn)
+        console.log('toOCRID: ' + JSON.stringify(oReturn))
         this.ocrData.idCard.name = oReturn.姓名.words || '未识别'
         this.ocrData.idCard.idNo = oReturn.公民身份号码.words || '未识别'
         this.jectData.btnLoading = false
@@ -258,6 +259,7 @@ export default {
         console.log('toUpload: ' + JSON.stringify(upReturn))
         // this.ocrData.driving.frontData = upReturn
         let oReturn = await this.toOCRDriving(upReturn.imgPath)
+        console.log('toOCRDriving: ' + JSON.stringify(oReturn))
         this.ocrData.driving.licenseNo = oReturn.证号.words || '未识别'
         this.jectData.btnLoading = false
         this.jectData.btnTitle = '上传'
@@ -310,6 +312,7 @@ export default {
         console.log('toUpload: ' + JSON.stringify(upReturn))
         // this.ocrData.car.frontData = upReturn
         let oReturn = await this.toOCRCar(upReturn.imgPath)
+        console.log('toOCRCar: ' + JSON.stringify(oReturn))
         this.ocrData.car.carHeadPlateNo = oReturn.number || '未识别'
         this.ocrData.car.plateNoColor = oReturn.color || '未识别'
         this.jectData.btnLoading = false
@@ -338,6 +341,7 @@ export default {
         console.log('toUpload: ' + JSON.stringify(upReturn))
         // this.ocrData.vehicle.frontData = upReturn
         let oReturn = await this.toOCRVehicle(upReturn.imgPath)
+        console.log('toOCRVehicle: ' + JSON.stringify(oReturn))
         this.ocrData.vehicle.plateNo = oReturn.号牌号码.words || '未识别'
         this.ocrData.vehicle.vehicleType = oReturn.车辆类型.words || '未识别'
         this.ocrData.vehicle.owner = oReturn.所有人.words || '未识别'
@@ -374,6 +378,7 @@ export default {
         console.log('toUpload: ' + JSON.stringify(upReturn))
         // this.ocrData.vehicle.backData = upReturn
         let oReturn = await this.toOCRVehicleSub(upReturn.imgPath)
+        console.log('toOCRVehicleSub: ' + JSON.stringify(oReturn))
         this.ocrData.vehicle.approvedCount = oReturn.核定载人数.words || '未识别'
         this.jectData.btnLoading = false
         this.jectData.btnTitle = '上传'
