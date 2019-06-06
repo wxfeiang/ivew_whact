@@ -54,7 +54,7 @@
         <span class="iifont">未查询到数据</span>
       </div>
     </div>
-    <div class="pbutton">
+    <div class="pbutton" v-if="orderDetail.ems.length > 0">
       <button class="ppbutton" @click="gotDevice()">确认收货</button>
     </div>
     <i-toast id="toast"/>
@@ -96,6 +96,7 @@ export default {
         wx.hideLoading()
         if (iReturn.status === 200 && iReturn.data.audit) {
           if (iReturn.data.audit.applyStatus !== '-1') {
+            // applyStatus:-1，无申请记录；0，待审核；1，审核通过；2审核拒绝。
             this.hasData = true
             this.orderDetail.audit.applyId = iReturn.data.audit.applyId
             this.orderDetail.audit.applyTime = iReturn.data.audit.applyTime
