@@ -620,26 +620,6 @@ export default {
         })
         return false
       }
-      if (this.ocrData.carHeadPlateNo !== this.ocrData.vehicle.plateNo) {
-        console.log('车头照 车牌号: ' + this.ocrData.carHeadPlateNo)
-        console.log('行驶证 车牌号' + this.ocrData.vehicle.plateNo)
-        $Toast({
-          type: 'error',
-          duration: 3,
-          content: '行驶证车牌号与车头照车牌号不符!'
-        })
-        return false
-      }
-      if (this.ocrData.driving.licenseNo !== this.ocrData.idCard.idNo) {
-        console.log('身份证 身份证号: ', this.ocrData.idCard.idNo)
-        console.log('驾驶证 身份证号: ', this.ocrData.driving.licenseNo)
-        $Toast({
-          type: 'error',
-          duration: 3,
-          content: '驾驶证证号与身份证号码不符!'
-        })
-        return false
-      }
       if (this.ocrData.idCard.name === '未识别' || this.ocrData.idCard.idNo === '未识别') {
         $Toast({
           type: 'error',
@@ -669,6 +649,26 @@ export default {
           type: 'error',
           duration: 3,
           content: '请上传正确的行驶证照!'
+        })
+        return false
+      }
+      if (this.ocrData.carHeadPlateNo !== this.ocrData.vehicle.plateNo) {
+        console.log('车头照 车牌号: ' + this.ocrData.carHeadPlateNo)
+        console.log('行驶证 车牌号' + this.ocrData.vehicle.plateNo)
+        $Toast({
+          type: 'error',
+          duration: 3,
+          content: '行驶证车牌号与车头照车牌号不符!'
+        })
+        return false
+      }
+      if (this.ocrData.driving.licenseNo !== this.ocrData.idCard.idNo) {
+        console.log('身份证 身份证号: ', this.ocrData.idCard.idNo)
+        console.log('驾驶证 身份证号: ', this.ocrData.driving.licenseNo)
+        $Toast({
+          type: 'error',
+          duration: 3,
+          content: '驾驶证证号与身份证号码不符!'
         })
         return false
       }
