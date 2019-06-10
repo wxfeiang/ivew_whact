@@ -1160,7 +1160,7 @@ export default {
         $Toast({
           type: 'error',
           duration: 4,
-          content: '提交收货信息失败,请稍后重试!'
+          content: `提交收货信息失败 ${err}`
         })
       }
     },

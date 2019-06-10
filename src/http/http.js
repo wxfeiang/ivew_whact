@@ -5,7 +5,8 @@ const fly = new Fly()
 
 fly.config.timeout = 30000
 fly.config.baseURL = 'https://www.gsunis.cn/'
-// fly.config.baseURL = 'http://172.16.10.218:9090/'
+// fly.config.baseURL = 'https://epay.gsunis.cn/'
+// fly.config.baseURL = 'http://172.16.10.170:9090/'
 fly.config.headers = {
   'content-type': 'application/json;charset=utf-8'
 }

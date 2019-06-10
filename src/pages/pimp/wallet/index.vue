@@ -1,12 +1,20 @@
 <template>
   <div class="wallet">
     <div class="title">
-      <div class="main" @click="gotoNavi">
-        去充值
-      </div>
       <div class="content">
         <div class="money">￥{{balance}}</div>
         <div class="ctitle">账户余额</div>
+      </div>
+    </div>
+    <div class="func">
+      <div class="cash" @click="gotoNavi('recharge')">
+        <img class="cimg" src="/static/images/tx.png" alt="">
+        充值
+      </div>
+      <div class="splice"></div>
+      <div class="recharge" @click="gotoNavi('bounds')">
+        <img class="rimg" src="/static/images/cz.png" alt="">
+        积分
       </div>
     </div>
     <div class="consum">
@@ -65,10 +73,22 @@ export default {
     ])
   },
   methods: {
-    gotoNavi () {
-      wx.navigateTo({
-        url: '../../pcore/recharge/main'
-      })
+    gotoNavi (which) {
+      let dest = {
+        'recharge': '../../pcore/recharge/main',
+        'bounds': '../../pcore/recharge/main'
+      }
+      if (which === 'bounds') {
+        $Toast({
+          type: 'warning',
+          duration: 2,
+          content: '敬请期待!'
+        })
+      } else {
+        wx.navigateTo({
+          url: dest[which]
+        })
+      }
     },
     getToday () {
       let myDate = new Date()
@@ -165,6 +185,42 @@ export default {
         align-items flex-start
         font-size 13px
         color #ffffff
+  .func
+    width 100%
+    height 50px
+    background-color #ffffff
+    display flex
+    flex-flow row nowrap
+    justify-content space-around
+    align-items center
+    .cash
+      width 40%
+      height 100%
+      display flex
+      flex-flow row nowrap
+      justify-content center
+      align-items center
+      font-size 17px
+      color main-font
+      .cimg
+        width 20%
+        height 65%
+    .splice
+      width 2px
+      height 100%
+      background-color #efefef
+    .recharge
+      width 40%
+      height 100%
+      display flex
+      flex-flow row nowrap
+      justify-content center
+      align-items center
+      font-size 17px
+      color main-font
+      .rimg
+        width 20%
+        height 65%
   .consum
     width 100%
     background-color #ffffff
@@ -172,6 +228,7 @@ export default {
     flex-flow column nowrap
     justify-content flex-start
     align-items center
+    margin-top 10px
     .ctitle
       width 95%
       height 40px

@@ -650,10 +650,11 @@ export default {
           duration: 3,
           content: '请上传正确的行驶证照!'
         })
+        console.log('识别的行驶证: ' + JSON.stringify(this.ocrData.vehicle))
         return false
       }
-      if (this.ocrData.carHeadPlateNo !== this.ocrData.vehicle.plateNo) {
-        console.log('车头照 车牌号: ' + this.ocrData.carHeadPlateNo)
+      if (this.ocrData.car.carHeadPlateNo !== this.ocrData.vehicle.plateNo) {
+        console.log('车头照 车牌号: ' + this.ocrData.car.carHeadPlateNo)
         console.log('行驶证 车牌号' + this.ocrData.vehicle.plateNo)
         $Toast({
           type: 'error',
