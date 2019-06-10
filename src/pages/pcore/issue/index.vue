@@ -200,7 +200,7 @@
       </div>
     </div>
     <div class="apply">
-      <div class="aservice">
+      <div class="aservice" @click="makCall">
         <i class="icon iconfont icon-kefu asimg"></i>
         <span class="astitle">客服</span>
       </div>
@@ -223,6 +223,11 @@ export default {
     }
   },
   methods: {
+    makCall() {
+      wx.makePhoneCall({
+        phoneNumber: '18009408933'
+      })
+    },
     aswitch(whiche) {
       const lActive = {
         'product': 0,
