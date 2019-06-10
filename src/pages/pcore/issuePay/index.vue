@@ -14,10 +14,6 @@
       </div>
     </div>
     <div class="pmoney">
-      <!-- <div class="item">
-        <span class="left">高速通行卡</span>
-        <span class="right">{{goods.cardMoney}}元</span>
-      </div> -->
       <div class="item">
         <span class="left">运费</span>
         <span class="right">{{goods.deliverMoney}}元</span>
@@ -57,7 +53,6 @@ export default {
         deviceImg: '',
         totalMoney: '0',
         deviceMoney: '0',
-        cardMoney: '0',
         deliverMoney: '0'
       }
     }
@@ -95,9 +90,6 @@ export default {
             if (item.gname === '蓝牙盒子套装') {
               this.goods.deviceMoney = item.gprice
               this.goods.deviceImg = item.imgUrl
-            }
-            if (item.gname === '陇通卡') {
-              this.goods.cardMoney = item.gprice
             }
             if (item.gname === '快递费') {
               this.goods.deliverMoney = item.gprice
