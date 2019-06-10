@@ -218,7 +218,7 @@ export default {
         console.log(`上传身份证头像面异常 ${err}`)
         $Toast({
           type: 'error',
-          duration: 4,
+          duration: 5,
           content: `${err}`
         })
       }
@@ -243,7 +243,7 @@ export default {
         console.log(`上传身份证国徽面异常${err}`)
         $Toast({
           type: 'error',
-          duration: 4,
+          duration: 5,
           content: `${err}`
         })
       }
@@ -271,7 +271,7 @@ export default {
         console.log(`上传驾驶证印章页异常${err}`)
         $Toast({
           type: 'error',
-          duration: 4,
+          duration: 5,
           content: `${err}`
         })
       }
@@ -296,7 +296,7 @@ export default {
         console.log(`上传驾驶证条码页异常${err}`)
         $Toast({
           type: 'error',
-          duration: 4,
+          duration: 5,
           content: `${err}`
         })
       }
@@ -325,7 +325,7 @@ export default {
         console.log(`上传车头照异常${err}`)
         $Toast({
           type: 'error',
-          duration: 4,
+          duration: 5,
           content: `${err}`
         })
       }
@@ -362,7 +362,7 @@ export default {
         console.log(`上传行驶证印章页异常${err}`)
         $Toast({
           type: 'error',
-          duration: 4,
+          duration: 5,
           content: `${err}`
         })
       }
@@ -390,7 +390,7 @@ export default {
         console.log(`上传行驶证条码页异常${err}`)
         $Toast({
           type: 'error',
-          duration: 4,
+          duration: 5,
           content: `${err}`
         })
       }
@@ -405,7 +405,7 @@ export default {
             resolve(res.tempFilePaths[0])
           },
           fail: res => {
-            reject(new Error(`请选择照片!`))
+            reject('请选择照片!')
           }
         })
       })
@@ -429,12 +429,12 @@ export default {
               let ddata = Object.assign(iReturn.data[0], {'imgPath': imgPath})
               resolve(ddata)
             } else {
-              reject(new Error(`未返回上传结果`))
+              reject('未返回上传结果')
             }
           },
           fail: function (res) {
             console.log('上传失败 2')
-            reject(new Error(`上传失败,请稍后重试 ${JSON.stringify(res)}`))
+            reject(`上传失败,请稍后重试 ${JSON.stringify(res)}`)
           }
         })
       })
@@ -453,13 +453,13 @@ export default {
             } else {
               that.photoData.uFront = null
               console.log('iReturn.:  ' + iReturn.reasonPhrase)
-              reject(new Error(`识别身份证失败 ${iReturn.reasonPhrase}`))
+              reject(`识别身份证失败 ${iReturn.reasonPhrase}`)
             }
           },
           fail: function (res) {
             console.log('识别失败' + JSON.stringify(res))
             that.photoData.uFront = null
-            reject(new Error(`识别身份证异常,请重新拍照上传 ${res}`))
+            reject(`识别身份证异常,请重新拍照上传 ${res}`)
           }
         })
       })
@@ -477,12 +477,12 @@ export default {
               resolve(cReturn.data)
             } else {
               that.photoData.carHead = null
-              reject(new Error(`识别车头照失败 ${cReturn.reasonPhrase}`))
+              reject(`识别车头照失败 ${cReturn.reasonPhrase}`)
             }
           },
           fail: function (res) {
             that.photoData.carHead = null
-            reject(new Error(`识别车头照异常,请重新拍照上传 ${res}`))
+            reject(`识别车头照异常,请重新拍照上传 ${res}`)
           }
         })
       })
@@ -500,12 +500,12 @@ export default {
               resolve(dReturn.data)
             } else {
               that.photoData.driveMain = null
-              reject(new Error(`识别驾驶证失败 ${dReturn.reasonPhrase}`))
+              reject(`识别驾驶证失败 ${dReturn.reasonPhrase}`)
             }
           },
           fail: function (res) {
             that.photoData.driveMain = null
-            reject(new Error(`识别驾驶证异常,请重新拍照上传 ${res}`))
+            reject(`识别驾驶证异常,请重新拍照上传 ${res}`)
           }
         })
       })
@@ -526,12 +526,12 @@ export default {
               resolve(vReturn.data)
             } else {
               that.photoData.vehicleMain = null
-              reject(new Error(`识别行驶证印章页失败 ${vReturn.reasonPhrase}`))
+              reject(`识别行驶证印章页失败 ${vReturn.reasonPhrase}`)
             }
           },
           fail: function (res) {
             that.photoData.vehicleMain = null
-            reject(new Error(`识别行驶证印章页异常,请重新拍照上传 ${res}`))
+            reject(`识别行驶证印章页异常,请重新拍照上传 ${res}`)
           }
         })
       })
@@ -553,12 +553,12 @@ export default {
               resolve(vReturn.data)
             } else {
               that.photoData.vehicleSub = null
-              reject(new Error(`识别行驶证条码页失败 ${vReturn.reasonPhrase}`))
+              reject(`识别行驶证条码页失败 ${vReturn.reasonPhrase}`)
             }
           },
           fail: function (res) {
             that.photoData.vehicleSub = null
-            reject(new Error(`识别行驶证条码页异常,请重新拍照上传 ${res}`))
+            reject(`识别行驶证条码页异常,请重新拍照上传 ${res}`)
           }
         })
       })
@@ -567,7 +567,7 @@ export default {
       if (!this.photoData.uFront) {
         $Toast({
           type: 'warning',
-          duration: 3,
+          duration: 5,
           content: '请上传身份证正面照!'
         })
         return false
@@ -575,7 +575,7 @@ export default {
       if (!this.photoData.uBack) {
         $Toast({
           type: 'warning',
-          duration: 3,
+          duration: 5,
           content: '请上传身份证反面照!'
         })
         return false
@@ -583,7 +583,7 @@ export default {
       if (!this.photoData.vehicleMain) {
         $Toast({
           type: 'warning',
-          duration: 3,
+          duration: 5,
           content: '请上传行驶证印章页照片!'
         })
         return false
@@ -591,7 +591,7 @@ export default {
       if (!this.photoData.vehicleSub) {
         $Toast({
           type: 'warning',
-          duration: 3,
+          duration: 5,
           content: '请上传行驶证条码页照片!'
         })
         return false
@@ -599,7 +599,7 @@ export default {
       if (!this.photoData.driveMain) {
         $Toast({
           type: 'warning',
-          duration: 3,
+          duration: 5,
           content: '请上传驾驶证印章页照片!'
         })
         return false
@@ -607,7 +607,7 @@ export default {
       if (!this.photoData.driveSub) {
         $Toast({
           type: 'warning',
-          duration: 3,
+          duration: 5,
           content: '请上传驾驶证条码页照片!'
         })
         return false
@@ -615,7 +615,7 @@ export default {
       if (!this.photoData.carHead) {
         $Toast({
           type: 'warning',
-          duration: 3,
+          duration: 5,
           content: '请上传车头照片!'
         })
         return false
@@ -623,7 +623,7 @@ export default {
       if (this.ocrData.idCard.name === '未识别' || this.ocrData.idCard.idNo === '未识别') {
         $Toast({
           type: 'error',
-          duration: 3,
+          duration: 5,
           content: '请上传正确的身份证照!'
         })
         return false
@@ -631,7 +631,7 @@ export default {
       if (this.ocrData.driving.licenseNo === '未识别') {
         $Toast({
           type: 'error',
-          duration: 3,
+          duration: 5,
           content: '请上传正确的驾驶证照!'
         })
         return false
@@ -639,7 +639,7 @@ export default {
       if (this.ocrData.car.carHeadPlateNo === '未识别' || this.ocrData.car.plateNoColor === '未识别') {
         $Toast({
           type: 'error',
-          duration: 3,
+          duration: 5,
           content: '请上传正确的车头照!'
         })
         return false
@@ -647,7 +647,7 @@ export default {
       if (this.ocrData.vehicle.plateNo === '未识别' || this.ocrData.vehicle.vehicleType === '未识别' || this.ocrData.vehicle.owner === '未识别' || this.ocrData.vehicle.address === '未识别' || this.ocrData.vehicle.useCharacter === '未识别' || this.ocrData.vehicle.model === '未识别' || this.ocrData.vehicle.vin === '未识别' || this.ocrData.vehicle.engineNo === '未识别' || this.ocrData.vehicle.registerDate === '未识别' || this.ocrData.vehicle.issueDate === '未识别' || this.ocrData.vehicle.approvedCount === '未识别') {
         $Toast({
           type: 'error',
-          duration: 3,
+          duration: 5,
           content: '请上传正确的行驶证照!'
         })
         console.log('识别的行驶证: ' + JSON.stringify(this.ocrData.vehicle))
@@ -658,7 +658,7 @@ export default {
         console.log('行驶证 车牌号' + this.ocrData.vehicle.plateNo)
         $Toast({
           type: 'error',
-          duration: 3,
+          duration: 5,
           content: '行驶证车牌号与车头照车牌号不符!'
         })
         return false
@@ -668,7 +668,7 @@ export default {
         console.log('驾驶证 身份证号: ', this.ocrData.driving.licenseNo)
         $Toast({
           type: 'error',
-          duration: 3,
+          duration: 5,
           content: '驾驶证证号与身份证号码不符!'
         })
         return false

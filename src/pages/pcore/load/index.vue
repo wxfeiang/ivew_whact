@@ -386,7 +386,7 @@ export default {
           if (code === '0') {
             resolve(res)
           } else {
-            reject(new Error('圈存校验失败,请注意:校验失败三次,将锁卡!'))
+            reject('圈存校验失败,请注意:校验失败三次,将锁卡!')
           }
         })
       })
@@ -475,11 +475,11 @@ export default {
           if (res.status === 200 && res.data) {
             resolve(res.data)
           } else {
-            reject(new Error('圈存前上报未返回id!'))
+            reject('圈存前上报未返回id!')
           }
           console.log('圈存前上报: ' + JSON.stringify(res))
         }).catch(err => {
-          reject(new Error('圈存前上报异常!'))
+          reject('圈存前上报异常!')
           console.log(`圈存前上报异常: ${err}`)
         })
       })
@@ -530,10 +530,10 @@ export default {
           if (res.status === 0 && res.message && JSON.parse(res.message).data) {
             resolve(JSON.parse(res.message).data)
           } else {
-            reject(new Error('获取令牌失败!'))
+            reject('获取令牌失败!')
           }
         }).catch(err => {
-          reject(new Error('获取令牌异常!'))
+          reject('获取令牌异常!')
           console.log(`获取令牌异常: ${err}`)
         })
       })
@@ -565,16 +565,16 @@ export default {
               if (cardStatus === 1) {
                 resolve(epBalanceMessage.data)
               } else {
-                reject(new Error('卡片状态异常!'))
+                reject('卡片状态异常!')
               }
             } else {
-              reject(new Error(`${epBalanceMessage.msg}`))
+              reject(`${epBalanceMessage.msg}`)
             }
           } else {
-            reject(new Error('圈存余额查询异常!'))
+            reject('圈存余额查询异常!')
           }
         }).catch(err => {
-          reject(new Error('圈存余额查询异常!'))
+          reject('圈存余额查询异常!')
           console.log(`圈存余额查询异常: ${err}`)
         })
       })
@@ -614,13 +614,13 @@ export default {
             if (epStartMessage.code === 0 && epStartMessage.data) {
               resolve(epStartMessage.data)
             } else {
-              reject(new Error(`${epStartMessage.msg}!`))
+              reject(`${epStartMessage.msg}!`)
             }
           } else {
-            reject(new Error(`圈存开始异常${res.message}!`))
+            reject(`圈存开始异常${res.message}!`)
           }
         }).catch(err => {
-          reject(new Error('圈存开始异常!'))
+          reject('圈存开始异常!')
           console.log(`圈存开始异常: ${err}`)
         })
       })
@@ -631,7 +631,7 @@ export default {
           if (code === '0') {
             resolve(res)
           } else {
-            reject(new Error('写卡出错' + JSON.stringify(res)))
+            reject(`写卡出错 ${JSON.stringify(res)}`)
           }
         })
       })
