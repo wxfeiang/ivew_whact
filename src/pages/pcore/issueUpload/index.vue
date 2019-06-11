@@ -387,7 +387,7 @@ export default {
         this.photoData.vehicleSub = null
         this.jectData.btnLoading = false
         this.jectData.btnTitle = '上传'
-        console.log(`上传行驶证条码页异常${err}`)
+        console.log(`上传行驶证条码页异常 ${err}`)
         $Toast({
           type: 'error',
           duration: 5,
@@ -429,7 +429,7 @@ export default {
               let ddata = Object.assign(iReturn.data[0], {'imgPath': imgPath})
               resolve(ddata)
             } else {
-              reject('未返回上传结果')
+              reject('上传失败,未返回结果,请稍后重试!')
             }
           },
           fail: function (res) {
@@ -584,7 +584,7 @@ export default {
         $Toast({
           type: 'warning',
           duration: 5,
-          content: '请上传行驶证印章页照片!'
+          content: '请上传行驶证印章页照!'
         })
         return false
       }
@@ -592,7 +592,7 @@ export default {
         $Toast({
           type: 'warning',
           duration: 5,
-          content: '请上传行驶证条码页照片!'
+          content: '请上传行驶证条码页照!'
         })
         return false
       }
@@ -600,7 +600,7 @@ export default {
         $Toast({
           type: 'warning',
           duration: 5,
-          content: '请上传驾驶证印章页照片!'
+          content: '请上传驾驶证印章页照!'
         })
         return false
       }
@@ -608,7 +608,7 @@ export default {
         $Toast({
           type: 'warning',
           duration: 5,
-          content: '请上传驾驶证条码页照片!'
+          content: '请上传驾驶证条码页照!'
         })
         return false
       }
@@ -616,7 +616,7 @@ export default {
         $Toast({
           type: 'warning',
           duration: 5,
-          content: '请上传车头照片!'
+          content: '请上传车头照!'
         })
         return false
       }
@@ -624,7 +624,7 @@ export default {
         $Toast({
           type: 'error',
           duration: 5,
-          content: '请上传正确的身份证照!'
+          content: '身份证识别失败或上传的不是正确身份证!'
         })
         return false
       }
@@ -632,7 +632,7 @@ export default {
         $Toast({
           type: 'error',
           duration: 5,
-          content: '请上传正确的驾驶证照!'
+          content: '驾驶证识别失败或上传的不是正确驾驶证!'
         })
         return false
       }
@@ -640,7 +640,7 @@ export default {
         $Toast({
           type: 'error',
           duration: 5,
-          content: '请上传正确的车头照!'
+          content: '车头照识别失败或上传的不是正确车头照!'
         })
         return false
       }
@@ -648,7 +648,7 @@ export default {
         $Toast({
           type: 'error',
           duration: 5,
-          content: '请上传正确的行驶证照!'
+          content: '行驶证识别失败或上传的不是正确行驶证!'
         })
         console.log('识别的行驶证: ' + JSON.stringify(this.ocrData.vehicle))
         return false
