@@ -89,10 +89,11 @@ export default {
     ...mapState(['openid', 'mobile'])
   },
   methods: {
-    async getOrderDetail() {
+    async getOrderDetail(applyId) {
       wx.showLoading({ title: '加载中', mask: true })
       let params = {
-        userId: this.openid
+        userId: this.openid,
+        applyId: applyId
       }
       try {
         let iReturn = await checkAudit(params)
@@ -175,7 +176,7 @@ export default {
     wx.stopPullDownRefresh()
   },
   mounted() {
-    this.getOrderDetail()
+    this.getOrderDetail(this.$root.$mp.query.applyId)
   }
 }
 </script>

@@ -23,6 +23,8 @@
         "card/main",
         "consum/main",
         "etcList/main",
+        "etcSupply/main",
+        "etcDetail/main",
         "help/main",
         "orderDetail/main",
         "userInfo/main",
