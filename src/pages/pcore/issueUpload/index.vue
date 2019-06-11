@@ -10,13 +10,6 @@
           </div>
           <span class="tptitle">头像面</span>
         </div>
-        <!-- <div class="tpc">
-          <div class="back" @click="jectModel('idBack')">
-            <image src="/static/images/sfz2.png" mode="aspecFill" class="ppimg" v-if="!photoData.uBack"/>
-            <image :src="photoData.uBack" class="ppimg" v-else/>
-          </div>
-          <span class="tptitle">国徽面</span>
-        </div> -->
       </div>
     </div>
     <div class="ucar">
@@ -47,11 +40,6 @@
           <span class="tptitle">驾驶证印章页</span>
         </div>
         <div class="tpc">
-          <!-- <div class="back" @click="jectModel('drivingLicenseSub')">
-            <image src="/static/images/jsz2.png" mode="aspecFill" class="ppimg" v-if="!photoData.driveSub"/>
-            <image :src="photoData.driveSub" class="ppimg" v-else/>
-          </div>
-          <span class="tptitle">驾驶证条码页</span> -->
           <div class="font" @click="jectModel('carHead')">
             <image src="/static/images/ct.png" mode="aspecFill" class="ppimg" v-if="!photoData.carHead"/>
             <image :src="photoData.carHead" class="ppimg" v-else/>
@@ -59,15 +47,6 @@
           <span class="tptitle">车头露牌照</span>
         </div>
       </div>
-      <!-- <div class="tphoto">
-        <div class="tpc">
-          <div class="font" @click="jectModel('carHead')">
-            <image src="/static/images/ct.png" mode="aspecFill" class="ppimg" v-if="!photoData.carHead"/>
-            <image :src="photoData.carHead" class="ppimg" v-else/>
-          </div>
-          <span class="tptitle">车头露牌照</span>
-        </div>
-      </div> -->
     </div>
     <div class="pbutton">
       <button class="bbutton" @click="toAddress()">下一步</button>
@@ -160,17 +139,6 @@ export default {
           })
         }
       }
-      // if (data === 'idBack') {
-      //   this.jectData.whichImg = '/static/images/zj2.png'
-      //   if (this.photoData.uBack) {
-      //     let preBack = []
-      //     preBack.push(this.photoData.uBack)
-      //     wx.previewImage({
-      //       urls: preBack,
-      //       current: preBack[0]
-      //     })
-      //   }
-      // }
       if (data === 'drivingLicenseMain') {
         this.jectData.whichImg = '/static/images/zj6.png'
         if (this.photoData.driveMain) {
@@ -182,17 +150,6 @@ export default {
           })
         }
       }
-      // if (data === 'drivingLicenseSub') {
-      //   this.jectData.whichImg = '/static/images/zj4.png'
-      //   if (this.photoData.driveSub) {
-      //     let preDrivingSub = []
-      //     preDrivingSub.push(this.photoData.driveSub)
-      //     wx.previewImage({
-      //       urls: preDrivingSub,
-      //       current: preDrivingSub[0]
-      //     })
-      //   }
-      // }
       if (data === 'vehicleLicenseMain') {
         this.jectData.whichImg = '/static/images/zj3.png'
         if (this.photoData.vehicleMain) {
@@ -236,15 +193,9 @@ export default {
       if (type === 'idFront') {
         this.toFront()
       }
-      // if (type === 'idBack') {
-      //   this.toBack()
-      // }
       if (type === 'drivingLicenseMain') {
         this.toDriveMain()
       }
-      // if (type === 'drivingLicenseSub') {
-      //   this.toDriveSub()
-      // }
       if (type === 'vehicleLicenseMain') {
         this.toVehicleMain()
       }
@@ -284,31 +235,6 @@ export default {
         })
       }
     },
-    // async toBack() {
-    //   let that = this
-    //   try {
-    //     let idReturn = await this.chooseImage('身份证国徽面')
-    //     this.photoData.uBack = idReturn
-    //     this.jectData.btnLoading = true
-    //     this.jectData.btnTitle = '上传中...'
-    //     let upReturn = await this.toUpload(idReturn, '8')
-    //     console.log('toUpload: ' + JSON.stringify(upReturn))
-    //     // this.ocrData.idCard.backData = upReturn
-    //     this.jectData.btnLoading = false
-    //     this.jectData.btnTitle = '上传'
-    //     this.jectData.showJect = false
-    //   } catch (err) {
-    //     this.photoData.uBack = null
-    //     this.jectData.btnLoading = false
-    //     this.jectData.btnTitle = '上传'
-    //     console.log(`上传身份证国徽面异常${err}`)
-    //     $Toast({
-    //       type: 'error',
-    //       duration: 5,
-    //       content: `${err}`
-    //     })
-    //   }
-    // },
     async toDriveMain() {
       let that = this
       try {
@@ -337,31 +263,6 @@ export default {
         })
       }
     },
-    // async toDriveSub() {
-    //   let that = this
-    //   try {
-    //     let idReturn = await this.chooseImage('驾驶证条码页')
-    //     this.photoData.driveSub = idReturn
-    //     this.jectData.btnLoading = true
-    //     this.jectData.btnTitle = '上传中...'
-    //     let upReturn = await this.toUpload(idReturn, '7')
-    //     console.log('toUpload: ' + JSON.stringify(upReturn))
-    //     // this.ocrData.driving.backData = upReturn
-    //     this.jectData.btnLoading = false
-    //     this.jectData.btnTitle = '上传'
-    //     this.jectData.showJect = false
-    //   } catch (err) {
-    //     this.photoData.driveSub = null
-    //     this.jectData.btnLoading = false
-    //     this.jectData.btnTitle = '上传'
-    //     console.log(`上传驾驶证条码页异常${err}`)
-    //     $Toast({
-    //       type: 'error',
-    //       duration: 5,
-    //       content: `${err}`
-    //     })
-    //   }
-    // },
     async toCarHead() {
       let that = this
       try {
@@ -829,26 +730,6 @@ export default {
           justify-content center
           align-items center
         .font
-          width 100%
-          height 100%
-          display flex
-          flex-flow row nowrap
-          justify-content center
-          align-items center
-          border 1px bg-color dashed
-          .pimg
-            line-height 100%
-            width 50%
-            height 50%
-            color #999
-            font-size 50px
-            text-align center
-          .ppimg
-            line-height 100%
-            width 90%
-            height 90%
-            text-align center
-        .back
           width 100%
           height 100%
           display flex

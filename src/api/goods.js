@@ -35,3 +35,24 @@ export function confirmReceipt(data) {
     method: 'POST'
   })
 }
+
+// 确认收货接口
+export function queryList(data) {
+  return fly.request('busi/etcissue/list', data, {
+    method: 'GET'
+  })
+}
+
+// 补单 获取ocr数据
+export function supplyOCR(data) {
+  return fly.request('busi/etcapply/id', data, {
+    method: 'GET'
+  })
+}
+
+// 补单 获取照片数据
+export function supplyPhoto(data) {
+  return fly.request(`/gfs/img/read/${data}`, data, {
+    method: 'GET'
+  })
+}
