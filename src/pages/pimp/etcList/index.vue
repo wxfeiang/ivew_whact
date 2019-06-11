@@ -1,25 +1,23 @@
 <template>
   <div class="etclist">
     <div class="econtent" v-if="hasData">
-      <div class="eitem" v-for="item in etcList" :key="item.id" @click="gotoDetail(item)">
-        <div class="estatus">
-          <span class="success" v-if="item.applyStatus === 1">{{item.applyStatusName}}</span>
-          <span class="fail" v-if="item.applyStatus === 2">{{item.applyStatusName}}</span>
-          <span class="wait" v-if="item.applyStatus === 0">{{item.applyStatusName}}</span>
-        </div>
-        <div class="eeitem">
-          <span class="eleft">申请单号</span>
-          <span class="eright">{{item.id}}</span>
-        </div>
-        <div class="esplice"></div>
-        <div class="eeitem">
-          <span class="eleft">申请时间</span>
-          <span class="eright">{{item.applyTime}}</span>
-        </div>
-        <div class="esplice"></div>
-        <div class="eeitem">
-          <span class="eleft">车牌号</span>
-          <span class="eright">{{item.plateNumber}}</span>
+      <div class="items" v-for="(item, index) in etcList" :key="item.id" @click="gotoDetail(item)">
+        <div class="itime">{{item.applyTime}}</div>
+        <div class="icontent">
+          <div class="ilogo">
+              <image class="ilogoimg" src="/static/images/logo.png"></image>
+              <span class="isuccess" v-if="item.applyStatus === 1">{{item.applyStatusName}}</span>
+              <span class="ifail" v-if="item.applyStatus === 2">{{item.applyStatusName}}</span>
+              <span class="iwait" v-if="item.applyStatus === 0">{{item.applyStatusName}}</span>
+          </div>
+          <div class="ititel">
+            <span class="iim">{{item.plateNumber}}</span>
+          </div>
+          <div class="splice"></div>
+          <div class="idetail">
+            <span class="idt">查看订单详情</span>
+            <span class="idi"><i class="icon iconfont icon-right dimg"></i></span>
+          </div>
         </div>
       </div>
     </div>
@@ -170,88 +168,107 @@ export default {
     flex-flow column nowrap
     justify-content flex-start
     align-items center
-    .eitem
-      width 95%
-      height 150px
+    .items
+      width 100%
+      height 200px
       display flex
       flex-flow column nowrap
       justify-content flex-start
       align-items center
-      margin-top 8px
-      background-color white-color
-      border-radius 5px
-      .estatus
+      margin 20px 0
+      .itime
         width 100%
-        height 21%
+        height 20%
         display flex
         flex-flow row nowrap
+        justify-content center
+        align-items center
+        font-size 15px
+        color sub-font
+      .icontent
+        width 90%
+        height 90%
+        display flex
+        flex-flow column nowrap
         justify-content flex-start
         align-items center
-        .success
-          width 100%
-          height 100%
-          color white-color
-          font-size 15px
-          display flex
-          flex-flow row nowrap
-          justify-content center
-          align-items center
-          border-top-left-radius 5px
-          border-top-right-radius 5px
-          background-color #28C200
-        .fail
-          width 100%
-          height 100%
-          color white-color
-          font-size 15px
-          display flex
-          flex-flow row nowrap
-          justify-content center
-          align-items center
-          border-top-left-radius 5px
-          border-top-right-radius 5px
-          background-color #FF8C00
-        .wait
-          width 100%
-          height 100%
-          color white-color
-          font-size 15px
-          display flex
-          flex-flow row nowrap
-          justify-content center
-          align-items center
-          border-top-left-radius 5px
-          border-top-right-radius 5px
-          background-color #009efb
-      .eeitem
-        width 95%
-        height 25%
-        display flex
-        flex-flow row nowrap
-        justify-content space-between
-        align-items center
-        .eleft
-          width 50%
-          height 100%
+        background-color white-color
+        border-radius 5px
+        .ilogo
+          width 90%
+          height 20%
           display flex
           flex-flow row nowrap
           justify-content flex-start
           align-items center
-          font-size 15px
-          color main-font
-        .eright
-          width 50%
-          height 100%
+          .ilogoimg
+            width 21px
+            height 21px
+          .isuccess
+            font-size 15px
+            color #28C200
+            text-indent 10px
+          .ifail
+            font-size 15px
+            color #FF8C00
+            text-indent 10px
+          .iwait
+            font-size 15px
+            color #009efb
+            text-indent 10px
+        .ititel
+          width 100%
+          height 55%
           display flex
           flex-flow row nowrap
-          justify-content flex-end
+          justify-content center
           align-items center
-          font-size 15px
-          color sub-font
-      .esplice
-        width 100%
-        height 1px
-        background-color bg-color
+          .iim
+            width 100%
+            height 100%
+            display flex
+            flex-flow row nowrap
+            justify-content center
+            align-items center
+            font-size 35px
+            color main-font
+        .splice
+          width 100%
+          height 1px
+          background-color #efefef
+        .idetail
+          width 95%
+          height 25%
+          display flex
+          flex-flow row nowrap
+          justify-content flex-start
+          align-items center
+          .idt
+            width 90%
+            height 100%
+            display flex
+            flex-flow row nowrap
+            justify-content flex-start
+            align-items center
+            font-size 15px
+            color main-font
+          .idi
+            width 10%
+            height 100%
+            display flex
+            flex-flow row nowrap
+            justify-content center
+            align-items center
+            .dimg
+              width 80%
+              height 100%
+              line-height 100%
+              font-size 20px
+              display flex
+              flex-flow row nowrap
+              justify-content center
+              align-items center
+              color sub-font
   .loadmore
     width 100%
     height 50px
