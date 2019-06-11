@@ -181,16 +181,16 @@ export default {
           $Toast({
             type: 'error',
             duration: 4,
-            content: '支付失败:未返回数据!'
+            content: '支付失败,未返回订单数据!'
           })
         }
       } catch (err) {
-        console.log('unifiedOrder 失败: ' + JSON.stringify(err))
+        console.log('unifiedOrder 异常: ' + JSON.stringify(err))
         wx.hideLoading()
         $Toast({
           type: 'error',
           duration: 4,
-          content: `接口异常${err}`
+          content: `支付异常,请稍后重试`
         })
       }
     },
@@ -227,7 +227,7 @@ export default {
               $Toast({
                 type: 'error',
                 duration: 4,
-                content: `支付失败 ${res.errMsg}`
+                content: `支付失败,请重新支付!`
               })
             }
           })
@@ -235,15 +235,16 @@ export default {
           $Toast({
             type: 'error',
             duration: 4,
-            content: '支付失败:未返回packages!'
+            content: '支付失败,未返回订单数据!'
           })
         }
       } catch (err) {
         wx.hideLoading()
+        console.log('toPayment 异常: ' + JSON.stringify(err))
         $Toast({
           type: 'error',
           duration: 4,
-          content: `支付异常 ${err}`
+          content: `支付异常,请稍后重试!`
         })
       }
     },
