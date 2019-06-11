@@ -12,7 +12,6 @@
         "issue/main",
         "issueAddress/main",
         "issueUpload/main",
-        "issuePay/main",
         "recharge/main"
       ]
     },

@@ -161,7 +161,7 @@
     </div>
     <upload v-model="jectData.showJect" :content="jectData.whichImg" :setLoading="jectData.btnLoading" :setTitle="jectData.btnTitle" :type="jectData.whichType" @cancel="clickJectCancel" @confirm="clickJectConfirm"></upload>
     <i-toast id="toast"/>
-    <i-modal title="在线申办成功" :visible="showMask"  :show-cancel="showCancel" @ok="clickConfirm">
+    <i-modal title="重新提单成功" :visible="showMask"  :show-cancel="showCancel" @ok="clickConfirm">
       <view>{{mContent}}</view>
     </i-modal>
   </div>
@@ -169,9 +169,8 @@
 
 <script>
 import { $Toast } from '@/utils/iview'
-import { goodsPhotoUpload, supplyOCR, supplyPhoto, goodsSave } from '@/api/goods'
-import { mapState, mapMutations } from 'vuex'
-import * as types from '@/store/mutation-types'
+import { goodsPhotoUpload, supplyOCR, supplyPhoto, reSupply } from '@/api/goods'
+import { mapState } from 'vuex'
 import upload from '@/components/upload.vue'
 import ocr from '@/api/ocr'
 const sysChannel = {
@@ -1496,7 +1495,7 @@ export default {
           this.ocrData.vehicle.registerDate = iReturn.data.registerDate
           this.ocrData.vehicle.issueDate = iReturn.data.issueDate
           this.ocrData.vehicle.approvedCount = iReturn.data.approvedCount
-          this.uAd.userName = iReturn.data.userName
+          this.uAd.userName = iReturn.data.ownerName
           this.uAd.idNumber = iReturn.data.ownerIdNum
           this.uAd.plateNo = iReturn.data.vehicleId
           this.uAd.mobile = iReturn.data.tel
@@ -1508,7 +1507,7 @@ export default {
           $Toast({
             type: 'error',
             duration: 3,
-            content: '获取申请单数据失败1!'
+            content: '获取申请单数据失败!'
           })
         }
         wx.hideLoading()
@@ -1550,7 +1549,7 @@ export default {
           $Toast({
             type: 'error',
             duration: 4,
-            content: '获取申请单数据失败2!'
+            content: '获取申请单照片失败!'
           })
         }
         wx.hideLoading()
@@ -1559,7 +1558,7 @@ export default {
         $Toast({
           type: 'error',
           duration: 4,
-          content: '获取申请单数据失败!'
+          content: '获取申请单照片失败!'
         })
       }
     },
@@ -1819,11 +1818,11 @@ export default {
           contact: this.ocrData.idCard.name, //
           vehicleType: this.ocrData.vehicle.vehicleType, // 行驶证车辆类型
           vehicleModel: this.ocrData.vehicle.model, // 行驶证品牌型号
-          issueDate: this.ocrData.vehicle.issueDate.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3') + ' 00:00:00' || '未识别', // 发证日期
+          issueDate: this.ocrData.vehicle.issueDate.length > 8 ? this.ocrData.vehicle.issueDate : this.ocrData.vehicle.issueDate.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3') + ' 00:00:00', // 发证日期
           vin: this.ocrData.vehicle.vin,
           engineNum: this.ocrData.vehicle.engineNo,
-          approvedCount: this.ocrData.vehicle.approvedCount.substr(0, this.ocrData.vehicle.approvedCount.length - 1), // 核定载人数
-          registerDate: this.ocrData.vehicle.registerDate.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3') + ' 00:00:00' || '未识别', // 注册日期
+          approvedCount: this.ocrData.vehicle.approvedCount.length - 1 > 0 ? this.ocrData.vehicle.approvedCount.substr(0, this.ocrData.vehicle.approvedCount.length - 1) : this.ocrData.vehicle.approvedCount, // 核定载人数
+          registerDate: this.ocrData.vehicle.registerDate.length > 8 ? this.ocrData.vehicle.registerDate : this.ocrData.vehicle.registerDate.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3') + ' 00:00:00', // 注册日期
           openid: this.openid,
           userName: this.ocrData.idCard.name,
           userIdNum: this.ocrData.idCard.idNo,
@@ -1833,24 +1832,22 @@ export default {
           takeCity: reginSplice[1],
           takeCountry: reginSplice[2],
           address: this.uAd.address,
-          color: this.ocrData.car.plateNoColor,
+          color: this.ocrData.car.plateNoColor === '0' ? 'blue' : 'yellow',
           aId: this.applyId
         }
         console.log('提交申请的参数: ' + JSON.stringify(params))
-        // let sReturn = await goodsSave(params)
-        // wx.hideLoading()
-        // console.log('提交申请返回: ' + JSON.stringify(sReturn))
-        // if (sReturn.status === 200 && sReturn.data === 'success') {
-        //   this.showMask = true
-        //   this.mContent = '请到我的页面-我的订单中关注审核流程'
-        //   this.saveOCR({})
-        // } else {
-        //   $Toast({
-        //     type: 'error',
-        //     duration: 4,
-        //     content: '提交收货信息失败,未返回结果,请稍后重试!'
-        //   })
-        // }
+        let sReturn = await reSupply(params)
+        wx.hideLoading()
+        if (sReturn.status === 200 && sReturn.data === 'success') {
+          this.showMask = true
+          this.mContent = '请到我的页面-我的订单中关注审核流程'
+        } else {
+          $Toast({
+            type: 'error',
+            duration: 4,
+            content: '提交收货信息失败,未返回结果,请稍后重试!'
+          })
+        }
       } catch (err) {
         console.log('提交收货信息异常: ' + JSON.stringify(err))
         wx.hideLoading()
@@ -1860,10 +1857,7 @@ export default {
           content: `提交收货信息异常 ${err}`
         })
       }
-    },
-    ...mapMutations({
-      saveOCR: types.SYSTEM_OCRDATA
-    })
+    }
   },
   mounted() {
     this.assignData()

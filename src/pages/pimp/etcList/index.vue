@@ -3,9 +3,9 @@
     <div class="econtent" v-if="hasData">
       <div class="eitem" v-for="item in etcList" :key="item.id" @click="gotoDetail(item)">
         <div class="estatus">
-          <span class="success" v-if="item.applyStatus === '1'">{{item.applyStatusName}}</span>
-          <span class="fail" v-if="item.applyStatus === '2'">{{item.applyStatusName}}</span>
-          <span class="wait" v-if="item.applyStatus === '0'">{{item.applyStatusName}}</span>
+          <span class="success" v-if="item.applyStatus === 1">{{item.applyStatusName}}</span>
+          <span class="fail" v-if="item.applyStatus === 2">{{item.applyStatusName}}</span>
+          <span class="wait" v-if="item.applyStatus === 0">{{item.applyStatusName}}</span>
         </div>
         <div class="eeitem">
           <span class="eleft">申请单号</span>
@@ -76,7 +76,7 @@ export default {
       }
       try {
         let iReturn = await queryList(params)
-        if (iReturn.status === 200 && iReturn.data.list) {
+        if (iReturn.status === 200 && iReturn.data.list.length > 0) {
           this.etcList = iReturn.data.list
           this.pagination.totalPage = iReturn.data.pages
           this.hasData = true
@@ -104,7 +104,7 @@ export default {
       }
       try {
         let iReturn = await queryList(params)
-        if (iReturn.status === 200 && iReturn.data.list) {
+        if (iReturn.status === 200 && iReturn.data.list.length > 0) {
           let tmpList = iReturn.data.list
           let tmpNewList = this.etcList
           this.etcList = []
@@ -125,11 +125,8 @@ export default {
       }
     },
     gotoDetail(item) {
-      // wx.navigateTo({
-      //   url: `../etcDetail/main?applyId=${item.id}`
-      // })
       wx.navigateTo({
-        url: `../etcSupply/main?applyId=${item.id}`
+        url: `../etcDetail/main?applyId=${item.id}`
       })
     }
   },
@@ -174,7 +171,7 @@ export default {
     justify-content flex-start
     align-items center
     .eitem
-      width 90%
+      width 95%
       height 150px
       display flex
       flex-flow column nowrap

@@ -36,9 +36,16 @@ export function confirmReceipt(data) {
   })
 }
 
-// 确认收货接口
+// 订单列表接口
 export function queryList(data) {
   return fly.request('busi/etcissue/list', data, {
+    method: 'GET'
+  })
+}
+
+// 订单详情接口
+export function queryDetail(data) {
+  return fly.request('busi/etc/detail', data, {
     method: 'GET'
   })
 }
@@ -56,8 +63,14 @@ export function supplyPhoto(data) {
     `/gfs/img/read/${data}`,
     {},
     {
-      method: 'GET',
-      baseURL: 'http://192.168.1.123:9999/'
+      method: 'GET'
     }
   )
+}
+
+// 补单 获取照片数据
+export function reSupply(data) {
+  return fly.request('/busi/etcapply/update', data, {
+    method: 'POST'
+  })
 }

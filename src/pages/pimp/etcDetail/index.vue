@@ -4,7 +4,12 @@
       <div class="etitle">
         <div class="etitem">
           <span class="left">申请单号</span>
-          <span class="right">{{orderDetail.audit.applyId}}</span>
+          <span class="right">{{orderDetail.audit.id}}</span>
+        </div>
+        <div class="splice"></div>
+        <div class="etitem">
+          <span class="left">办理车牌</span>
+          <span class="right">{{orderDetail.audit.plateNumber}}</span>
         </div>
         <div class="splice"></div>
         <div class="etitem">
@@ -14,7 +19,9 @@
         <div class="splice"></div>
         <div class="etitem">
           <span class="left">申请结果</span>
-          <span class="iright">{{orderDetail.audit.auditResult}}</span>
+          <span class="iwait" v-if="orderDetail.audit.applyStatus === '0'">{{orderDetail.audit.applyStatusName}}</span>
+          <span class="isuccess" v-if="orderDetail.audit.applyStatus === '1'">{{orderDetail.audit.applyStatusName}}</span>
+          <span class="ifail" v-if="orderDetail.audit.applyStatus === '2'">{{orderDetail.audit.applyStatusName}}</span>
         </div>
       </div>
       <div class="econtent" v-if="orderDetail.ems.length > 0">
@@ -57,13 +64,16 @@
     <div class="pbutton" v-if="orderDetail.ems.length > 0 && orderDetail.pay.state !=3">
       <button class="ppbutton" @click="gotDevice()">确认收货</button>
     </div>
+    <div class="pbutton" v-if="orderDetail.audit.applyStatus === '2'">
+      <button class="ppbutton" @click="reSupply()">重新提单</button>
+    </div>
     <i-toast id="toast"/>
   </div>
 </template>
 
 <script>
 import { $Toast } from '@/utils/iview'
-import { checkAudit, confirmReceipt } from '@/api/goods'
+import { queryDetail, confirmReceipt } from '@/api/goods'
 import {mapState} from 'vuex'
 export default {
   data() {
@@ -72,59 +82,56 @@ export default {
       mchOrderId: '',
       orderDetail: {
         audit: {
-          applyId: '',
+          id: '',
           applyTime: '',
-          auditResult: '',
-          auditTime: '',
-          auditContent: ''
+          applyStatusName: '',
+          plateNumber: '',
+          applyStatus: ''
         },
         pay: {
           state: ''
         },
         ems: []
-      }
+      },
+      applyId: ''
     }
   },
   computed: {
     ...mapState(['openid', 'mobile'])
   },
   methods: {
+    reSupply() {
+      wx.navigateTo({
+        url: `../etcSupply/main?applyId=${this.orderDetail.audit.id}`
+      })
+    },
     async getOrderDetail(applyId) {
       wx.showLoading({ title: '加载中', mask: true })
       let params = {
-        userId: this.openid,
-        applyId: applyId
+        id: applyId
       }
       try {
-        let iReturn = await checkAudit(params)
+        let iReturn = await queryDetail(params)
         wx.hideLoading()
         if (iReturn.status === 200 && iReturn.data.audit) {
-          if (iReturn.data.audit.applyStatus !== '-1') {
-            // applyStatus:-1，无申请记录；0，待审核；1，审核通过；2审核拒绝。
-            this.hasData = true
-            this.orderDetail.audit.applyId = iReturn.data.audit.applyId
-            this.orderDetail.audit.applyTime = iReturn.data.audit.applyTime
-            this.orderDetail.audit.auditResult = iReturn.data.audit.auditResult
-            this.orderDetail.audit.auditTime = iReturn.data.audit.auditTime
-            this.orderDetail.audit.auditContent = iReturn.data.audit.auditContent
-            this.orderDetail.pay.state = iReturn.data.pay.state
-            this.orderDetail.ems = iReturn.data.ems
-          } else {
-            this.hasData = false
-            console.log('暂无订单信息数据' + JSON.stringify(iReturn.data))
-            $Toast({
-              type: 'error',
-              duration: 4,
-              content: `暂无订单信息数据`
-            })
+          // applyStatus:-1，无申请记录；0，待审核；1，审核通过；2审核拒绝。
+          this.hasData = true
+          this.orderDetail.audit.id = iReturn.data.audit.id
+          this.orderDetail.audit.applyTime = iReturn.data.audit.applyTime
+          this.orderDetail.audit.applyStatusName = iReturn.data.audit.applyStatusName
+          this.orderDetail.audit.plateNumber = iReturn.data.audit.plateNumber
+          this.orderDetail.audit.applyStatus = iReturn.data.audit.applyStatus
+          if (iReturn.data.pay && iReturn.data.pay.state) {
+            this.orderDetail.pay.state = iReturn.data.pay.state || ''
           }
+          this.orderDetail.ems = iReturn.data.ems
         } else {
           this.hasData = false
-          console.log('获取订单信息失败,未返回数据' + JSON.stringify(iReturn.data))
+          console.log('获取订单信息失败' + JSON.stringify(iReturn.data))
           $Toast({
             type: 'error',
             duration: 4,
-            content: `获取订单信息失败,未返回数据`
+            content: `获取订单信息失败`
           })
         }
       } catch (err) {
@@ -139,8 +146,8 @@ export default {
       }
     },
     async gotDevice() {
-      const iParams = {
-        id: this.orderDetail.audit.applyId
+      let iParams = {
+        id: this.applyId
       }
       try {
         let gReturn = await confirmReceipt(iParams)
@@ -150,7 +157,7 @@ export default {
             duration: 3,
             content: `确认收货成功`
           })
-          this.getOrderDetail()
+          this.getOrderDetail(this.applyId)
         } else {
           console.log('确认收货失败' + JSON.stringify(gReturn.data))
           $Toast({
@@ -172,11 +179,12 @@ export default {
   },
   onPullDownRefresh () {
     this.hasData = false
-    this.getOrderDetail()
+    this.getOrderDetail(this.applyId)
     wx.stopPullDownRefresh()
   },
   mounted() {
-    this.getOrderDetail(this.$root.$mp.query.applyId)
+    this.applyId = this.$root.$mp.query.applyId
+    this.getOrderDetail(this.applyId)
   }
 }
 </script>
@@ -193,7 +201,7 @@ export default {
     flex 1
     .etitle
       width 100%
-      height 150px
+      height 180px
       background-color white-color
       display flex
       flex-flow column nowrap
@@ -205,7 +213,7 @@ export default {
         background-color bg-color
       .etitem
         width 90%
-        height 49%
+        height 45px
         display flex
         flex-flow row nowrap
         justify-content space-between
@@ -228,14 +236,32 @@ export default {
           align-items center
           color main-font
           font-size 15px
-        .iright
+        .isuccess
           width 60%
           height 100%
           display flex
           flex-flow row nowrap
           justify-content flex-end
           align-items center
-          color main-color
+          color #28C200
+          font-size 15px
+        .iwait
+          width 60%
+          height 100%
+          display flex
+          flex-flow row nowrap
+          justify-content flex-end
+          align-items center
+          color #009efb
+          font-size 15px
+        .ifail
+          width 60%
+          height 100%
+          display flex
+          flex-flow row nowrap
+          justify-content flex-end
+          align-items center
+          color #FF8C00
           font-size 15px
     .econtent
       width 100%

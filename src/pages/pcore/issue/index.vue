@@ -1,8 +1,30 @@
+import { $Toast } from '@/utils/iview';
 <template>
   <div class="issue">
     <div class="picture">
       <img class="ppimg" src="/static/images/etcu.png">
       <div class="pmark"></div>
+    </div>
+    <div class="ifee">
+      <div class="ifitem">
+        <div class="ifleft">
+          <span class="ifll">￥</span>
+          <span class="iflr">0</span>
+        </div>
+        <span class="ifcenter">微信用户专享</span>
+        <span class="ifright">月办理量：3847笔</span>
+      </div>
+      <div class="ifnoew">
+        <span class="ifnl">原价</span>
+        <span class="ifnr">￥{{goods.totalMoney}}</span>
+      </div>
+      <div class="ifcontent">
+        <span class="ifct">快递</span>
+        <span class="ifctc">
+          <i class="icon iconfont icon-location ifctimg"></i>
+          甘肃省内免快递费（EMS）</span>
+      </div>
+      <span class="iftitle">全国通用 高速ETC办理</span>
     </div>
     <div class="product">
       <div class="actions">
@@ -212,14 +234,23 @@
         <button class="bbutton"  @click="toPay()">立即申办</button>
       </div>
     </div>
+    <i-toast id="toast"/>
   </div>
 </template>
 
 <script>
+import { goodsList } from '@/api/goods'
+import { $Toast } from '@/utils/iview'
 export default {
   data() {
     return {
-      palink: 0
+      palink: 0,
+      goods: {
+        deviceImg: [],
+        totalMoney: '0',
+        deviceMoney: '0',
+        deliverMoney: '0'
+      }
     }
   },
   methods: {
@@ -235,9 +266,9 @@ export default {
         'question': 2
       }
       const lPosition = {
-        'product': 1000,
-        'flow': 2300,
-        'question': 3500
+        'product': 1350,
+        'flow': 2650,
+        'question': 3850
       }
       this.palink = lActive[whiche]
       let t = lPosition[whiche] / 750 * wx.getSystemInfoSync().windowWidth
@@ -248,13 +279,49 @@ export default {
     },
     toPay() {
       wx.navigateTo({
-        url: `../issuePay/main?applyId=${this.applyId}`
+        url: `../issueUpload/main`
       })
     },
     showPeopleDetail() {
       this.isPeopleCollapse = !this.isPeopleCollapse
       this.isCarCollapse = !this.isPeopleCollapse
+    },
+    async getGoods() {
+      wx.showLoading({title: '加载中', mask: true})
+      try {
+        let gRetrun = await goodsList()
+        wx.hideLoading()
+        if (gRetrun.status === 200 && gRetrun.data && gRetrun.data.goodsInfo.length > 0) {
+          this.goods.totalMoney = gRetrun.data.total
+          for (let item of gRetrun.data.goodsInfo) {
+            if (item.gname === '蓝牙盒子套装') {
+              this.goods.deviceMoney = item.gprice
+              this.goods.deviceImg.push(item.imgUrl)
+            }
+            if (item.gname === '快递费') {
+              this.goods.deliverMoney = item.gprice
+            }
+          }
+        } else {
+          wx.hideLoading()
+          $Toast({
+            type: 'warning',
+            duration: 4,
+            content: '商品信息未返回数据!'
+          })
+        }
+      } catch (err) {
+        wx.hideLoading()
+        $Toast({
+          type: 'error',
+          duration: 4,
+          content: '获取商品信息失败!'
+        })
+      }
     }
+  },
+  mounted () {
+    this.getGoods()
   }
 }
 </script>
@@ -273,6 +340,122 @@ export default {
     .ppimg
       width 100%
       height 100%
+  .ifee
+    width 100%
+    height 155px
+    display flex
+    flex-flow column nowrap
+    justify-content flex-start
+    align-items center
+    position relative
+    margin-top 10px
+    background-color white-color
+    .ifitem
+      width 95%
+      height 45px
+      display flex
+      flex-flow row nowrap
+      justify-content flex-start
+      align-items center
+      position relative
+      .ifleft
+        width 15%
+        height 100%
+        display flex
+        flex-flow row nowrap
+        justify-content flex-start
+        align-items center
+        .ifll
+          font-size 15px
+          color main-font
+        .iflr
+          font-size 15px
+          color main-color
+      .ifcenter
+        width 25%
+        height 50%
+        display flex
+        flex-flow row nowrap
+        justify-content center
+        align-items center
+        font-size 12px
+        color white-color
+        background-color sub-color
+        border-radius 6px
+      .ifright
+        width 60%
+        height 100%
+        display flex
+        flex-flow row nowrap
+        justify-content flex-end
+        align-items center
+        font-size 13px
+        color sub-font
+    .ifnoew
+      width 95%
+      height 35px
+      display flex
+      flex-flow row nowrap
+      justify-content flex-start
+      align-items center
+      position relative
+      .ifnl
+        width 10%
+        height 50px
+        display flex
+        flex-flow row nowrap
+        justify-content flex-start
+        align-items center
+        font-size 15px
+        color main-font
+      .ifnr
+        width 90%
+        height 50px
+        display flex
+        flex-flow row nowrap
+        justify-content flex-start
+        align-items center
+        font-size 15px
+        color main-font
+    .iftitle
+      width 95%
+      height 35px
+      display flex
+      flex-flow row nowrap
+      justify-content flex-start
+      align-items center
+      font-size 15px
+      color main-font
+      font-weight 700
+    .ifcontent
+      width 95%
+      height 35px
+      display flex
+      flex-flow row nowrap
+      justify-content flex-start
+      align-items center
+      .ifct
+        width 10%
+        height 100%
+        display flex
+        flex-flow row nowrap
+        justify-content flex-start
+        align-items center
+        font-size 14px
+        color main-font
+      .ifctc
+        width 90%
+        height 100%
+        display flex
+        flex-flow row nowrap
+        justify-content flex-start
+        align-items center
+        font-size 15px
+        color main-font
+        .ifctimg
+          line-height 100%
+          font-size 15px
+          color main-color
   .product
     width 100%
     flex 1
