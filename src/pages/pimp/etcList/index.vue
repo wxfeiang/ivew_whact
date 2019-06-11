@@ -3,7 +3,9 @@
     <div class="econtent" v-if="hasData">
       <div class="eitem" v-for="item in etcList" :key="item.id" @click="gotoDetail(item)">
         <div class="estatus">
-          <span class="escontent">{{item.status}}</span>
+          <span class="success" v-if="item.applyStatus === '1'">{{item.applyStatusName}}</span>
+          <span class="fail" v-if="item.applyStatus === '2'">{{item.applyStatusName}}</span>
+          <span class="wait" v-if="item.applyStatus === '0'">{{item.applyStatusName}}</span>
         </div>
         <div class="eeitem">
           <span class="eleft">申请单号</span>
@@ -12,12 +14,12 @@
         <div class="esplice"></div>
         <div class="eeitem">
           <span class="eleft">申请时间</span>
-          <span class="eright">{{item.time}}</span>
+          <span class="eright">{{item.applyTime}}</span>
         </div>
         <div class="esplice"></div>
         <div class="eeitem">
           <span class="eleft">车牌号</span>
-          <span class="eright">{{item.plateNo}}</span>
+          <span class="eright">{{item.plateNumber}}</span>
         </div>
       </div>
     </div>
@@ -45,7 +47,7 @@
 
 <script>
 import { $Toast } from '@/utils/iview'
-import { checkAudit, confirmReceipt } from '@/api/goods'
+import { queryList } from '@/api/goods'
 import {mapState} from 'vuex'
 export default {
   data() {
@@ -66,13 +68,14 @@ export default {
   },
   methods: {
     async getEtcList() {
+      wx.showLoading({ title: '加载中', mask: true })
       let params = {
-        openid: this.openid,
+        userId: this.openid,
         pageNum: 1,
         pageSize: 10
       }
       try {
-        let iReturn = await checkAudit(params)
+        let iReturn = await queryList(params)
         if (iReturn.status === 200 && iReturn.data.list) {
           this.etcList = iReturn.data.list
           this.pagination.totalPage = iReturn.data.pages
@@ -81,23 +84,26 @@ export default {
           this.hasData = false
         }
         this.noData = false
+        wx.hideLoading()
       } catch (err) {
-        console.log(`获取产品信息失败${err}`)
+        wx.hideLoading()
+        console.log(`获取订单列表失败 ${err}`)
         $Toast({
           type: 'error',
           duration: 3,
-          content: '获取产品信息失败!'
+          content: '获取订单列表失败!'
         })
       }
     },
     async etcListForMore() {
+      wx.showLoading({ title: '加载中', mask: true })
       let params = {
-        openid: this.openid,
+        userId: this.openid,
         pageNum: this.pagination.pageNum,
         pageSize: this.pagination.pageSize
       }
       try {
-        let iReturn = await checkAudit(params)
+        let iReturn = await queryList(params)
         if (iReturn.status === 200 && iReturn.data.list) {
           let tmpList = iReturn.data.list
           let tmpNewList = this.etcList
@@ -107,14 +113,23 @@ export default {
           })
           this.etcList = tmpNewList
           this.loadMore = false
+          wx.hideLoading()
         }
       } catch (err) {
-        wx.showToast({ title: `${err}`, icon: 'none', duration: 4000 })
+        wx.hideLoading()
+        $Toast({
+          type: 'error',
+          duration: 3,
+          content: '获取订单列表失败!'
+        })
       }
     },
     gotoDetail(item) {
+      // wx.navigateTo({
+      //   url: `../etcDetail/main?applyId=${item.id}`
+      // })
       wx.navigateTo({
-        url: `../etcDetail/main?applyId=${item.id}`
+        url: `../etcSupply/main?applyId=${item.id}`
       })
     }
   },
@@ -175,10 +190,9 @@ export default {
         flex-flow row nowrap
         justify-content flex-start
         align-items center
-        .escontent
+        .success
           width 100%
           height 100%
-          background-color main-color
           color white-color
           font-size 15px
           display flex
@@ -187,6 +201,31 @@ export default {
           align-items center
           border-top-left-radius 5px
           border-top-right-radius 5px
+          background-color #28C200
+        .fail
+          width 100%
+          height 100%
+          color white-color
+          font-size 15px
+          display flex
+          flex-flow row nowrap
+          justify-content center
+          align-items center
+          border-top-left-radius 5px
+          border-top-right-radius 5px
+          background-color #FF8C00
+        .wait
+          width 100%
+          height 100%
+          color white-color
+          font-size 15px
+          display flex
+          flex-flow row nowrap
+          justify-content center
+          align-items center
+          border-top-left-radius 5px
+          border-top-right-radius 5px
+          background-color #009efb
       .eeitem
         width 95%
         height 25%

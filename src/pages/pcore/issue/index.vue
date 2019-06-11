@@ -204,10 +204,10 @@
         <i class="icon iconfont icon-kefu asimg"></i>
         <span class="astitle">客服</span>
       </div>
-      <div class="acard">
+      <!-- <div class="acard">
         <span class="actitle">卡片类型</span>
         <span class="acmark">记账卡</span>
-      </div>
+      </div> -->
       <div class="abutton">
         <button class="bbutton"  @click="toPay()">立即申办</button>
       </div>
@@ -582,7 +582,7 @@ export default {
         justify-content center
         align-items flex-start
     .abutton
-      width 60%
+      width 80%
       height 70%
       display flex
       flex-flow column nowrap

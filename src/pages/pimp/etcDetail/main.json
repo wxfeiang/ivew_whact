@@ -2,7 +2,7 @@
   "usingComponents": {
     "i-toast": "/iview/toast/index"
   },
-  "navigationBarTitleText": "订单详情",
+  "navigationBarTitleText": "重提订单",
   "enablePullDownRefresh": true,
   "backgroundTextStyle": "dark"
 }

@@ -83,7 +83,7 @@ export default {
         whichImg: '',
         whichType: '',
         btnLoading: false,
-        btnTitle: '上传'
+        btnTitle: '拍照'
       },
       photoData: {
         uFront: null,
@@ -221,11 +221,11 @@ export default {
         this.ocrData.idCard.name = oReturn.姓名.words || '未识别'
         this.ocrData.idCard.idNo = oReturn.公民身份号码.words || '未识别'
         this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
+        this.jectData.btnTitle = '拍照'
         this.jectData.showJect = false
       } catch (err) {
         this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
+        this.jectData.btnTitle = '拍照'
         this.photoData.uFront = null
         console.log(`上传身份证头像面异常 ${err}`)
         $Toast({
@@ -249,12 +249,12 @@ export default {
         console.log('toOCRDriving: ' + JSON.stringify(oReturn))
         this.ocrData.driving.licenseNo = oReturn.证号.words || '未识别'
         this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
+        this.jectData.btnTitle = '拍照'
         this.jectData.showJect = false
       } catch (err) {
         this.photoData.driveMain = null
         this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
+        this.jectData.btnTitle = '拍照'
         console.log(`上传驾驶证印章页异常${err}`)
         $Toast({
           type: 'error',
@@ -278,12 +278,12 @@ export default {
         this.ocrData.car.carHeadPlateNo = oReturn.number || '未识别'
         this.ocrData.car.plateNoColor = oReturn.color || '未识别'
         this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
+        this.jectData.btnTitle = '拍照'
         this.jectData.showJect = false
       } catch (err) {
         this.photoData.carHead = null
         this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
+        this.jectData.btnTitle = '拍照'
         console.log(`上传车头照异常${err}`)
         $Toast({
           type: 'error',
@@ -315,12 +315,12 @@ export default {
         this.ocrData.vehicle.registerDate = oReturn.注册日期.words || '未识别'
         this.ocrData.vehicle.issueDate = oReturn.发证日期.words || '未识别'
         this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
+        this.jectData.btnTitle = '拍照'
         this.jectData.showJect = false
       } catch (err) {
         this.photoData.vehicleMain = null
         this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
+        this.jectData.btnTitle = '拍照'
         console.log(`上传行驶证印章页异常${err}`)
         $Toast({
           type: 'error',
@@ -343,12 +343,12 @@ export default {
         console.log('toOCRVehicleSub: ' + JSON.stringify(oReturn))
         this.ocrData.vehicle.approvedCount = oReturn.核定载人数.words || '未识别'
         this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
+        this.jectData.btnTitle = '拍照'
         this.jectData.showJect = false
       } catch (err) {
         this.photoData.vehicleSub = null
         this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
+        this.jectData.btnTitle = '拍照'
         console.log(`上传行驶证条码页异常 ${err}`)
         $Toast({
           type: 'error',
@@ -611,7 +611,7 @@ export default {
         })
         return false
       }
-      if (this.ocrData.vehicle.plateNo === '未识别' || this.ocrData.vehicle.vehicleType === '未识别' || this.ocrData.vehicle.owner === '未识别' || this.ocrData.vehicle.address === '未识别' || this.ocrData.vehicle.useCharacter === '未识别' || this.ocrData.vehicle.model === '未识别' || this.ocrData.vehicle.vin === '未识别' || this.ocrData.vehicle.engineNo === '未识别' || this.ocrData.vehicle.registerDate === '未识别' || this.ocrData.vehicle.issueDate === '未识别' || this.ocrData.vehicle.approvedCount === '未识别') {
+      if (this.ocrData.vehicle.plateNo === '未识别' || this.ocrData.vehicle.vehicleType === '未识别' || this.ocrData.vehicle.owner === '未识别' || this.ocrData.vehicle.useCharacter === '未识别' || this.ocrData.vehicle.model === '未识别' || this.ocrData.vehicle.vin === '未识别' || this.ocrData.vehicle.engineNo === '未识别' || this.ocrData.vehicle.registerDate === '未识别' || this.ocrData.vehicle.issueDate === '未识别' || this.ocrData.vehicle.approvedCount === '未识别') {
         $Toast({
           type: 'error',
           duration: 5,

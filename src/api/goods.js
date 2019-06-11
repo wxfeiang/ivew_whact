@@ -52,7 +52,12 @@ export function supplyOCR(data) {
 
 // 补单 获取照片数据
 export function supplyPhoto(data) {
-  return fly.request(`/gfs/img/read/${data}`, data, {
-    method: 'GET'
-  })
+  return fly.request(
+    `/gfs/img/read/${data}`,
+    {},
+    {
+      method: 'GET',
+      baseURL: 'http://192.168.1.123:9999/'
+    }
+  )
 }
