@@ -62,12 +62,14 @@
       </div>
     </div>
     <div class="pbutton" v-if="orderDetail.ems.length > 0 && orderDetail.pay.state !=3">
-      <button class="ppbutton" @click="gotDevice()">确认收货</button>
+      <button class="ppbutton" @click="toGot()">确认收货</button>
     </div>
     <div class="pbutton" v-if="orderDetail.audit.applyStatus === '2'">
       <button class="ppbutton" @click="reSupply()">重新提单</button>
     </div>
     <i-toast id="toast"/>
+    <i-modal title="是否确认收货" :visible="showMask" @cancel="clickCancel" @ok="clickConfirm">
+    </i-modal>
   </div>
 </template>
 
@@ -79,6 +81,8 @@ export default {
   data() {
     return {
       hasData: true,
+      showMask: false,
+      showCancel: false,
       mchOrderId: '',
       orderDetail: {
         audit: {
@@ -100,6 +104,16 @@ export default {
     ...mapState(['openid', 'mobile'])
   },
   methods: {
+    clickCancel() {
+      this.showMask = false
+    },
+    clickConfirm() {
+      this.showMask = false
+      this.gotDevice()
+    },
+    toGot() {
+      this.showMask = true
+    },
     reSupply() {
       wx.navigateTo({
         url: `../etcSupply/main?applyId=${this.orderDetail.audit.id}`
