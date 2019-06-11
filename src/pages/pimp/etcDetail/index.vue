@@ -65,7 +65,7 @@
       <button class="ppbutton" @click="toGot()">确认收货</button>
     </div>
     <div class="pbutton" v-if="orderDetail.audit.applyStatus === '2'">
-      <button class="ppbutton" @click="reSupply()">重新提单</button>
+      <button class="ppbutton" @click="reSupply()">订单重提</button>
     </div>
     <i-toast id="toast"/>
     <i-modal title="是否确认收货" :visible="showMask" @cancel="clickCancel" @ok="clickConfirm">
@@ -315,7 +315,7 @@ export default {
               width 100%
               height 50%
               position absolute
-              top 10px
+              top 5px
               .dimg
                 font-size 31px
                 color main-color

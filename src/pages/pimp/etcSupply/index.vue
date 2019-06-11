@@ -157,7 +157,7 @@
       </div>
     </div>
     <div class="pbutton">
-      <button class="bbutton" @click="comfirmInfo()">重新提交</button>
+      <button class="bbutton" @click="comfirmInfo()">提交订单</button>
     </div>
     <upload v-model="jectData.showJect" :content="jectData.whichImg" :setLoading="jectData.btnLoading" :setTitle="jectData.btnTitle" :type="jectData.whichType" @cancel="clickJectCancel" @confirm="clickJectConfirm"></upload>
     <i-toast id="toast"/>
