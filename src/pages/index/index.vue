@@ -103,48 +103,8 @@ export default {
           url: '../pcore/bindUser/main'
         })
       } else {
-        if (which === 'issue') {
-          this.queryHasOrder()
-        } else {
-          wx.navigateTo({
-            url: dest[which]
-          })
-        }
-      }
-    },
-    async queryHasOrder() {
-      try {
-        let params = {
-          userId: this.openid
-        }
-        let iReturn = await hasOrder(params)
-        if (iReturn.status === 200 && iReturn.data) {
-          if (iReturn.data === '1') {
-            // 没申请过
-            wx.navigateTo({
-              url: '../pcore/issue/main'
-            })
-          } else if (iReturn.data === '2') {
-            // 支付过，但还未提交收货信息
-            wx.navigateTo({
-              url: '../pcore/issueUpload/main' // TODO: 提示用户支付过，需要提交信息
-            })
-          } else if (iReturn.data === '3') {
-            // 申请过，直接取审核信息页面
-            wx.navigateTo({
-              url: '../pimp/etcOrder/main'
-            })
-          }
-        } else {
-          console.log('查询用户是否下单失败,未返回数据')
-          wx.navigateTo({
-            url: '../pcore/issue/main'
-          })
-        }
-      } catch (err) {
-        console.log('查询用户是否下单异常: ' + JSON.stringify(err))
         wx.navigateTo({
-          url: '../pcore/issue/main'
+          url: dest[which]
         })
       }
     }

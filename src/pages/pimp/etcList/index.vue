@@ -54,7 +54,7 @@
         <span class="iifont">未查询到数据</span>
       </div>
     </div>
-    <div class="pbutton" v-if="orderDetail.ems.length > 0">
+    <div class="pbutton" v-if="orderDetail.ems.length > 0 && orderDetail.pay.state !=3">
       <button class="ppbutton" @click="gotDevice()">确认收货</button>
     </div>
     <i-toast id="toast"/>
@@ -63,7 +63,7 @@
 
 <script>
 import { $Toast } from '@/utils/iview'
-import { checkAudit } from '@/api/goods'
+import { checkAudit, confirmReceipt } from '@/api/goods'
 import {mapState} from 'vuex'
 export default {
   data() {
@@ -77,6 +77,9 @@ export default {
           auditResult: '',
           auditTime: '',
           auditContent: ''
+        },
+        pay: {
+          state: ''
         },
         ems: []
       }
@@ -103,6 +106,7 @@ export default {
             this.orderDetail.audit.auditResult = iReturn.data.audit.auditResult
             this.orderDetail.audit.auditTime = iReturn.data.audit.auditTime
             this.orderDetail.audit.auditContent = iReturn.data.audit.auditContent
+            this.orderDetail.pay.state = iReturn.data.pay.state
             this.orderDetail.ems = iReturn.data.ems
           } else {
             this.hasData = false
@@ -128,13 +132,41 @@ export default {
         wx.hideLoading()
         $Toast({
           type: 'error',
-          duration: 4,
+          duration: 5,
           content: `获取订单信息异常 ${JSON.stringify(err)}`
         })
       }
     },
-    gotDevice() {
-
+    async gotDevice() {
+      const iParams = {
+        id: this.orderDetail.audit.applyId
+      }
+      try {
+        let gReturn = await confirmReceipt(iParams)
+        if (gReturn.status === 200 && gReturn.data === 1) {
+          $Toast({
+            type: 'success',
+            duration: 3,
+            content: `确认收货成功`
+          })
+          this.getOrderDetail()
+        } else {
+          console.log('确认收货失败' + JSON.stringify(gReturn.data))
+          $Toast({
+            type: 'error',
+            duration: 5,
+            content: `确认收货失败 ${JSON.stringify(gReturn.data)}`
+          })
+        }
+      } catch (err) {
+        console.log('确认收货异常' + JSON.stringify(err))
+        wx.hideLoading()
+        $Toast({
+          type: 'error',
+          duration: 5,
+          content: `确认收货异常 ${JSON.stringify(err)}`
+        })
+      }
     }
   },
   onPullDownRefresh () {

@@ -5,18 +5,18 @@
       <div class="tphoto">
         <div class="tpc">
           <div class="font" @click="jectModel('idFront')">
-            <i class="icon iconfont icon-xiangji pimg" v-if="!photoData.uFront"></i>
+            <image src="/static/images/sfz.png" mode="aspecFill" class="ppimg" v-if="!photoData.uFront"/>
             <image :src="photoData.uFront" mode="aspecFill" class="ppimg" v-else/>
           </div>
           <span class="tptitle">头像面</span>
         </div>
-        <div class="tpc">
+        <!-- <div class="tpc">
           <div class="back" @click="jectModel('idBack')">
-            <i class="icon iconfont icon-xiangji pimg" v-if="!photoData.uBack"></i>
+            <image src="/static/images/sfz2.png" mode="aspecFill" class="ppimg" v-if="!photoData.uBack"/>
             <image :src="photoData.uBack" class="ppimg" v-else/>
           </div>
           <span class="tptitle">国徽面</span>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="ucar">
@@ -24,14 +24,14 @@
       <div class="tphoto">
         <div class="tpc">
           <div class="font" @click="jectModel('vehicleLicenseMain')">
-            <i class="icon iconfont icon-xiangji pimg" v-if="!photoData.vehicleMain"></i>
+            <image src="/static/images/xsz2.png" mode="aspecFill" class="ppimg" v-if="!photoData.vehicleMain"/>
             <image :src="photoData.vehicleMain" class="ppimg" v-else/>
           </div>
           <span class="tptitle">行驶证印章页</span>
         </div>
         <div class="tpc">
           <div class="back" @click="jectModel('vehicleLicenseSub')">
-            <i class="icon iconfont icon-xiangji pimg" v-if="!photoData.vehicleSub"></i>
+            <image src="/static/images/xsz.png" mode="aspecFill" class="ppimg" v-if="!photoData.vehicleSub"/>
             <image :src="photoData.vehicleSub" class="ppimg" v-else/>
           </div>
           <span class="tptitle">行驶证条码页</span>
@@ -41,31 +41,36 @@
       <div class="tphoto">
         <div class="tpc">
           <div class="font" @click="jectModel('drivingLicenseMain')">
-            <i class="icon iconfont icon-xiangji pimg" v-if="!photoData.driveMain"></i>
+            <image src="/static/images/jsz.png" mode="aspecFill" class="ppimg" v-if="!photoData.driveMain"/>
             <image :src="photoData.driveMain" class="ppimg" v-else/>
           </div>
           <span class="tptitle">驾驶证印章页</span>
         </div>
         <div class="tpc">
-          <div class="back" @click="jectModel('drivingLicenseSub')">
-            <i class="icon iconfont icon-xiangji pimg" v-if="!photoData.driveSub"></i>
+          <!-- <div class="back" @click="jectModel('drivingLicenseSub')">
+            <image src="/static/images/jsz2.png" mode="aspecFill" class="ppimg" v-if="!photoData.driveSub"/>
             <image :src="photoData.driveSub" class="ppimg" v-else/>
           </div>
-          <span class="tptitle">驾驶证条码页</span>
-        </div>
-      </div>
-      <div class="tphoto">
-        <div class="tpc">
+          <span class="tptitle">驾驶证条码页</span> -->
           <div class="font" @click="jectModel('carHead')">
-            <i class="icon iconfont icon-xiangji pimg" v-if="!photoData.carHead"></i>
+            <image src="/static/images/ct.png" mode="aspecFill" class="ppimg" v-if="!photoData.carHead"/>
             <image :src="photoData.carHead" class="ppimg" v-else/>
           </div>
-          <span class="tptitle">45°车头露牌照</span>
+          <span class="tptitle">车头露牌照</span>
         </div>
       </div>
+      <!-- <div class="tphoto">
+        <div class="tpc">
+          <div class="font" @click="jectModel('carHead')">
+            <image src="/static/images/ct.png" mode="aspecFill" class="ppimg" v-if="!photoData.carHead"/>
+            <image :src="photoData.carHead" class="ppimg" v-else/>
+          </div>
+          <span class="tptitle">车头露牌照</span>
+        </div>
+      </div> -->
     </div>
     <div class="pbutton">
-      <button class="bbutton" @click="toAddress()" :disabled="btnDisabled">下一步</button>
+      <button class="bbutton" @click="toAddress()">下一步</button>
     </div>
     <upload v-model="jectData.showJect" :content="jectData.whichImg" :setLoading="jectData.btnLoading" :setTitle="jectData.btnTitle" :type="jectData.whichType" @cancel="clickJectCancel" @confirm="clickJectConfirm"></upload>
     <i-toast id="toast"/>
@@ -74,7 +79,7 @@
 
 <script>
 import { $Toast } from '@/utils/iview'
-import { goodsPhotoUpload } from '@/api/goods'
+import { goodsPhotoUpload, hasOrder } from '@/api/goods'
 import { mapState, mapMutations } from 'vuex'
 import * as types from '@/store/mutation-types'
 import upload from '@/components/upload.vue'
@@ -103,11 +108,9 @@ export default {
       },
       photoData: {
         uFront: null,
-        uBack: null,
         vehicleMain: null,
         vehicleSub: null,
         driveMain: null,
-        driveSub: null,
         carHead: null
       },
       ocrData: {
@@ -135,7 +138,8 @@ export default {
           carHeadPlateNo: '',
           plateNoColor: ''
         }
-      }
+      },
+      applyId: ''
     }
   },
   computed: {
@@ -143,27 +147,84 @@ export default {
   },
   methods: {
     jectModel(data) {
+      let that = this
       this.jectData.showJect = true
       if (data === 'idFront') {
         this.jectData.whichImg = '/static/images/zj1.png'
+        if (this.photoData.uFront) {
+          let preFront = []
+          preFront.push(this.photoData.uFront)
+          wx.previewImage({
+            urls: preFront,
+            current: preFront[0]
+          })
+        }
       }
-      if (data === 'idBack') {
-        this.jectData.whichImg = '/static/images/zj2.png'
-      }
+      // if (data === 'idBack') {
+      //   this.jectData.whichImg = '/static/images/zj2.png'
+      //   if (this.photoData.uBack) {
+      //     let preBack = []
+      //     preBack.push(this.photoData.uBack)
+      //     wx.previewImage({
+      //       urls: preBack,
+      //       current: preBack[0]
+      //     })
+      //   }
+      // }
       if (data === 'drivingLicenseMain') {
         this.jectData.whichImg = '/static/images/zj6.png'
+        if (this.photoData.driveMain) {
+          let preDriving = []
+          preDriving.push(this.photoData.driveMain)
+          wx.previewImage({
+            urls: preDriving,
+            current: preDriving[0]
+          })
+        }
       }
-      if (data === 'drivingLicenseSub') {
-        this.jectData.whichImg = '/static/images/zj4.png'
-      }
+      // if (data === 'drivingLicenseSub') {
+      //   this.jectData.whichImg = '/static/images/zj4.png'
+      //   if (this.photoData.driveSub) {
+      //     let preDrivingSub = []
+      //     preDrivingSub.push(this.photoData.driveSub)
+      //     wx.previewImage({
+      //       urls: preDrivingSub,
+      //       current: preDrivingSub[0]
+      //     })
+      //   }
+      // }
       if (data === 'vehicleLicenseMain') {
         this.jectData.whichImg = '/static/images/zj3.png'
+        if (this.photoData.vehicleMain) {
+          let preVehicle = []
+          preVehicle.push(this.photoData.vehicleMain)
+          wx.previewImage({
+            urls: preVehicle,
+            current: preVehicle[0]
+          })
+        }
       }
       if (data === 'vehicleLicenseSub') {
         this.jectData.whichImg = '/static/images/zj4.png'
+        if (this.photoData.vehicleSub) {
+          let preVehicleSub = []
+          preVehicleSub.push(this.photoData.vehicleSub)
+          wx.previewImage({
+            urls: preVehicleSub,
+            current: preVehicleSub[0]
+          })
+        }
       }
       if (data === 'carHead') {
         this.jectData.whichImg = '/static/images/zj5.png'
+        if (this.photoData.carHead) {
+          let preCarhead = []
+          preCarhead.push(this.photoData.carHead)
+          wx.previewImage({
+            urls: preCarhead,
+            current: preCarhead[0]
+          })
+        }
       }
       this.jectData.whichType = data
     },
@@ -175,15 +236,15 @@ export default {
       if (type === 'idFront') {
         this.toFront()
       }
-      if (type === 'idBack') {
-        this.toBack()
-      }
+      // if (type === 'idBack') {
+      //   this.toBack()
+      // }
       if (type === 'drivingLicenseMain') {
         this.toDriveMain()
       }
-      if (type === 'drivingLicenseSub') {
-        this.toDriveSub()
-      }
+      // if (type === 'drivingLicenseSub') {
+      //   this.toDriveSub()
+      // }
       if (type === 'vehicleLicenseMain') {
         this.toVehicleMain()
       }
@@ -223,31 +284,31 @@ export default {
         })
       }
     },
-    async toBack() {
-      let that = this
-      try {
-        let idReturn = await this.chooseImage('身份证国徽面')
-        this.photoData.uBack = idReturn
-        this.jectData.btnLoading = true
-        this.jectData.btnTitle = '上传中...'
-        let upReturn = await this.toUpload(idReturn, '8')
-        console.log('toUpload: ' + JSON.stringify(upReturn))
-        // this.ocrData.idCard.backData = upReturn
-        this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
-        this.jectData.showJect = false
-      } catch (err) {
-        this.photoData.uBack = null
-        this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
-        console.log(`上传身份证国徽面异常${err}`)
-        $Toast({
-          type: 'error',
-          duration: 5,
-          content: `${err}`
-        })
-      }
-    },
+    // async toBack() {
+    //   let that = this
+    //   try {
+    //     let idReturn = await this.chooseImage('身份证国徽面')
+    //     this.photoData.uBack = idReturn
+    //     this.jectData.btnLoading = true
+    //     this.jectData.btnTitle = '上传中...'
+    //     let upReturn = await this.toUpload(idReturn, '8')
+    //     console.log('toUpload: ' + JSON.stringify(upReturn))
+    //     // this.ocrData.idCard.backData = upReturn
+    //     this.jectData.btnLoading = false
+    //     this.jectData.btnTitle = '上传'
+    //     this.jectData.showJect = false
+    //   } catch (err) {
+    //     this.photoData.uBack = null
+    //     this.jectData.btnLoading = false
+    //     this.jectData.btnTitle = '上传'
+    //     console.log(`上传身份证国徽面异常${err}`)
+    //     $Toast({
+    //       type: 'error',
+    //       duration: 5,
+    //       content: `${err}`
+    //     })
+    //   }
+    // },
     async toDriveMain() {
       let that = this
       try {
@@ -276,31 +337,31 @@ export default {
         })
       }
     },
-    async toDriveSub() {
-      let that = this
-      try {
-        let idReturn = await this.chooseImage('驾驶证条码页')
-        this.photoData.driveSub = idReturn
-        this.jectData.btnLoading = true
-        this.jectData.btnTitle = '上传中...'
-        let upReturn = await this.toUpload(idReturn, '7')
-        console.log('toUpload: ' + JSON.stringify(upReturn))
-        // this.ocrData.driving.backData = upReturn
-        this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
-        this.jectData.showJect = false
-      } catch (err) {
-        this.photoData.driveSub = null
-        this.jectData.btnLoading = false
-        this.jectData.btnTitle = '上传'
-        console.log(`上传驾驶证条码页异常${err}`)
-        $Toast({
-          type: 'error',
-          duration: 5,
-          content: `${err}`
-        })
-      }
-    },
+    // async toDriveSub() {
+    //   let that = this
+    //   try {
+    //     let idReturn = await this.chooseImage('驾驶证条码页')
+    //     this.photoData.driveSub = idReturn
+    //     this.jectData.btnLoading = true
+    //     this.jectData.btnTitle = '上传中...'
+    //     let upReturn = await this.toUpload(idReturn, '7')
+    //     console.log('toUpload: ' + JSON.stringify(upReturn))
+    //     // this.ocrData.driving.backData = upReturn
+    //     this.jectData.btnLoading = false
+    //     this.jectData.btnTitle = '上传'
+    //     this.jectData.showJect = false
+    //   } catch (err) {
+    //     this.photoData.driveSub = null
+    //     this.jectData.btnLoading = false
+    //     this.jectData.btnTitle = '上传'
+    //     console.log(`上传驾驶证条码页异常${err}`)
+    //     $Toast({
+    //       type: 'error',
+    //       duration: 5,
+    //       content: `${err}`
+    //     })
+    //   }
+    // },
     async toCarHead() {
       let that = this
       try {
@@ -400,7 +461,7 @@ export default {
         wx.chooseImage({
           count: 1,
           sizeType: ['compressed'],
-          sourceType: ['album', 'camera'],
+          sourceType: ['camera'],
           success: res => {
             resolve(res.tempFilePaths[0])
           },
@@ -414,29 +475,34 @@ export default {
       let that = this
       console.log('imgPath: ' + imgPath, 'modeType: ' + modeType)
       return new Promise((resolve, reject) => {
-        wx.uploadFile({
-          url: ocr.upload,
-          filePath: imgPath,
-          name: 'file',
-          formData: {
-            userId: this.openid,
-            module: modeType, // 1,--证件图片;2,--车辆原图;3,--车辆转换压缩图;4,--行驶证正本;5,--行驶证副本，6,--驾驶证正本;7,--驾驶证副本，8-身份证国徽面，9-other；
-            sysChannel: '0'
-          },
-          success: function (res) {
-            const iReturn = JSON.parse(res.data)
-            if (iReturn.status === 200 && iReturn.data && iReturn.data.length > 0) {
-              let ddata = Object.assign(iReturn.data[0], {'imgPath': imgPath})
-              resolve(ddata)
-            } else {
-              reject('上传失败,未返回结果,请稍后重试!')
+        if (this.applyId) {
+          wx.uploadFile({
+            url: ocr.upload,
+            filePath: imgPath,
+            name: 'file',
+            formData: {
+              applyId: this.applyId,
+              userId: this.openid,
+              module: modeType, // 1,--证件图片;2,--车辆原图;3,--车辆转换压缩图;4,--行驶证正本;5,--行驶证副本，6,--驾驶证正本;7,--驾驶证副本，8-身份证国徽面，9-other；
+              sysChannel: '0'
+            },
+            success: function (res) {
+              const iReturn = JSON.parse(res.data)
+              if (iReturn.status === 200 && iReturn.data && iReturn.data.length > 0) {
+                let ddata = Object.assign(iReturn.data[0], {'imgPath': imgPath})
+                resolve(ddata)
+              } else {
+                reject('上传失败,未返回结果,请稍后重试!')
+              }
+            },
+            fail: function (res) {
+              console.log('上传失败 2')
+              reject(`上传失败,请稍后重试 ${JSON.stringify(res)}`)
             }
-          },
-          fail: function (res) {
-            console.log('上传失败 2')
-            reject(`上传失败,请稍后重试 ${JSON.stringify(res)}`)
-          }
-        })
+          })
+        } else {
+          reject(`初始化拍照上传失败!`)
+        }
       })
     },
     toOCRID(tempFilePaths) {
@@ -572,14 +638,14 @@ export default {
         })
         return false
       }
-      if (!this.photoData.uBack) {
-        $Toast({
-          type: 'warning',
-          duration: 5,
-          content: '请上传身份证反面照!'
-        })
-        return false
-      }
+      // if (!this.photoData.uBack) {
+      //   $Toast({
+      //     type: 'warning',
+      //     duration: 5,
+      //     content: '请上传身份证反面照!'
+      //   })
+      //   return false
+      // }
       if (!this.photoData.vehicleMain) {
         $Toast({
           type: 'warning',
@@ -604,14 +670,14 @@ export default {
         })
         return false
       }
-      if (!this.photoData.driveSub) {
-        $Toast({
-          type: 'warning',
-          duration: 5,
-          content: '请上传驾驶证条码页照!'
-        })
-        return false
-      }
+      // if (!this.photoData.driveSub) {
+      //   $Toast({
+      //     type: 'warning',
+      //     duration: 5,
+      //     content: '请上传驾驶证条码页照!'
+      //   })
+      //   return false
+      // }
       if (!this.photoData.carHead) {
         $Toast({
           type: 'warning',
@@ -675,12 +741,40 @@ export default {
       }
       this.saveOCR(this.ocrData)
       wx.navigateTo({
-        url: `../issueAddress/main`
+        url: `../issueAddress/main?applyId=${this.applyId}`
       })
+    },
+    async getApplyId() {
+      try {
+        let params = {
+          userId: this.openid
+        }
+        let iReturn = await hasOrder(params)
+        if (iReturn.status === 200 && iReturn.data) {
+          this.applyId = iReturn.data
+        } else {
+          console.log('初始化拍照上传失败,未返回数据')
+          $Toast({
+            type: 'error',
+            duration: 4,
+            content: '初始化拍照上传失败!'
+          })
+        }
+      } catch (err) {
+        console.log('初始化拍照上传异常: ' + JSON.stringify(err))
+        $Toast({
+          type: 'error',
+          duration: 4,
+          content: '初始化拍照上传异常,请稍后重试!'
+        })
+      }
     },
     ...mapMutations({
       saveOCR: types.SYSTEM_OCRDATA
     })
+  },
+  mounted() {
+    this.getApplyId()
   }
 }
 </script>

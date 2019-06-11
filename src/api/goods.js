@@ -15,7 +15,7 @@ export function goodsSave(data) {
   })
 }
 
-// 查询用户是否下单接口
+// 新申请获取上传id 接口
 export function hasOrder(data) {
   return fly.request('busi/etcissue/userid', data, {
     method: 'GET'
@@ -26,5 +26,12 @@ export function hasOrder(data) {
 export function checkAudit(data) {
   return fly.request('busi/etcissue/audit', data, {
     method: 'GET'
+  })
+}
+
+// 确认收货接口
+export function confirmReceipt(data) {
+  return fly.request('busi/etcissue/confirm', data, {
+    method: 'POST'
   })
 }

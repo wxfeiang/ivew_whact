@@ -108,7 +108,7 @@ import { $Toast } from '@/utils/iview';
       <button class="bbutton" @click="comfirmInfo()">提交收货信息</button>
     </div>
     <i-toast id="toast"/>
-    <i-modal title="在线发行成功" :visible="showMask"  :show-cancel="showCancel" @ok="clickConfirm">
+    <i-modal title="在线申办成功" :visible="showMask"  :show-cancel="showCancel" @ok="clickConfirm">
       <view>{{mContent}}</view>
     </i-modal>
   </div>
@@ -953,7 +953,8 @@ export default {
         pCode: '',
         address: '',
         regionSelect: '甘肃省-兰州市-城关区'
-      }
+      },
+      applyId: ''
     }
   },
   computed: {
@@ -1136,7 +1137,8 @@ export default {
           takeCity: reginSplice[1],
           takeCountry: reginSplice[2],
           address: this.uAd.address,
-          color: this.ocrData.car.plateNoColor
+          color: this.ocrData.car.plateNoColor,
+          aId: this.applyId
         }
         console.log('提交申请的参数: ' + JSON.stringify(params))
         let sReturn = await goodsSave(params)
@@ -1144,23 +1146,22 @@ export default {
         console.log('提交申请返回: ' + JSON.stringify(sReturn))
         if (sReturn.status === 200 && sReturn.data === 'success') {
           this.showMask = true
-          // this.mContent = `车牌号: ${this.ocrData.car.carHeadPlateNo}`
           this.mContent = '请到我的页面-我的订单中关注审核流程'
           this.saveOCR({})
         } else {
           $Toast({
             type: 'error',
             duration: 4,
-            content: '提交收货信息失败,未返回数据!'
+            content: '提交收货信息失败,未返回结果,请稍后重试!'
           })
         }
       } catch (err) {
-        console.log('提交收货信息失败: ' + JSON.stringify(err))
+        console.log('提交收货信息异常: ' + JSON.stringify(err))
         wx.hideLoading()
         $Toast({
           type: 'error',
           duration: 4,
-          content: `提交收货信息失败 ${err}`
+          content: `提交收货信息异常 ${err}`
         })
       }
     },
@@ -1169,6 +1170,7 @@ export default {
     })
   },
   mounted() {
+    this.applyId = this.$root.$mp.query.applyId
     this.setTransData()
     this.assignData()
   }

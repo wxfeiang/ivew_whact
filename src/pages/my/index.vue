@@ -37,10 +37,16 @@
         <div class="content">我的车辆</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
-      <div class="splice"></div>
+      <!-- <div class="splice"></div>
       <div class="item" @click="gotoNavi('card')">
         <div class="icon card"><i class="icon iconfont icon-creditcard-fill img"></i></div>
         <div class="content">我的ETC卡</div>
+        <div class="more"><i class="icon iconfont icon-right img"></i></div>
+      </div> -->
+      <div class="splice"></div>
+      <div class="item" @click="gotoNavi('consum')">
+        <div class="icon order"><i class="icon iconfont icon-Dollar-circle-fill img"></i></div>
+        <div class="content">消费记录</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
       <div class="splice"></div>
@@ -51,13 +57,13 @@
       </div>
     </div>
 
-    <div class="record">
+    <!-- <div class="record">
       <div class="item" @click="gotoNavi('consum')">
-        <div class="icon consum"><i class="icon iconfont icon-Dollar-circle-fill img"></i></div>
-        <div class="content">圈存记录</div>
+        <div class="icon consum"><i class="icon iconfont icon-number1 img"></i></div>
+        <div class="content">我的订单</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
-    </div>
+    </div> -->
 
     <div class="help">
       <div class="item" @click="gotoNavi('about')">
@@ -124,7 +130,7 @@ export default {
         'help': '../pimp/help/main',
         'about': '../pimp/about/main',
         'issue': '../pimp/issue/main',
-        'order': '../pimp/etcOrder/main'
+        'order': '../pimp/etcList/main'
       }
       // cp.isLogin(() => {
       // wx.navigateTo({

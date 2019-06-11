@@ -248,54 +248,12 @@ export default {
     },
     toPay() {
       wx.navigateTo({
-        url: '../issuePay/main'
+        url: `../issuePay/main?applyId=${this.applyId}`
       })
     },
     showPeopleDetail() {
       this.isPeopleCollapse = !this.isPeopleCollapse
       this.isCarCollapse = !this.isPeopleCollapse
-    },
-    toFront() {
-      let that = this
-      wx.chooseImage({
-        success: res => {
-          console.log(`chooseImage success: ${JSON.stringify(res)}`)
-          wx.getFileSystemManager().readFile({
-            filePath: res.tempFilePaths[0],
-            encoding: 'base64',
-            success: res => {
-              that.submitData.uFront = 'data:image/png;base64,' + res.data
-            }
-          })
-        },
-        fail: res => {
-          console.log('chooseImage fail: ' + res)
-        },
-        complete: res => {
-          console.log('chooseImage commplete: ' + res)
-        }
-      })
-    },
-    toBlack() {
-      let that = this
-      wx.chooseImage({
-        success: res => {
-          console.log(`chooseImage success: ${JSON.stringify(res)}`)
-          wx.getFileSystemManager().readFile({
-            filePath: res.tempFilePaths[0],
-            encoding: 'base64',
-            success: res => {
-              that.submitData.uBlack = 'data:image/png;base64,' + res.data
-            }
-          })
-        },
-        fail: res => {
-          console.log('chooseImage fail: ' + res)
-        },
-        complete: res => {
-          console.log('chooseImage commplete: ' + res)
-        }
-      })
     }
   }
 }

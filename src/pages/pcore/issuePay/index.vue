@@ -1,7 +1,14 @@
 <template>
   <div class="pay">
     <div class="pimg">
-      <img class="ppimg" :src="goods.deviceImg">
+      <!-- <img class="ppimg" :src="goods.deviceImg"> -->
+      <swiper class="ppimg" indicator-dots="true" indicator-color="white" indicator-active-color="#009efb" autoplay="true" interval="5000" duration="1000">
+          <block v-for="(item, index) in goods.deviceImg" :index="index" :key="item.id">
+              <swiper-item>
+                <image :src="item" class="psimage" mode="aspectFill"/>
+              </swiper-item>
+          </block>
+      </swiper>
     </div>
     <div class="ptips">
       <div class="ttmoney">
@@ -50,7 +57,7 @@ export default {
     return {
       showMask: false,
       goods: {
-        deviceImg: '',
+        deviceImg: [],
         totalMoney: '0',
         deviceMoney: '0',
         deliverMoney: '0'
@@ -70,7 +77,7 @@ export default {
     clickConfirm() {
       this.showMask = false
       wx.navigateTo({
-        url: '../issueUpload/main'
+        url: `../issueUpload/main?applyId=${this.applyId}`
       })
     },
     pay() {
@@ -89,7 +96,7 @@ export default {
           for (let item of gRetrun.data.goodsInfo) {
             if (item.gname === '蓝牙盒子套装') {
               this.goods.deviceMoney = item.gprice
-              this.goods.deviceImg = item.imgUrl
+              this.goods.deviceImg.push(item.imgUrl)
             }
             if (item.gname === '快递费') {
               this.goods.deliverMoney = item.gprice
@@ -243,6 +250,9 @@ export default {
     .ppimg
       width 100%
       height 100%
+      .psimage
+        width 100%
+        height 100%
   .ptips
     width 100%
     height 90px
