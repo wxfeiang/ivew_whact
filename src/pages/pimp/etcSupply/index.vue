@@ -1714,6 +1714,14 @@ export default {
         })
         return false
       }
+      if (this.uAd.address.length < 8) {
+        $Toast({
+          type: 'warning',
+          duration: 4,
+          content: '详细地址不能少于8个字!'
+        })
+        return false
+      }
       if (!this.photoData.uFront) {
         $Toast({
           type: 'warning',

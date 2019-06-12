@@ -1112,6 +1112,14 @@ export default {
         })
         return false
       }
+      if (this.uAd.address.length < 8) {
+        $Toast({
+          type: 'warning',
+          duration: 4,
+          content: '详细地址不能少于8个字!'
+        })
+        return false
+      }
       wx.showLoading({ title: '提交中', mask: true })
       try {
         const reginSplice = this.uAd.regionSelect.split('-')

@@ -12,7 +12,7 @@ import { $Toast } from '@/utils/iview';
           <span class="iflr">0</span>
         </div>
         <span class="ifcenter">微信用户专享</span>
-        <span class="ifright">月办理量：3847笔</span>
+        <span class="ifright">办理量：{{goods.count}}笔</span>
       </div>
       <div class="ifnoew">
         <span class="ifnl">原价</span>
@@ -249,7 +249,8 @@ export default {
         deviceImg: [],
         totalMoney: '0',
         deviceMoney: '0',
-        deliverMoney: '0'
+        deliverMoney: '0',
+        count: '0'
       }
     }
   },
@@ -293,6 +294,7 @@ export default {
         wx.hideLoading()
         if (gRetrun.status === 200 && gRetrun.data && gRetrun.data.goodsInfo.length > 0) {
           this.goods.totalMoney = gRetrun.data.total
+          this.goods.count = gRetrun.data.count
           for (let item of gRetrun.data.goodsInfo) {
             if (item.gname === '蓝牙盒子套装') {
               this.goods.deviceMoney = item.gprice
