@@ -47,7 +47,7 @@ import { $Toast } from '@/utils/iview';
             </span>
           </div>
           <div class="fcontent">
-            点击“立即申办”,进入“选购设备”支付费用,完成支付
+            点击“立即申办”,进入“证件上传”页面
           </div>
         </div>
         <div class="item">
@@ -67,7 +67,7 @@ import { $Toast } from '@/utils/iview';
             </span>
           </div>
           <div class="fcontent">
-            “高速公路局”审核车辆信息,完成蓝牙盒子、标签装箱邮寄。
+            “甘肃高速公路局”审核车辆信息,完成蓝牙盒子、标签装箱邮寄。
           </div>
         </div>
         <div class="item">
@@ -97,9 +97,7 @@ import { $Toast } from '@/utils/iview';
           <span class="ttmark">温馨提示</span>
         </div>
         <div class="tcontent">
-          <span class="tctitle">1、ETC设备属于定制产品,无法二次销售,一旦制卡,不支持退换货</span>
-          <span class="tctitle">2、先通行后扣费,由于有1-7天的记账周期,每次通行在通行费的基础上会产品1%的服务费</span>
-          <span class="tctitle">3、用户注销设备,需将设备寄回,费用不予退回</span>
+          <span class="tctitle">1、ETC设备属于定制产品无法二次销售。一旦制卡不支持退换货</span>
         </div>
       </div>
       <div class="helps">
@@ -139,20 +137,6 @@ import { $Toast } from '@/utils/iview';
           <div class="ftitle">
             <span class="ficon"><i class="icon iconfont icon-question fimg"></i></span>
             <span class="fttitle">
-              是否全国通用？可以多车使用一个么？
-            </span>
-          </div>
-          <div class="fcontent">
-            <span class="fcicon"><i class="icon iconfont icon-answer fimg"></i></span>
-            <span class="fctitle">
-              支持全国29省高速通行,本设备一车一卡,专车专用。
-            </span>
-          </div>
-        </div>
-        <div class="item">
-          <div class="ftitle">
-            <span class="ficon"><i class="icon iconfont icon-question fimg"></i></span>
-            <span class="fttitle">
               如何办理？
             </span>
           </div>
@@ -173,7 +157,7 @@ import { $Toast } from '@/utils/iview';
           <div class="fcontent">
             <span class="fcicon"><i class="icon iconfont icon-answer fimg"></i></span>
             <span class="fctitle">
-              办理ETC只需支付邮寄费用，不会再收取额外费用。
+              在线办理ETC不用支付邮寄费用，也不会再收取额外费用。
             </span>
           </div>
         </div>
@@ -219,6 +203,7 @@ import { $Toast } from '@/utils/iview';
             </span>
           </div>
         </div>
+        <div class="mcend"></div>
       </div>
     </div>
     <div class="apply">
@@ -269,7 +254,7 @@ export default {
       const lPosition = {
         'product': 1350,
         'flow': 2650,
-        'question': 3850
+        'question': 3700
       }
       this.palink = lActive[whiche]
       let t = lPosition[whiche] / 750 * wx.getSystemInfoSync().windowWidth
@@ -472,13 +457,15 @@ export default {
     .devices
       width 100%
       height 600px
+      background-color white-color
       .dimg
         width 100%
         height 100%
+        margin-top 10px
     .flows
       width 100%
       height 405px
-      margin-top 10px
+      margin-top 20px
       background-color white-color
       display flex
       flex-flow column nowrap
@@ -544,7 +531,7 @@ export default {
           color sub-font
     .tips
       width 100%
-      height 190px
+      height 100px
       margin-top 10px
       background-color white-color
       display flex
@@ -578,7 +565,7 @@ export default {
           color main-font
       .tcontent
         width 90%
-        height 150px
+        height 70px
         display flex
         flex-flow column nowrap
         justify-content flex-start
@@ -594,7 +581,7 @@ export default {
           font-size 13px
     .helps
       width 100%
-      height 1300px
+      flex 1
       margin-top 10px
       background-color white-color
       display flex
@@ -628,7 +615,7 @@ export default {
           color main-font
       .item
         width 90%
-        height 130px
+        flex 1
         display flex
         flex-flow column wrap
         justify-content flex-start
@@ -665,7 +652,8 @@ export default {
             font-size 15px
         .fcontent
           width 100%
-          height 50px
+          min-height 30px
+          flex 1
           display flex
           flex-flow row wrap
           justify-content center
@@ -683,13 +671,22 @@ export default {
               line-height 100%
           .fctitle
             width 90%
-            height 100%
+            flex 1
             display flex
             flex-flow row wrap
             justify-content flex-start
             align-items flex-start
             color sub-font
             font-size 13px
+            margin-bottom 5px
+      .mcend
+        width 100%
+        height 65px
+        display flex
+        flex-flow row nowrap
+        justify-content center
+        align-items center
+        background-color white-color
   .apply
     width 100%
     height 60px

@@ -209,8 +209,6 @@ export default {
         this.jectData.btnLoading = true
         this.jectData.btnTitle = '上传中...'
         let upReturn = await this.toUpload(idReturn, '1')
-        // this.ocrData.idCard.frontData = upReturn
-        console.log('idReturn:  ' + JSON.stringify(idReturn))
         let oReturn = await this.toOCRID(idReturn)
         console.log('toOCRID: ' + JSON.stringify(oReturn))
         this.ocrData.idCard.name = oReturn.姓名.words || '未识别'
@@ -238,9 +236,7 @@ export default {
         this.jectData.btnLoading = true
         this.jectData.btnTitle = '上传中...'
         let upReturn = await this.toUpload(idReturn, '6')
-        console.log('toUpload: ' + JSON.stringify(upReturn))
-        // this.ocrData.driving.frontData = upReturn
-        let oReturn = await this.toOCRDriving(upReturn.imgPath)
+        let oReturn = await this.toOCRDriving(idReturn)
         console.log('toOCRDriving: ' + JSON.stringify(oReturn))
         this.ocrData.driving.licenseNo = oReturn.证号.words || '未识别'
         this.jectData.btnLoading = false
@@ -266,9 +262,7 @@ export default {
         this.jectData.btnLoading = true
         this.jectData.btnTitle = '上传中...'
         let upReturn = await this.toUpload(idReturn, '2')
-        console.log('toUpload: ' + JSON.stringify(upReturn))
-        // this.ocrData.car.frontData = upReturn
-        let oReturn = await this.toOCRCar(upReturn.imgPath)
+        let oReturn = await this.toOCRCar(idReturn)
         console.log('toOCRCar: ' + JSON.stringify(oReturn))
         this.ocrData.car.carHeadPlateNo = oReturn.number || '未识别'
         this.ocrData.car.plateNoColor = oReturn.color || '未识别'
@@ -295,9 +289,7 @@ export default {
         this.jectData.btnLoading = true
         this.jectData.btnTitle = '上传中...'
         let upReturn = await this.toUpload(idReturn, '4')
-        console.log('toUpload: ' + JSON.stringify(upReturn))
-        // this.ocrData.vehicle.frontData = upReturn
-        let oReturn = await this.toOCRVehicle(upReturn.imgPath)
+        let oReturn = await this.toOCRVehicle(idReturn)
         console.log('toOCRVehicle: ' + JSON.stringify(oReturn))
         this.ocrData.vehicle.plateNo = oReturn.号牌号码.words || '未识别'
         this.ocrData.vehicle.vehicleType = oReturn.车辆类型.words || '未识别'
@@ -332,9 +324,7 @@ export default {
         this.jectData.btnLoading = true
         this.jectData.btnTitle = '上传中...'
         let upReturn = await this.toUpload(idReturn, '5')
-        console.log('toUpload: ' + JSON.stringify(upReturn))
-        // this.ocrData.vehicle.backData = upReturn
-        let oReturn = await this.toOCRVehicleSub(upReturn.imgPath)
+        let oReturn = await this.toOCRVehicleSub(idReturn)
         console.log('toOCRVehicleSub: ' + JSON.stringify(oReturn))
         this.ocrData.vehicle.approvedCount = oReturn.核定载人数.words || '未识别'
         this.jectData.btnLoading = false
@@ -371,34 +361,33 @@ export default {
       let that = this
       console.log('imgPath: ' + imgPath, 'modeType: ' + modeType)
       return new Promise((resolve, reject) => {
-        if (this.applyId) {
-          wx.uploadFile({
-            url: ocr.upload,
-            filePath: imgPath,
-            name: 'file',
-            formData: {
-              applyId: this.applyId,
-              userId: this.openid,
-              module: modeType, // 1,--证件图片;2,--车辆原图;3,--车辆转换压缩图;4,--行驶证正本;5,--行驶证副本，6,--驾驶证正本;7,--驾驶证副本，8-身份证国徽面，9-other；
-              sysChannel: '0'
-            },
-            success: function (res) {
-              const iReturn = JSON.parse(res.data)
-              if (iReturn.status === 200 && iReturn.data && iReturn.data.length > 0) {
-                let ddata = Object.assign(iReturn.data[0], {'imgPath': imgPath})
-                resolve(ddata)
-              } else {
-                reject('上传失败,未返回结果,请稍后重试!')
-              }
-            },
-            fail: function (res) {
-              console.log('上传失败 2')
-              reject(`上传失败,请稍后重试 ${JSON.stringify(res)}`)
-            }
-          })
-        } else {
+        if (!this.applyId) {
           reject(`初始化拍照上传失败!`)
         }
+        wx.uploadFile({
+          url: ocr.upload,
+          filePath: imgPath,
+          name: 'file',
+          formData: {
+            applyId: this.applyId,
+            userId: this.openid,
+            module: modeType, // 1,--证件图片;2,--车辆原图;3,--车辆转换压缩图;4,--行驶证正本;5,--行驶证副本，6,--驾驶证正本;7,--驾驶证副本，8-身份证国徽面，9-other；
+            sysChannel: '0'
+          },
+          success: function (res) {
+            const iReturn = JSON.parse(res.data)
+            if (iReturn.status === 200 && iReturn.data && iReturn.data.length > 0) {
+              let ddata = Object.assign(iReturn.data[0], {'imgPath': imgPath})
+              resolve(ddata)
+            } else {
+              reject('上传失败,未返回结果,请稍后重试!')
+            }
+          },
+          fail: function (res) {
+            console.log('上传失败 2')
+            reject(`上传失败,请稍后重试 ${JSON.stringify(res)}`)
+          }
+        })
       })
     },
     toOCRID(tempFilePaths) {
@@ -414,14 +403,14 @@ export default {
               resolve(iReturn.data)
             } else {
               that.photoData.uFront = null
-              console.log('iReturn.:  ' + iReturn.reasonPhrase)
+              console.log('识别身份证失败:  ' + iReturn.reasonPhrase)
               reject(`识别身份证失败 ${iReturn.reasonPhrase}`)
             }
           },
           fail: function (res) {
-            console.log('识别失败' + JSON.stringify(res))
+            console.log('识别身份证异常: ' + JSON.stringify(res))
             that.photoData.uFront = null
-            reject(`识别身份证异常,请重新拍照上传 ${res}`)
+            reject(`识别身份证异常,请重新拍照上传 ${JSON.stringify(res)}`)
           }
         })
       })
@@ -436,15 +425,17 @@ export default {
           success: function (res) {
             const cReturn = JSON.parse(res.data)
             if (cReturn.status === 200 && cReturn.data) {
-              resolve(cReturn.data)
+              cReturn.data.color === 'unknown' ? reject(`识别车头照失败 请上传清晰正确的车头照`) : resolve(cReturn.data)
             } else {
               that.photoData.carHead = null
+              console.log('识别车头照失败:  ' + cReturn.reasonPhrase)
               reject(`识别车头照失败 ${cReturn.reasonPhrase}`)
             }
           },
           fail: function (res) {
             that.photoData.carHead = null
-            reject(`识别车头照异常,请重新拍照上传 ${res}`)
+            console.log('识别车头照异常:  ' + JSON.stringify(res))
+            reject(`识别车头照异常,请重新拍照上传 ${JSON.stringify(res)}`)
           }
         })
       })
@@ -462,12 +453,14 @@ export default {
               resolve(dReturn.data)
             } else {
               that.photoData.driveMain = null
+              console.log('识别驾驶证失败:  ' + dReturn.reasonPhrase)
               reject(`识别驾驶证失败 ${dReturn.reasonPhrase}`)
             }
           },
           fail: function (res) {
             that.photoData.driveMain = null
-            reject(`识别驾驶证异常,请重新拍照上传 ${res}`)
+            console.log('识别驾驶证异常:  ' + JSON.stringify(res))
+            reject(`识别驾驶证异常,请重新拍照上传 ${JSON.stringify(res)}`)
           }
         })
       })
@@ -488,12 +481,14 @@ export default {
               resolve(vReturn.data)
             } else {
               that.photoData.vehicleMain = null
+              console.log('识别行驶证印章页失败:  ' + vReturn.reasonPhrase)
               reject(`识别行驶证印章页失败 ${vReturn.reasonPhrase}`)
             }
           },
           fail: function (res) {
             that.photoData.vehicleMain = null
-            reject(`识别行驶证印章页异常,请重新拍照上传 ${res}`)
+            console.log('识别行驶证印章页异常:  ' + JSON.stringify(res))
+            reject(`识别行驶证印章页异常,请重新拍照上传 ${JSON.stringify(res)}`)
           }
         })
       })
@@ -510,17 +505,18 @@ export default {
           },
           success: function (res) {
             const vReturn = JSON.parse(res.data)
-            console.log('vehicleSub:   ' + JSON.stringify(vReturn))
             if (vReturn.status === 200 && vReturn.data) {
               resolve(vReturn.data)
             } else {
               that.photoData.vehicleSub = null
+              console.log('识别行驶证条码页失败:  ' + vReturn.reasonPhrase)
               reject(`识别行驶证条码页失败 ${vReturn.reasonPhrase}`)
             }
           },
           fail: function (res) {
             that.photoData.vehicleSub = null
-            reject(`识别行驶证条码页异常,请重新拍照上传 ${res}`)
+            console.log('识别行驶证条码页异常:  ' + JSON.stringify(res))
+            reject(`识别行驶证条码页异常,请重新拍照上传 ${JSON.stringify(res)}`)
           }
         })
       })
@@ -534,14 +530,6 @@ export default {
         })
         return false
       }
-      // if (!this.photoData.uBack) {
-      //   $Toast({
-      //     type: 'warning',
-      //     duration: 5,
-      //     content: '请上传身份证反面照!'
-      //   })
-      //   return false
-      // }
       if (!this.photoData.vehicleMain) {
         $Toast({
           type: 'warning',
@@ -566,14 +554,6 @@ export default {
         })
         return false
       }
-      // if (!this.photoData.driveSub) {
-      //   $Toast({
-      //     type: 'warning',
-      //     duration: 5,
-      //     content: '请上传驾驶证条码页照!'
-      //   })
-      //   return false
-      // }
       if (!this.photoData.carHead) {
         $Toast({
           type: 'warning',
