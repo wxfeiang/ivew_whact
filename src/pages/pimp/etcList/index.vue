@@ -4,13 +4,19 @@
       <div class="items" v-for="(item, index) in etcList" :key="item.id" @click="gotoDetail(item)">
         <div class="itime">{{item.applyTime}}</div>
         <div class="icontent">
-          <div class="ilogo">
-              <image class="ilogoimg" src="/static/images/logo.png"></image>
+          <!-- <div class="ilogo">
+              <i class="icon iconfont icon-qunfengshenhetongguo isuccess" v-if="item.applyStatus === 1"></i>
+              <i class="icon iconfont icon-qunfengshenheshibai ifail" v-if="item.applyStatus === 2"></i>
+              <i class="icon iconfont icon-qunfengshenhechulizhong iwait" v-if="item.applyStatus === 0"></i>
+
               <span class="isuccess" v-if="item.applyStatus === 1">{{item.applyStatusName}}</span>
               <span class="ifail" v-if="item.applyStatus === 2">{{item.applyStatusName}}</span>
               <span class="iwait" v-if="item.applyStatus === 0">{{item.applyStatusName}}</span>
-          </div>
+          </div> -->
           <div class="ititel">
+            <i class="icon iconfont icon-qunfengshenhetongguo isuccess" v-if="item.applyStatus === 1"></i>
+            <i class="icon iconfont icon-qunfengshenheshibai ifail" v-if="item.applyStatus === 2"></i>
+            <i class="icon iconfont icon-qunfengshenhechulizhong iwait" v-if="item.applyStatus === 0"></i>
             <span class="iim">{{item.plateNumber}}</span>
           </div>
           <div class="splice"></div>
@@ -170,7 +176,7 @@ export default {
     align-items center
     .items
       width 100%
-      height 200px
+      height 150px
       display flex
       flex-flow column nowrap
       justify-content flex-start
@@ -187,58 +193,65 @@ export default {
         color sub-font
       .icontent
         width 90%
-        height 90%
+        height 80%
         display flex
         flex-flow column nowrap
         justify-content flex-start
         align-items center
         background-color white-color
         border-radius 5px
-        .ilogo
-          width 90%
-          height 20%
-          display flex
-          flex-flow row nowrap
-          justify-content flex-start
-          align-items center
-          .ilogoimg
-            width 21px
-            height 21px
-          .isuccess
-            font-size 15px
-            color #28C200
-            text-indent 10px
-          .ifail
-            font-size 15px
-            color #FF8C00
-            text-indent 10px
-          .iwait
-            font-size 15px
-            color #009efb
-            text-indent 10px
+        border-top-left-radius 20%
         .ititel
           width 100%
-          height 55%
+          height 65%
           display flex
           flex-flow row nowrap
           justify-content center
           align-items center
+          position relative
+          border-bottom 1px bg-color solid
           .iim
-            width 100%
+            width 80%
             height 100%
             display flex
             flex-flow row nowrap
-            justify-content center
+            justify-content space-around
             align-items center
             font-size 35px
             color main-font
-        .splice
-          width 100%
-          height 1px
-          background-color #efefef
+          .isuccess
+            width 20%
+            font-size 60px
+            color #28C200
+            text-indent 10px
+            line-height 100%
+            position absolute
+            top -14px
+            left -17px
+            transform rotate(45deg)
+          .ifail
+            width 20%
+            font-size 60px
+            color #FF8C00
+            text-indent 10px
+            line-height 100%
+            position absolute
+            top -14px
+            left -17px
+            transform rotate(45deg)
+          .iwait
+            width 20%
+            font-size 60px
+            color #009efb
+            text-indent 10px
+            line-height 100%
+            position absolute
+            top -14px
+            left -17px
+            transform rotate(45deg)
         .idetail
-          width 95%
-          height 25%
+          width 90%
+          height 35%
           display flex
           flex-flow row nowrap
           justify-content flex-start

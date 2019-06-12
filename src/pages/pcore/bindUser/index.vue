@@ -39,10 +39,10 @@
           <div class="splice"></div>
         </div>
     <div class="service-button">
-      <div class="service-button-view" @click="bindBtn">绑定</div>
+      <div class="service-button-view" @click="bindBtn">登录</div>
     </div>
     <i-toast id="toast"/>
-    <i-modal title="绑定成功" :visible="showMask"  :show-cancel="showCancel" @ok="handleSuccess"></i-modal>
+    <i-modal title="登录成功" :visible="showMask"  :show-cancel="showCancel" @ok="handleSuccess"></i-modal>
   </div>
 </template>
 
