@@ -247,10 +247,10 @@ export default {
       palink: 0,
       goods: {
         deviceImg: [],
-        totalMoney: '0',
-        deviceMoney: '0',
-        deliverMoney: '0',
-        count: '0'
+        totalMoney: '188',
+        deviceMoney: '208',
+        deliverMoney: '20',
+        count: '3726'
       }
     }
   },
@@ -283,42 +283,29 @@ export default {
         url: `../issueUpload/main`
       })
     },
-    showPeopleDetail() {
-      this.isPeopleCollapse = !this.isPeopleCollapse
-      this.isCarCollapse = !this.isPeopleCollapse
-    },
     async getGoods() {
       wx.showLoading({title: '加载中', mask: true})
       try {
         let gRetrun = await goodsList()
         wx.hideLoading()
-        if (gRetrun.status === 200 && gRetrun.data && gRetrun.data.goodsInfo.length > 0) {
-          this.goods.totalMoney = gRetrun.data.total
-          this.goods.count = gRetrun.data.count
-          for (let item of gRetrun.data.goodsInfo) {
-            if (item.gname === '蓝牙盒子套装') {
-              this.goods.deviceMoney = item.gprice
-              this.goods.deviceImg.push(item.imgUrl)
-            }
-            if (item.gname === '快递费') {
-              this.goods.deliverMoney = item.gprice
-            }
-          }
+        if (gRetrun.status === 200 && gRetrun.data) {
+          this.goods.totalMoney = gRetrun.data.total || '188'
+          this.goods.count = gRetrun.data.count || '4782'
+          // for (let item of gRetrun.data.goodsInfo) {
+          //   if (item.gname === '蓝牙盒子套装') {
+          //     this.goods.deviceMoney = item.gprice
+          //     this.goods.deviceImg.push(item.imgUrl)
+          //   }
+          //   if (item.gname === '快递费') {
+          //     this.goods.deliverMoney = item.gprice
+          //   }
+          // }
         } else {
-          wx.hideLoading()
-          $Toast({
-            type: 'warning',
-            duration: 4,
-            content: '商品信息未返回数据!'
-          })
+          console.log('商品信息未返回数据')
         }
       } catch (err) {
         wx.hideLoading()
-        $Toast({
-          type: 'error',
-          duration: 4,
-          content: '获取商品信息失败!'
-        })
+        console.log('获取商品信息异常')
       }
     }
   },

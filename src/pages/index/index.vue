@@ -60,12 +60,10 @@
 
 <script>
 import { $Toast } from '@/utils/iview'
-import {mapState, mapMutations} from 'vuex'
+import {mapState} from 'vuex'
 import * as types from '@/store/mutation-types'
 import global from '../../utils/global'
 import * as cp from '../../utils/handleLogin'
-import {newsInfo} from '@/api/newss'
-import { hasOrder } from '@/api/goods'
 export default {
   data () {
     return {
