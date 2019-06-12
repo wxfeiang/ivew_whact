@@ -1469,96 +1469,6 @@ export default {
         })
       })
     },
-    async getSupplyOCR(applyId) {
-      wx.showLoading({ title: '加载中', mask: true })
-      let params = {
-        id: applyId
-      }
-      try {
-        let iReturn = await supplyOCR(params)
-        if (iReturn.status === 200 && iReturn.data) {
-          this.ocrData.idCard.name = iReturn.data.userName
-          this.ocrData.idCard.idNo = iReturn.data.ownerIdNum
-          this.ocrData.driving.licenseNo = iReturn.data.ownerIdNum
-          this.ocrData.car.carHeadPlateNo = iReturn.data.vehicleId
-          this.ocrData.car.plateNoColor = iReturn.data.vehicleColor
-          this.ocrData.vehicle.plateNo = iReturn.data.vehicleId
-          this.ocrData.vehicle.vehicleType = iReturn.data.vehicleType
-          this.ocrData.vehicle.owner = iReturn.data.ownerName
-          this.ocrData.vehicle.useCharacter = iReturn.data.usecharacter
-          this.ocrData.vehicle.model = iReturn.data.vehicleModel
-          this.ocrData.vehicle.vin = iReturn.data.vin
-          this.ocrData.vehicle.engineNo = iReturn.data.engineNum
-          this.ocrData.vehicle.registerDate = iReturn.data.registerDate
-          this.ocrData.vehicle.issueDate = iReturn.data.issueDate
-          this.ocrData.vehicle.approvedCount = iReturn.data.approvedCount
-          this.uAd.userName = iReturn.data.ownerName
-          this.uAd.idNumber = iReturn.data.ownerIdNum
-          this.uAd.plateNo = iReturn.data.vehicleId
-          this.uAd.mobile = iReturn.data.tel
-          this.uAd.pCode = iReturn.data.postCode
-          this.uAd.address = iReturn.data.address
-          this.uAd.regionSelect = iReturn.data.takeProvince + '-' + iReturn.data.takeCity + '-' + iReturn.data.takeCountry
-          this.getSupplyPhoto(applyId)
-        } else {
-          $Toast({
-            type: 'error',
-            duration: 3,
-            content: '获取申请单数据失败!'
-          })
-        }
-        wx.hideLoading()
-      } catch (err) {
-        console.log('获取申请单数据异常: ' + err)
-        wx.hideLoading()
-        $Toast({
-          type: 'error',
-          duration: 4,
-          content: '获取申请单数据异常!'
-        })
-      }
-    },
-    async getSupplyPhoto(applyId) {
-      wx.showLoading({ title: '加载中', mask: true })
-      let params = applyId
-      try {
-        let iReturn = await supplyPhoto(params)
-        if (iReturn.status === 200 && iReturn.data.length > 0) {
-          // 1,--证件图片;2,--车辆原图;3,--车辆转换压缩图;4,--行驶证正本;5,--行驶证副本，6,--驾驶证正本;7,--驾驶证副本，8-身份证国徽面，9-other；
-          iReturn.data.forEach(item => {
-            if (item.module === '1') {
-              this.photoData.uFront = `${ocr.rootPath}${item.id}`
-            }
-            if (item.module === '2') {
-              this.photoData.carHead = `${ocr.rootPath}${item.id}`
-            }
-            if (item.module === '4') {
-              this.photoData.vehicleMain = `${ocr.rootPath}${item.id}`
-            }
-            if (item.module === '5') {
-              this.photoData.vehicleSub = `${ocr.rootPath}${item.id}`
-            }
-            if (item.module === '6') {
-              this.photoData.driveMain = `${ocr.rootPath}${item.id}`
-            }
-          })
-        } else {
-          $Toast({
-            type: 'error',
-            duration: 4,
-            content: '获取申请单照片失败!'
-          })
-        }
-        wx.hideLoading()
-      } catch (err) {
-        wx.hideLoading()
-        $Toast({
-          type: 'error',
-          duration: 4,
-          content: '获取申请单照片失败!'
-        })
-      }
-    },
     // TODO:  下面是收货信息
     clickConfirm() {
       this.showMask = false
@@ -1862,12 +1772,102 @@ export default {
           content: `提交收货信息异常 ${err}`
         })
       }
+    },
+    async getSupplyOCR() {
+      wx.showLoading({ title: '加载中', mask: true })
+      let params = {
+        id: this.applyId
+      }
+      try {
+        let iReturn = await supplyOCR(params)
+        if (iReturn.status === 200 && iReturn.data) {
+          this.ocrData.idCard.name = iReturn.data.userName
+          this.ocrData.idCard.idNo = iReturn.data.ownerIdNum
+          this.ocrData.driving.licenseNo = iReturn.data.ownerIdNum
+          this.ocrData.car.carHeadPlateNo = iReturn.data.vehicleId
+          this.ocrData.car.plateNoColor = iReturn.data.vehicleColor
+          this.ocrData.vehicle.plateNo = iReturn.data.vehicleId
+          this.ocrData.vehicle.vehicleType = iReturn.data.vehicleType
+          this.ocrData.vehicle.owner = iReturn.data.ownerName
+          this.ocrData.vehicle.useCharacter = iReturn.data.usecharacter
+          this.ocrData.vehicle.model = iReturn.data.vehicleModel
+          this.ocrData.vehicle.vin = iReturn.data.vin
+          this.ocrData.vehicle.engineNo = iReturn.data.engineNum
+          this.ocrData.vehicle.registerDate = iReturn.data.registerDate
+          this.ocrData.vehicle.issueDate = iReturn.data.issueDate
+          this.ocrData.vehicle.approvedCount = iReturn.data.approvedCount
+          this.uAd.userName = iReturn.data.ownerName
+          this.uAd.idNumber = iReturn.data.ownerIdNum
+          this.uAd.plateNo = iReturn.data.vehicleId
+          this.uAd.mobile = iReturn.data.tel
+          this.uAd.pCode = iReturn.data.postCode
+          this.uAd.address = iReturn.data.address
+          this.uAd.regionSelect = iReturn.data.takeProvince + '-' + iReturn.data.takeCity + '-' + iReturn.data.takeCountry
+          this.getSupplyPhoto()
+        } else {
+          $Toast({
+            type: 'error',
+            duration: 3,
+            content: '获取申请单数据失败!'
+          })
+        }
+        wx.hideLoading()
+      } catch (err) {
+        console.log('获取申请单数据异常: ' + err)
+        wx.hideLoading()
+        $Toast({
+          type: 'error',
+          duration: 4,
+          content: '获取申请单数据异常!'
+        })
+      }
+    },
+    async getSupplyPhoto() {
+      wx.showLoading({ title: '加载中', mask: true })
+      let params = this.applyId
+      try {
+        let iReturn = await supplyPhoto(params)
+        if (iReturn.status === 200 && iReturn.data.length > 0) {
+          // 1,--证件图片;2,--车辆原图;3,--车辆转换压缩图;4,--行驶证正本;5,--行驶证副本，6,--驾驶证正本;7,--驾驶证副本，8-身份证国徽面，9-other；
+          iReturn.data.forEach(item => {
+            if (item.module === '1') {
+              this.photoData.uFront = `${ocr.rootPath}${item.id}`
+            }
+            if (item.module === '2') {
+              this.photoData.carHead = `${ocr.rootPath}${item.id}`
+            }
+            if (item.module === '4') {
+              this.photoData.vehicleMain = `${ocr.rootPath}${item.id}`
+            }
+            if (item.module === '5') {
+              this.photoData.vehicleSub = `${ocr.rootPath}${item.id}`
+            }
+            if (item.module === '6') {
+              this.photoData.driveMain = `${ocr.rootPath}${item.id}`
+            }
+          })
+        } else {
+          $Toast({
+            type: 'error',
+            duration: 4,
+            content: '获取申请单照片失败!'
+          })
+        }
+        wx.hideLoading()
+      } catch (err) {
+        wx.hideLoading()
+        $Toast({
+          type: 'error',
+          duration: 4,
+          content: '获取申请单照片失败!'
+        })
+      }
     }
   },
   mounted() {
     this.assignData()
     this.applyId = this.$root.$mp.query.applyId
-    this.getSupplyOCR(this.$root.$mp.query.applyId)
+    this.getSupplyOCR()
   }
 }
 </script>
