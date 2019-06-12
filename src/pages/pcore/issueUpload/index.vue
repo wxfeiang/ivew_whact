@@ -1,14 +1,13 @@
 <template>
   <div class="upload">
     <div class="uid">
-      <span class="utitle">身份证照片</span>
+      <span class="utitle">身份证照</span>
       <div class="tphoto">
         <div class="tpc">
           <div class="font" @click="jectModel('idFront')">
-            <image src="/static/images/sfz.png" mode="aspecFill" class="ppimg" v-if="!photoData.uFront"/>
+            <image src="/static/images/sfz.jpg" mode="aspecFill" class="ppimg" v-if="!photoData.uFront"/>
             <image :src="photoData.uFront" mode="aspecFill" class="ppimg" v-else/>
           </div>
-          <span class="tptitle">头像面</span>
         </div>
       </div>
     </div>
@@ -17,34 +16,30 @@
       <div class="tphoto">
         <div class="tpc">
           <div class="font" @click="jectModel('vehicleLicenseMain')">
-            <image src="/static/images/xsz2.png" mode="aspecFill" class="ppimg" v-if="!photoData.vehicleMain"/>
+            <image src="/static/images/xsz.jpg" mode="aspecFill" class="ppimg" v-if="!photoData.vehicleMain"/>
             <image :src="photoData.vehicleMain" class="ppimg" v-else/>
           </div>
-          <span class="tptitle">行驶证印章页</span>
         </div>
         <div class="tpc">
           <div class="back" @click="jectModel('vehicleLicenseSub')">
-            <image src="/static/images/xsz.png" mode="aspecFill" class="ppimg" v-if="!photoData.vehicleSub"/>
+            <image src="/static/images/xsz2.jpg" mode="aspecFill" class="ppimg" v-if="!photoData.vehicleSub"/>
             <image :src="photoData.vehicleSub" class="ppimg" v-else/>
           </div>
-          <span class="tptitle">行驶证条码页</span>
         </div>
       </div>
       <span class="utitle">驾驶证及车头照片</span>
       <div class="tphoto">
         <div class="tpc">
           <div class="font" @click="jectModel('drivingLicenseMain')">
-            <image src="/static/images/jsz.png" mode="aspecFill" class="ppimg" v-if="!photoData.driveMain"/>
+            <image src="/static/images/jsz.jpg" mode="aspecFill" class="ppimg" v-if="!photoData.driveMain"/>
             <image :src="photoData.driveMain" class="ppimg" v-else/>
           </div>
-          <span class="tptitle">驾驶证印章页</span>
         </div>
         <div class="tpc">
           <div class="font" @click="jectModel('carHead')">
-            <image src="/static/images/ct.png" mode="aspecFill" class="ppimg" v-if="!photoData.carHead"/>
+            <image src="/static/images/ct.jpg" mode="aspecFill" class="ppimg" v-if="!photoData.carHead"/>
             <image :src="photoData.carHead" class="ppimg" v-else/>
           </div>
-          <span class="tptitle">车头露牌照</span>
         </div>
       </div>
     </div>
@@ -655,19 +650,9 @@ export default {
           this.applyId = iReturn.data
         } else {
           console.log('初始化拍照上传失败,未返回数据')
-          $Toast({
-            type: 'error',
-            duration: 4,
-            content: '初始化拍照上传失败!'
-          })
         }
       } catch (err) {
         console.log('初始化拍照上传异常: ' + JSON.stringify(err))
-        $Toast({
-          type: 'error',
-          duration: 4,
-          content: '初始化拍照上传异常,请稍后重试!'
-        })
       }
     },
     ...mapMutations({
@@ -698,13 +683,13 @@ export default {
     position relative
     .utitle
       width 100%
-      height 50px
+      height 35px
       font-size 15px
       color main-font
       display flex
       flex-flow row nowrap
       justify-content center
-      align-items center
+      align-items flex-end
       font-weight 600
     .tphoto
       width 100%
@@ -720,15 +705,6 @@ export default {
         flex-flow column nowrap
         justify-content flex-start
         align-items center
-        .tptitle
-          width 100%
-          height 30px
-          font-size 13px
-          color title-font
-          display flex
-          flex-flow row nowrap
-          justify-content center
-          align-items center
         .font
           width 100%
           height 100%
@@ -736,7 +712,7 @@ export default {
           flex-flow row nowrap
           justify-content center
           align-items center
-          border 1px bg-color dashed
+          border-radius 5px
           .pimg
             line-height 100%
             width 50%
@@ -746,9 +722,10 @@ export default {
             text-align center
           .ppimg
             line-height 100%
-            width 90%
-            height 90%
+            width 95%
+            height 95%
             text-align center
+            border-radius 5px
   .ucar
     width 100%
     flex 1
@@ -759,13 +736,13 @@ export default {
     position relative
     .utitle
       width 100%
-      height 50px
+      height 35px
       font-size 15px
       color main-font
       display flex
       flex-flow row nowrap
       justify-content center
-      align-items center
+      align-items flex-end
       font-weight 600
     .tphoto
       width 100%
@@ -781,15 +758,6 @@ export default {
         flex-flow column nowrap
         justify-content flex-start
         align-items center
-        .tptitle
-          width 100%
-          height 30px
-          font-size 13px
-          color title-font
-          display flex
-          flex-flow row nowrap
-          justify-content center
-          align-items center
         .font
           width 100%
           height 100%
@@ -797,7 +765,7 @@ export default {
           flex-flow row nowrap
           justify-content center
           align-items center
-          border 1px bg-color dashed
+          border-radius 5px
           .pimg
             line-height 100%
             width 50%
@@ -807,9 +775,10 @@ export default {
             text-align center
           .ppimg
             line-height 100%
-            width 90%
-            height 90%
+            width 95%
+            height 95%
             text-align center
+            border-radius 5px
         .back
           width 100%
           height 100%
@@ -830,6 +799,7 @@ export default {
             width 90%
             height 90%
             text-align center
+            border-radius 5px
   .pbutton
     width 100%
     height 90px
