@@ -13,11 +13,11 @@ const global = {
   ocrvehicle: 'https://epay.gsunis.cn/busi/vehicle/license',
   rootPath: 'https://epay.gsunis.cn/gfs/file/read/'
 
-  // upload: 'http://192.168.1.123:9999/gfs/image/upload',
-  // ocrid: 'http://192.168.1.123:9090/busi/id/card',
-  // ocrcar: 'http://192.168.1.123:9090/busi/plate/license',
-  // ocrdriving: 'http://192.168.1.123:9090/busi/driving/license',
-  // ocrvehicle: 'http://192.168.1.123:9090/busi/vehicle/license',
+  // upload: 'http://172.16.10.170:9999/gfs/image/upload',
+  // ocrid: 'http://172.16.10.170:9090/busi/id/card',
+  // ocrcar: 'http://172.16.10.170:9090/busi/plate/license',
+  // ocrdriving: 'http://172.16.10.170:9090/busi/driving/license',
+  // ocrvehicle: 'http://172.16.10.170:9090/busi/vehicle/license',
   // rootPath: 'http://epay.gsunis.cn/gfs/file/read/'
 }
 

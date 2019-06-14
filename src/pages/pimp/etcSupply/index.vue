@@ -1158,8 +1158,8 @@ export default {
         let upReturn = await this.toUpload(idReturn, '1')
         let oReturn = await this.toOCRID(idReturn)
         console.log('toOCRID: ' + JSON.stringify(oReturn))
-        this.ocrData.idCard.name = oReturn.姓名.words || '未识别'
-        this.ocrData.idCard.idNo = oReturn.公民身份号码.words || '未识别'
+        this.ocrData.idCard.name = oReturn.姓名 ? oReturn.姓名.words || '未识别' : '未识别'
+        this.ocrData.idCard.idNo = oReturn.公民身份号码 ? oReturn.公民身份号码.words || '未识别' : '未识别'
         this.jectData.btnLoading = false
         this.jectData.btnTitle = '拍照'
         this.jectData.showJect = false
@@ -1185,7 +1185,7 @@ export default {
         let upReturn = await this.toUpload(idReturn, '6')
         let oReturn = await this.toOCRDriving(idReturn)
         console.log('toOCRDriving: ' + JSON.stringify(oReturn))
-        this.ocrData.driving.licenseNo = oReturn.证号.words || '未识别'
+        this.ocrData.driving.licenseNo = oReturn.证号 ? oReturn.证号.words || '未识别' : '未识别'
         this.jectData.btnLoading = false
         this.jectData.btnTitle = '拍照'
         this.jectData.showJect = false
@@ -1238,16 +1238,16 @@ export default {
         let upReturn = await this.toUpload(idReturn, '4')
         let oReturn = await this.toOCRVehicle(idReturn)
         console.log('toOCRVehicle: ' + JSON.stringify(oReturn))
-        this.ocrData.vehicle.plateNo = oReturn.号牌号码.words || '未识别'
-        this.ocrData.vehicle.vehicleType = oReturn.车辆类型.words || '未识别'
-        this.ocrData.vehicle.owner = oReturn.所有人.words || '未识别'
-        this.ocrData.vehicle.address = oReturn.住址.words || '未识别'
-        this.ocrData.vehicle.useCharacter = oReturn.使用性质.words || '未识别'
-        this.ocrData.vehicle.model = oReturn.品牌型号.words || '未识别'
-        this.ocrData.vehicle.vin = oReturn.车辆识别代号.words || '未识别'
-        this.ocrData.vehicle.engineNo = oReturn.发动机号码.words || '未识别'
-        this.ocrData.vehicle.registerDate = oReturn.注册日期.words || '未识别'
-        this.ocrData.vehicle.issueDate = oReturn.发证日期.words || '未识别'
+        this.ocrData.vehicle.plateNo = oReturn.号牌号码 ? oReturn.号牌号码.words || '未识别' : '未识别'
+        this.ocrData.vehicle.vehicleType = oReturn.车辆类型 ? oReturn.车辆类型.words || '未识别' : '未识别'
+        this.ocrData.vehicle.owner = oReturn.所有人 ? oReturn.所有人.words || '未识别' : '未识别'
+        this.ocrData.vehicle.address = oReturn.住址 ? oReturn.住址.words || '未识别' : '未识别'
+        this.ocrData.vehicle.useCharacter = oReturn.使用性质 ? oReturn.使用性质.words || '未识别' : '未识别'
+        this.ocrData.vehicle.model = oReturn.品牌型号 ? oReturn.品牌型号.words || '未识别' : '未识别'
+        this.ocrData.vehicle.vin = oReturn.车辆识别代号 ? oReturn.车辆识别代号.words || '未识别' : '未识别'
+        this.ocrData.vehicle.engineNo = oReturn.发动机号码 ? oReturn.发动机号码.words || '未识别' : '未识别'
+        this.ocrData.vehicle.registerDate = oReturn.注册日期 ? oReturn.注册日期.words || '未识别' : '未识别'
+        this.ocrData.vehicle.issueDate = oReturn.发证日期 ? oReturn.发证日期.words || '未识别' : '未识别'
         this.jectData.btnLoading = false
         this.jectData.btnTitle = '拍照'
         this.jectData.showJect = false
@@ -1273,7 +1273,7 @@ export default {
         let upReturn = await this.toUpload(idReturn, '5')
         let oReturn = await this.toOCRVehicleSub(idReturn)
         console.log('toOCRVehicleSub: ' + JSON.stringify(oReturn))
-        this.ocrData.vehicle.approvedCount = oReturn.核定载人数.words || '未识别'
+        this.ocrData.vehicle.approvedCount = oReturn.核定载人数 ? oReturn.核定载人数.words || '未识别' : '未识别'
         this.jectData.btnLoading = false
         this.jectData.btnTitle = '拍照'
         this.jectData.showJect = false
