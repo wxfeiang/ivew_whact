@@ -1146,7 +1146,11 @@ export default {
           takeCountry: reginSplice[2],
           address: this.uAd.address,
           color: this.ocrData.car.plateNoColor,
-          aId: this.applyId
+          aId: this.applyId,
+          carImgId: this.ocrData.car.carImgId,
+          vehicleImgOriId: this.ocrData.vehicle.vehicleImgOriId,
+          vehicleImgDupId: this.ocrData.vehicle.vehicleImgDupId,
+          imageId: this.ocrData.idCard.imageId
         }
         console.log('提交申请的参数: ' + JSON.stringify(params))
         let sReturn = await goodsSave(params)

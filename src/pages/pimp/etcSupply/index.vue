@@ -1,51 +1,37 @@
 <template>
   <div class="supply">
     <div class="upload">
-      <div class="uid">
-        <span class="utitle">身份证照片</span>
-        <div class="tphoto">
-          <div class="tpc">
-            <div class="font" @click="jectModel('idFront')">
-              <image src="/static/images/sfz.png" mode="aspecFill" class="ppimg" v-if="!photoData.uFront"/>
-              <image :src="photoData.uFront" mode="aspecFill" class="ppimg" v-else/>
-            </div>
-            <span class="tptitle">头像面</span>
-          </div>
-        </div>
-      </div>
       <div class="ucar">
-        <span class="utitle">行驶证</span>
+        <span class="utitle">行驶证照</span>
         <div class="tphoto">
           <div class="tpc">
             <div class="font" @click="jectModel('vehicleLicenseMain')">
-              <image src="/static/images/xsz2.png" mode="aspecFill" class="ppimg" v-if="!photoData.vehicleMain"/>
+              <image src="/static/images/xsz.jpg" mode="aspecFill" class="ppimg" v-if="!photoData.vehicleMain"/>
               <image :src="photoData.vehicleMain" class="ppimg" v-else/>
             </div>
-            <span class="tptitle">行驶证印章页</span>
           </div>
           <div class="tpc">
             <div class="back" @click="jectModel('vehicleLicenseSub')">
-              <image src="/static/images/xsz.png" mode="aspecFill" class="ppimg" v-if="!photoData.vehicleSub"/>
+              <image src="/static/images/xsz2.jpg" mode="aspecFill" class="ppimg" v-if="!photoData.vehicleSub"/>
               <image :src="photoData.vehicleSub" class="ppimg" v-else/>
             </div>
-            <span class="tptitle">行驶证条码页</span>
           </div>
         </div>
-        <span class="utitle">驾驶证及车头照片</span>
+      </div>
+      <div class="uid">
+        <span class="utitle">身份证及车头照</span>
         <div class="tphoto">
           <div class="tpc">
-            <div class="font" @click="jectModel('drivingLicenseMain')">
-              <image src="/static/images/jsz.png" mode="aspecFill" class="ppimg" v-if="!photoData.driveMain"/>
-              <image :src="photoData.driveMain" class="ppimg" v-else/>
+            <div class="font" @click="jectModel('idFront')">
+              <image src="/static/images/sfz.jpg" mode="aspecFill" class="ppimg" v-if="!photoData.uFront"/>
+              <image :src="photoData.uFront" mode="aspecFill" class="ppimg" v-else/>
             </div>
-            <span class="tptitle">驾驶证印章页</span>
           </div>
           <div class="tpc">
             <div class="font" @click="jectModel('carHead')">
-              <image src="/static/images/ct.png" mode="aspecFill" class="ppimg" v-if="!photoData.carHead"/>
+              <image src="/static/images/ct.jpg" mode="aspecFill" class="ppimg" v-if="!photoData.carHead"/>
               <image :src="photoData.carHead" class="ppimg" v-else/>
             </div>
-            <span class="tptitle">车头露牌照</span>
           </div>
         </div>
       </div>
@@ -175,9 +161,6 @@ import upload from '@/components/upload.vue'
 import ocr from '@/api/ocr'
 const sysChannel = {
   idFront: '身份证头像面',
-  idBack: '身份证国徽面',
-  drivingLicenseMain: '驾驶证印章页',
-  drivingLicenseSub: '驾驶证条码页',
   vehicleLicenseMain: '行驶证印章页',
   vehicleLicenseSub: '行驶证条码页',
   carHead: '车头照'
@@ -1017,16 +1000,13 @@ export default {
         uFront: null,
         vehicleMain: null,
         vehicleSub: null,
-        driveMain: null,
         carHead: null
       },
       ocrData: {
         idCard: {
           name: '',
-          idNo: ''
-        },
-        driving: {
-          licenseNo: ''
+          idNo: '',
+          imageId: ''
         },
         vehicle: {
           plateNo: '',
@@ -1039,11 +1019,14 @@ export default {
           engineNo: '',
           registerDate: '',
           issueDate: '',
-          approvedCount: ''
+          approvedCount: '',
+          vehicleImgOriId: '',
+          vehicleImgDupId: ''
         },
         car: {
           carHeadPlateNo: '',
-          plateNoColor: ''
+          plateNoColor: '',
+          carImgId: ''
         }
       },
       showMask: false,
@@ -1078,17 +1061,6 @@ export default {
           wx.previewImage({
             urls: preFront,
             current: preFront[0]
-          })
-        }
-      }
-      if (data === 'drivingLicenseMain') {
-        this.jectData.whichImg = '/static/images/zj6.png'
-        if (this.photoData.driveMain) {
-          let preDriving = []
-          preDriving.push(this.photoData.driveMain)
-          wx.previewImage({
-            urls: preDriving,
-            current: preDriving[0]
           })
         }
       }
@@ -1135,9 +1107,6 @@ export default {
       if (type === 'idFront') {
         this.toFront()
       }
-      if (type === 'drivingLicenseMain') {
-        this.toDriveMain()
-      }
       if (type === 'vehicleLicenseMain') {
         this.toVehicleMain()
       }
@@ -1156,6 +1125,8 @@ export default {
         this.jectData.btnLoading = true
         this.jectData.btnTitle = '上传中...'
         let upReturn = await this.toUpload(idReturn, '1')
+        console.log('返回的照片id: ' + upReturn.id)
+        this.ocrData.idCard.imageId = upReturn.id
         let oReturn = await this.toOCRID(idReturn)
         console.log('toOCRID: ' + JSON.stringify(oReturn))
         this.ocrData.idCard.name = oReturn.姓名 ? oReturn.姓名.words || '未识别' : '未识别'
@@ -1175,32 +1146,6 @@ export default {
         })
       }
     },
-    async toDriveMain() {
-      let that = this
-      try {
-        let idReturn = await this.chooseImage('驾驶证印章页')
-        this.photoData.driveMain = idReturn
-        this.jectData.btnLoading = true
-        this.jectData.btnTitle = '上传中...'
-        let upReturn = await this.toUpload(idReturn, '6')
-        let oReturn = await this.toOCRDriving(idReturn)
-        console.log('toOCRDriving: ' + JSON.stringify(oReturn))
-        this.ocrData.driving.licenseNo = oReturn.证号 ? oReturn.证号.words || '未识别' : '未识别'
-        this.jectData.btnLoading = false
-        this.jectData.btnTitle = '拍照'
-        this.jectData.showJect = false
-      } catch (err) {
-        this.photoData.driveMain = null
-        this.jectData.btnLoading = false
-        this.jectData.btnTitle = '拍照'
-        console.log(`上传驾驶证印章页异常${err}`)
-        $Toast({
-          type: 'error',
-          duration: 5,
-          content: `${err}`
-        })
-      }
-    },
     async toCarHead() {
       let that = this
       try {
@@ -1209,6 +1154,8 @@ export default {
         this.jectData.btnLoading = true
         this.jectData.btnTitle = '上传中...'
         let upReturn = await this.toUpload(idReturn, '2')
+        console.log('返回的照片id: ' + upReturn.id)
+        this.ocrData.car.carImgId = upReturn.id
         let oReturn = await this.toOCRCar(idReturn)
         console.log('toOCRCar: ' + JSON.stringify(oReturn))
         this.ocrData.car.carHeadPlateNo = oReturn.number || '未识别'
@@ -1236,6 +1183,8 @@ export default {
         this.jectData.btnLoading = true
         this.jectData.btnTitle = '上传中...'
         let upReturn = await this.toUpload(idReturn, '4')
+        console.log('返回的照片id: ' + upReturn.id)
+        this.ocrData.vehicle.vehicleImgOriId = upReturn.id
         let oReturn = await this.toOCRVehicle(idReturn)
         console.log('toOCRVehicle: ' + JSON.stringify(oReturn))
         this.ocrData.vehicle.plateNo = oReturn.号牌号码 ? oReturn.号牌号码.words || '未识别' : '未识别'
@@ -1271,6 +1220,8 @@ export default {
         this.jectData.btnLoading = true
         this.jectData.btnTitle = '上传中...'
         let upReturn = await this.toUpload(idReturn, '5')
+        console.log('返回的照片id: ' + upReturn.id)
+        this.ocrData.vehicle.vehicleImgDupId = upReturn.id
         let oReturn = await this.toOCRVehicleSub(idReturn)
         console.log('toOCRVehicleSub: ' + JSON.stringify(oReturn))
         this.ocrData.vehicle.approvedCount = oReturn.核定载人数 ? oReturn.核定载人数.words || '未识别' : '未识别'
@@ -1383,31 +1334,6 @@ export default {
             that.photoData.carHead = null
             console.log('识别车头照异常:  ' + JSON.stringify(res))
             reject(`识别车头照异常,请重新拍照上传 ${JSON.stringify(res)}`)
-          }
-        })
-      })
-    },
-    toOCRDriving(tempFilePaths) {
-      let that = this
-      return new Promise((resolve, reject) => {
-        wx.uploadFile({
-          url: ocr.ocrdriving,
-          filePath: tempFilePaths,
-          name: 'image',
-          success: function (res) {
-            const dReturn = JSON.parse(res.data)
-            if (dReturn.status === 200 && dReturn.data) {
-              resolve(dReturn.data)
-            } else {
-              that.photoData.driveMain = null
-              console.log('识别驾驶证失败:  ' + dReturn.reasonPhrase)
-              reject(`识别驾驶证失败 ${dReturn.reasonPhrase}`)
-            }
-          },
-          fail: function (res) {
-            that.photoData.driveMain = null
-            console.log('识别驾驶证异常:  ' + JSON.stringify(res))
-            reject(`识别驾驶证异常,请重新拍照上传 ${JSON.stringify(res)}`)
           }
         })
       })
@@ -1653,14 +1579,6 @@ export default {
         })
         return false
       }
-      if (!this.photoData.driveMain) {
-        $Toast({
-          type: 'warning',
-          duration: 5,
-          content: '请上传驾驶证印章页照!'
-        })
-        return false
-      }
       if (!this.photoData.carHead) {
         $Toast({
           type: 'warning',
@@ -1674,14 +1592,6 @@ export default {
           type: 'error',
           duration: 5,
           content: '身份证识别失败或上传的不是正确身份证!'
-        })
-        return false
-      }
-      if (this.ocrData.driving.licenseNo === '未识别') {
-        $Toast({
-          type: 'error',
-          duration: 5,
-          content: '驾驶证识别失败或上传的不是正确驾驶证!'
         })
         return false
       }
@@ -1712,16 +1622,6 @@ export default {
         })
         return false
       }
-      if (this.ocrData.driving.licenseNo !== this.ocrData.idCard.idNo) {
-        console.log('身份证 身份证号: ', this.ocrData.idCard.idNo)
-        console.log('驾驶证 身份证号: ', this.ocrData.driving.licenseNo)
-        $Toast({
-          type: 'error',
-          duration: 5,
-          content: '驾驶证证号与身份证号码不符!'
-        })
-        return false
-      }
       wx.showLoading({ title: '提交中', mask: true })
       try {
         const reginSplice = this.uAd.regionSelect.split('-')
@@ -1748,7 +1648,11 @@ export default {
           takeCountry: reginSplice[2],
           address: this.uAd.address,
           color: this.ocrData.car.plateNoColor === '0' ? 'blue' : 'blue',
-          aId: this.applyId
+          aId: this.applyId,
+          carImgId: this.ocrData.car.carImgId,
+          vehicleImgOriId: this.ocrData.vehicle.vehicleImgOriId,
+          vehicleImgDupId: this.ocrData.vehicle.vehicleImgDupId,
+          imageId: this.ocrData.idCard.imageId
         }
         console.log('提交申请的参数: ' + JSON.stringify(params))
         let sReturn = await reSupply(params)
@@ -1783,7 +1687,6 @@ export default {
         if (iReturn.status === 200 && iReturn.data) {
           this.ocrData.idCard.name = iReturn.data.userName
           this.ocrData.idCard.idNo = iReturn.data.ownerIdNum
-          this.ocrData.driving.licenseNo = iReturn.data.ownerIdNum
           this.ocrData.car.carHeadPlateNo = iReturn.data.vehicleId
           this.ocrData.car.plateNoColor = iReturn.data.vehicleColor
           this.ocrData.vehicle.plateNo = iReturn.data.vehicleId
@@ -1935,7 +1838,6 @@ export default {
             flex-flow row nowrap
             justify-content center
             align-items center
-            border 1px bg-color dashed
             .pimg
               line-height 100%
               width 50%
@@ -1996,7 +1898,6 @@ export default {
             flex-flow row nowrap
             justify-content center
             align-items center
-            border 1px bg-color dashed
             .pimg
               line-height 100%
               width 50%
@@ -2016,7 +1917,6 @@ export default {
             flex-flow row nowrap
             justify-content center
             align-items center
-            border 1px bg-color dashed
             .pimg
               line-height 100%
               width 50%
