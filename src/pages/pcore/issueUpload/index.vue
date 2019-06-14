@@ -512,7 +512,7 @@ export default {
       }
       if (this.ocrData.car.carHeadPlateNo !== this.ocrData.vehicle.plateNo) {
         console.log('车头照 车牌号: ' + this.ocrData.car.carHeadPlateNo)
-        console.log('行驶证 车牌号' + this.ocrData.vehicle.plateNo)
+        console.log('行驶证 车牌号: ' + this.ocrData.vehicle.plateNo)
         $Toast({
           type: 'error',
           duration: 5,
