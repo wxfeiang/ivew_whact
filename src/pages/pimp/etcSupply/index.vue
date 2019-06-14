@@ -6,14 +6,14 @@
         <div class="tphoto">
           <div class="tpc">
             <div class="font" @click="jectModel('vehicleLicenseMain')">
-              <image src="/static/images/xsz.jpg" mode="aspecFill" class="ppimg" v-if="!photoData.vehicleMain"/>
-              <image :src="photoData.vehicleMain" class="ppimg" v-else/>
+              <image src="/static/images/xsz.jpg" mode="scaleToFill" class="ppimg" v-if="!photoData.vehicleMain"/>
+              <image :src="photoData.vehicleMain" mode="scaleToFill" class="ppimg" v-else/>
             </div>
           </div>
           <div class="tpc">
             <div class="back" @click="jectModel('vehicleLicenseSub')">
-              <image src="/static/images/xsz2.jpg" mode="aspecFill" class="ppimg" v-if="!photoData.vehicleSub"/>
-              <image :src="photoData.vehicleSub" class="ppimg" v-else/>
+              <image src="/static/images/xsz2.jpg" mode="scaleToFill" class="ppimg" v-if="!photoData.vehicleSub"/>
+              <image :src="photoData.vehicleSub" mode="scaleToFill" class="ppimg" v-else/>
             </div>
           </div>
         </div>
@@ -23,14 +23,14 @@
         <div class="tphoto">
           <div class="tpc">
             <div class="font" @click="jectModel('idFront')">
-              <image src="/static/images/sfz.jpg" mode="aspecFill" class="ppimg" v-if="!photoData.uFront"/>
-              <image :src="photoData.uFront" mode="aspecFill" class="ppimg" v-else/>
+              <image src="/static/images/sfz.jpg" mode="scaleToFill" class="ppimg" v-if="!photoData.uFront"/>
+              <image :src="photoData.uFront" mode="scaleToFill" class="ppimg" v-else/>
             </div>
           </div>
           <div class="tpc">
             <div class="font" @click="jectModel('carHead')">
-              <image src="/static/images/ct.jpg" mode="aspecFill" class="ppimg" v-if="!photoData.carHead"/>
-              <image :src="photoData.carHead" class="ppimg" v-else/>
+              <image src="/static/images/ct.jpg" mode="scaleToFill" class="ppimg" v-if="!photoData.carHead"/>
+              <image :src="photoData.carHead" mode="scaleToFill" class="ppimg" v-else/>
             </div>
           </div>
         </div>

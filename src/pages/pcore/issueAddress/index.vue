@@ -969,7 +969,7 @@ export default {
     },
     setTransData() {
       this.uAd.userName = this.ocrData.vehicle.owner
-      this.uAd.idNumber = this.ocrData.idCard.idNo
+      this.uAd.idNumber = this.ocrData.idcard.idNo
       this.uAd.plateNo = this.ocrData.car.carHeadPlateNo
     },
     assignData() {
@@ -1125,10 +1125,10 @@ export default {
         const reginSplice = this.uAd.regionSelect.split('-')
         let params = {
           ownerName: this.ocrData.vehicle.owner,
-          ownerIdNum: this.ocrData.idCard.idNo, //
+          ownerIdNum: this.ocrData.idcard.idNo, //
           ownerTel: this.uAd.mobile, //
           vehicleId: this.ocrData.car.carHeadPlateNo,
-          contact: this.ocrData.idCard.name, //
+          contact: this.ocrData.idcard.name, //
           vehicleType: this.ocrData.vehicle.vehicleType, // 行驶证车辆类型
           vehicleModel: this.ocrData.vehicle.model, // 行驶证品牌型号
           issueDate: this.ocrData.vehicle.issueDate.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3') + ' 00:00:00' || '未识别', // 发证日期
@@ -1137,8 +1137,8 @@ export default {
           approvedCount: this.ocrData.vehicle.approvedCount.substr(0, this.ocrData.vehicle.approvedCount.length - 1), // 核定载人数
           registerDate: this.ocrData.vehicle.registerDate.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3') + ' 00:00:00' || '未识别', // 注册日期
           openid: this.openid,
-          userName: this.ocrData.idCard.name,
-          userIdNum: this.ocrData.idCard.idNo,
+          userName: this.ocrData.idcard.name,
+          userIdNum: this.ocrData.idcard.idNo,
           tel: this.uAd.mobile, // 开户人/指定经办人电号码
           postCode: this.uAd.pCode,
           takeProvince: reginSplice[0],
@@ -1150,7 +1150,7 @@ export default {
           carImgId: this.ocrData.car.carImgId,
           vehicleImgOriId: this.ocrData.vehicle.vehicleImgOriId,
           vehicleImgDupId: this.ocrData.vehicle.vehicleImgDupId,
-          imageId: this.ocrData.idCard.imageId
+          imageId: this.ocrData.idcard.imageId
         }
         console.log('提交申请的参数: ' + JSON.stringify(params))
         let sReturn = await goodsSave(params)

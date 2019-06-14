@@ -8,8 +8,8 @@ import { $Toast } from '@/utils/iview';
     <div class="ifee">
       <div class="ifitem">
         <div class="ifleft">
-          <span class="ifll">￥</span>
-          <span class="iflr">0</span>
+          <span class="ifll">现价</span>
+          <span class="iflr">￥0</span>
         </div>
         <span class="ifcenter">微信用户专享</span>
         <span class="ifright">办理量：{{goods.count}}笔</span>
@@ -57,7 +57,7 @@ import { $Toast } from '@/utils/iview';
             </span>
           </div>
           <div class="fcontent">
-            通过手机拍照提交审核资料(身份证、驾驶证、行驶证、车头照)。
+            通过手机拍照提交审核资料(身份证、行驶证、车头照)。
           </div>
         </div>
         <div class="item">
@@ -98,6 +98,8 @@ import { $Toast } from '@/utils/iview';
         </div>
         <div class="tcontent">
           <span class="tctitle">1、ETC设备属于定制产品无法二次销售。一旦制卡不支持退换货</span>
+          <span class="tctitle">2、用户在进入高速通行前，需开通微信车主服务，否则无法完成微信代扣，对正常出行造成影响。</span>
+          <span class="tctitle">3、用户进入高速通行后，再未离开高速之前不能关闭微信车主服务，否则将会被计入黑名单。</span>
         </div>
       </div>
       <div class="helps">
@@ -171,7 +173,7 @@ import { $Toast } from '@/utils/iview';
           <div class="fcontent">
             <span class="fcicon"><i class="icon iconfont icon-answer fimg"></i></span>
             <span class="fctitle">
-              支付设备邮寄费用并提交资料后，24小时内完成审核，并定制卡片，48小时内发货，72小时左右送达。
+              申办完成并提交资料后，12小时内完成审核，并定制卡片，48小时内发货，省内用户将在3至5个工作日内收到已经定制完成的卡片及设备。
             </span>
           </div>
         </div>
@@ -185,7 +187,7 @@ import { $Toast } from '@/utils/iview';
           <div class="fcontent">
             <span class="fcicon"><i class="icon iconfont icon-answer fimg"></i></span>
             <span class="fctitle">
-              收到快递设备后，先将设备后的透明薄膜私下，粘贴在车辆前挡风玻璃后视镜旁的位置。然后将ETC卡插入侧面卡槽内快速插拔两下，屏幕显示“已激活”则安装成功。
+              收到快递设备后，将由专业的业务人员，上门向您进行免费的安装服务，并现场激活，保证您的设备能正常使用。
             </span>
           </div>
         </div>
@@ -333,13 +335,19 @@ export default {
       align-items center
       position relative
       .ifleft
-        width 15%
+        width 20%
         height 100%
         display flex
         flex-flow row nowrap
         justify-content flex-start
         align-items center
         .ifll
+          width 50%
+          height 100%
+          display flex
+          flex-flow row nowrap
+          justify-content flex-start
+          align-items center
           font-size 15px
           color main-font
         .iflr
@@ -357,7 +365,7 @@ export default {
         background-color sub-color
         border-radius 6px
       .ifright
-        width 60%
+        width 55%
         height 100%
         display flex
         flex-flow row nowrap
@@ -391,6 +399,7 @@ export default {
         align-items center
         font-size 15px
         color main-font
+        text-decoration line-through #FF0000
     .iftitle
       width 95%
       height 35px
@@ -531,7 +540,7 @@ export default {
           color sub-font
     .tips
       width 100%
-      height 100px
+      height 200px
       margin-top 10px
       background-color white-color
       display flex
@@ -565,14 +574,15 @@ export default {
           color main-font
       .tcontent
         width 90%
-        height 70px
+        // height 170px
+        flex 1
         display flex
         flex-flow column nowrap
         justify-content flex-start
         align-items center
         .tctitle
           width 100%
-          height 80px
+          flex 1
           display flex
           flex-flow row nowrap
           justify-content flex-start
