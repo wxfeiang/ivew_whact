@@ -27,8 +27,8 @@
             <div class="bind-carnumber-content-item-title-func">
               <switch
                 @change="openChange(item, index)"
-                :checked = "item.parkService"
-                :disabled = "item.parkService"
+                :checked = "item.etcService"
+                :disabled = "item.etcService"
                 class="bind-carnumber-content-item-title-func-switch"
               />
             </div>
@@ -146,7 +146,7 @@ export default {
       })
     },
     openChange(item, index) {
-      if (!item.parkService) {
+      if (!item.etcService) {
         this.isOpenCarService(this.car[index].plateNo) // e.mp.detail.value
       }
     },

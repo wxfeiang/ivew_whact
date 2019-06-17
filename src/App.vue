@@ -95,7 +95,7 @@ export default {
           if (iReturn.data.length > 0) {
             let tmpNewList = []
             iReturn.data.forEach((item, index) => {
-              item.parkService = item.parkService === 1
+              item.etcService = item.etcService === 1
               tmpNewList.push(item)
             })
             this.saveCar(tmpNewList)
