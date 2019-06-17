@@ -433,7 +433,7 @@ export default {
         $Toast({
           type: 'warning',
           duration: 4,
-          content: '车牌格式有误,重新填写!'
+          content: '车牌格式有误,请重新填写!'
         })
         return false
       } else {
@@ -442,7 +442,7 @@ export default {
           $Toast({
             type: 'warning',
             duration: 4,
-            content: '车牌格式有误,重新填写!'
+            content: '车牌格式有误,请重新填写!'
           })
           return false
         } else {
