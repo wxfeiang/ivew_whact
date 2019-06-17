@@ -958,7 +958,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['openid', 'mobile', 'ocrData'])
+    ...mapState(['openid', 'mobile', 'issueData'])
   },
   methods: {
     clickConfirm() {
@@ -968,9 +968,9 @@ export default {
       })
     },
     setTransData() {
-      this.uAd.userName = this.ocrData.vehicle.owner
-      this.uAd.idNumber = this.ocrData.idcard.idNo
-      this.uAd.plateNo = this.ocrData.car.carHeadPlateNo
+      this.uAd.userName = this.issueData.vehicle.owner
+      this.uAd.idNumber = this.issueData.idcard.idNo
+      this.uAd.plateNo = this.issueData.car.carHeadPlateNo
     },
     assignData() {
       for (let i = 0, len = allData.length; i < len; i++) {
@@ -1080,7 +1080,7 @@ export default {
           // that.uAd.userName = a.userName
           // that.uAd.mobile = a.telNumber
           that.uAd.address = a.provinceName + '' + a.cityName + '' + a.countyName + '' + a.detailInfo
-          that.uAd.regionSelect = a.provinceName + '-' + a.cityName + '-' + a.countyName
+          // that.uAd.regionSelect = a.provinceName + '-' + a.cityName + '-' + a.countyName
         },
         fail: function() {
           console.log('chooseAddress fail')
@@ -1124,33 +1124,33 @@ export default {
       try {
         const reginSplice = this.uAd.regionSelect.split('-')
         let params = {
-          ownerName: this.ocrData.vehicle.owner,
-          ownerIdNum: this.ocrData.idcard.idNo, //
+          ownerName: this.issueData.vehicle.owner,
+          ownerIdNum: this.issueData.idcard.idNo, //
           ownerTel: this.uAd.mobile, //
-          vehicleId: this.ocrData.car.carHeadPlateNo,
-          contact: this.ocrData.idcard.name, //
-          vehicleType: this.ocrData.vehicle.vehicleType, // 行驶证车辆类型
-          vehicleModel: this.ocrData.vehicle.model, // 行驶证品牌型号
-          issueDate: this.ocrData.vehicle.issueDate.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3') + ' 00:00:00' || '未识别', // 发证日期
-          vin: this.ocrData.vehicle.vin,
-          engineNum: this.ocrData.vehicle.engineNo,
-          approvedCount: this.ocrData.vehicle.approvedCount.substr(0, this.ocrData.vehicle.approvedCount.length - 1), // 核定载人数
-          registerDate: this.ocrData.vehicle.registerDate.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3') + ' 00:00:00' || '未识别', // 注册日期
+          vehicleId: this.issueData.car.carHeadPlateNo,
+          contact: this.issueData.idcard.name, //
+          vehicleType: this.issueData.vehicle.vehicleType, // 行驶证车辆类型
+          vehicleModel: this.issueData.vehicle.model, // 行驶证品牌型号
+          issueDate: this.issueData.vehicle.issueDate.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3') + ' 00:00:00' || '未识别', // 发证日期
+          vin: this.issueData.vehicle.vin,
+          engineNum: this.issueData.vehicle.engineNo,
+          approvedCount: this.issueData.vehicle.approvedCount.substr(0, this.issueData.vehicle.approvedCount.length - 1), // 核定载人数
+          registerDate: this.issueData.vehicle.registerDate.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3') + ' 00:00:00' || '未识别', // 注册日期
           openid: this.openid,
-          userName: this.ocrData.idcard.name,
-          userIdNum: this.ocrData.idcard.idNo,
+          userName: this.issueData.idcard.name,
+          userIdNum: this.issueData.idcard.idNo,
           tel: this.uAd.mobile, // 开户人/指定经办人电号码
           postCode: this.uAd.pCode,
           takeProvince: reginSplice[0],
           takeCity: reginSplice[1],
           takeCountry: reginSplice[2],
           address: this.uAd.address,
-          color: this.ocrData.car.plateNoColor,
+          color: this.issueData.car.plateNoColor,
           aId: this.applyId,
-          carImgId: this.ocrData.car.carImgId,
-          vehicleImgOriId: this.ocrData.vehicle.vehicleImgOriId,
-          vehicleImgDupId: this.ocrData.vehicle.vehicleImgDupId,
-          imageId: this.ocrData.idcard.imageId
+          carImgId: this.issueData.car.carImgId,
+          vehicleImgOriId: this.issueData.vehicle.vehicleImgOriId,
+          vehicleImgDupId: this.issueData.vehicle.vehicleImgDupId,
+          imageId: this.issueData.idcard.imageId
         }
         console.log('提交申请的参数: ' + JSON.stringify(params))
         let sReturn = await goodsSave(params)
@@ -1159,7 +1159,7 @@ export default {
         if (sReturn.status === 200 && sReturn.data === 'success') {
           this.showMask = true
           this.mContent = '请到我的页面-我的订单中关注审核流程'
-          this.saveOCR({})
+          this.saveIssue({})
         } else {
           $Toast({
             type: 'error',
@@ -1178,7 +1178,7 @@ export default {
       }
     },
     ...mapMutations({
-      saveOCR: types.SYSTEM_OCRDATA
+      saveIssue: types.SYSTEM_ISSUEDATA
     })
   },
   mounted() {

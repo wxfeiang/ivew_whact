@@ -104,7 +104,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['openid', 'mobile'])
+    ...mapState(['openid', 'mobile', 'issueData'])
   },
   methods: {
     jectModel(data) {
@@ -191,6 +191,7 @@ export default {
         this.jectData.btnLoading = false
         this.jectData.btnTitle = '拍照'
         this.jectData.showJect = false
+        this.saveIssue(this.ocrData)
       } catch (err) {
         this.jectData.btnLoading = false
         this.jectData.btnTitle = '拍照'
@@ -220,6 +221,7 @@ export default {
         this.jectData.btnLoading = false
         this.jectData.btnTitle = '拍照'
         this.jectData.showJect = false
+        this.saveIssue(this.ocrData)
       } catch (err) {
         this.ocrData.carHead = null
         this.jectData.btnLoading = false
@@ -257,6 +259,7 @@ export default {
         this.jectData.btnLoading = false
         this.jectData.btnTitle = '拍照'
         this.jectData.showJect = false
+        this.saveIssue(this.ocrData)
       } catch (err) {
         this.ocrData.vehicleMain = null
         this.jectData.btnLoading = false
@@ -286,6 +289,7 @@ export default {
         this.jectData.btnLoading = false
         this.jectData.btnTitle = '拍照'
         this.jectData.showJect = false
+        this.saveIssue(this.ocrData)
       } catch (err) {
         this.ocrData.vehicleSub = null
         this.jectData.btnLoading = false
@@ -530,7 +534,7 @@ export default {
       //   })
       //   return false
       // }
-      this.saveOCR(this.ocrData)
+      this.saveIssue(this.ocrData)
       wx.navigateTo({
         url: `../issueAddress/main?applyId=${this.applyId}`
       })
@@ -551,11 +555,13 @@ export default {
       }
     },
     ...mapMutations({
-      saveOCR: types.SYSTEM_OCRDATA
+      saveIssue: types.SYSTEM_ISSUEDATA
     })
   },
   mounted() {
     this.getApplyId()
+    console.log('issueData :    ' + JSON.stringify(this.issueData))
+    this.ocrData = this.issueData
   }
 }
 </script>

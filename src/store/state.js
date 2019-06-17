@@ -13,7 +13,38 @@ const state = {
   sessionKey: '',
   car: [],
   plateNo: '',
-  ocrData: {}
+  issueData: {
+    uFront: null,
+    vehicleMain: null,
+    vehicleSub: null,
+    carHead: null,
+    idcard: {
+      name: '',
+      idNo: '',
+      imageId: ''
+    },
+    vehicle: {
+      plateNo: '',
+      vehicleType: '',
+      owner: '',
+      address: '',
+      useCharacter: '',
+      model: '',
+      vin: '',
+      engineNo: '',
+      registerDate: '',
+      issueDate: '',
+      approvedCount: '',
+      vehicleImgOriId: '',
+      vehicleImgDupId: '',
+      splateNo: ''
+    },
+    car: {
+      carHeadPlateNo: '',
+      plateNoColor: '',
+      carImgId: ''
+    }
+  }
 }
 
 export default state
