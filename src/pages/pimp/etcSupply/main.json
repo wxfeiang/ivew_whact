@@ -3,7 +3,5 @@
     "i-toast": "/iview/toast/index",
     "i-modal": "/iview/modal/index"
   },
-  "navigationBarTitleText": "订单重提",
-  "enablePullDownRefresh": true,
-  "backgroundTextStyle": "dark"
+  "navigationBarTitleText": "订单重提"
 }
