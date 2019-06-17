@@ -549,9 +549,29 @@ export default {
           this.applyId = iReturn.data
         } else {
           console.log('初始化拍照上传失败,未返回数据')
+          $Toast({
+            type: 'error',
+            duration: 3,
+            content: '初始化拍照上传失败!'
+          })
+          setTimeout(function () {
+            wx.navigateBack({
+              delta: 1
+            })
+          }, 3000)
         }
       } catch (err) {
         console.log('初始化拍照上传异常: ' + JSON.stringify(err))
+        $Toast({
+          type: 'error',
+          duration: 3,
+          content: '初始化拍照上传异常!'
+        })
+        setTimeout(function () {
+          wx.navigateBack({
+            delta: 1
+          })
+        }, 3000)
       }
     },
     ...mapMutations({
