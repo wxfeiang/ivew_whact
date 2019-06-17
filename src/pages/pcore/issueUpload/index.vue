@@ -524,16 +524,16 @@ export default {
         })
         return false
       }
-      // if (this.ocrData.vehicle.plateNo !== this.ocrData.vehicle.splateNo) {
-      //   console.log('行驶证印章页 车牌号: ' + this.ocrData.vehicle.plateNo)
-      //   console.log('行驶证条码页 车牌号: ' + this.ocrData.vehicle.splateNo)
-      //   $Toast({
-      //     type: 'error',
-      //     duration: 5,
-      //     content: '行驶证印章页车牌号与行驶证条码页车牌号不符!'
-      //   })
-      //   return false
-      // }
+      if (this.ocrData.vehicle.plateNo !== this.ocrData.vehicle.splateNo) {
+        console.log('行驶证印章页 车牌号: ' + this.ocrData.vehicle.plateNo)
+        console.log('行驶证条码页 车牌号: ' + this.ocrData.vehicle.splateNo)
+        $Toast({
+          type: 'error',
+          duration: 5,
+          content: '行驶证印章页车牌号与行驶证条码页车牌号不符!'
+        })
+        return false
+      }
       this.saveIssue(this.ocrData)
       wx.navigateTo({
         url: `../issueAddress/main?applyId=${this.applyId}`
