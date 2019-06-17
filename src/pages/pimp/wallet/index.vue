@@ -12,9 +12,9 @@
         充值
       </div>
       <div class="splice"></div>
-      <div class="recharge" @click="gotoNavi('bounds')">
+      <div class="recharge" @click="gotoNavi('load')">
         <img class="rimg" src="/static/images/cz.png" alt="">
-        积分
+        圈存
       </div>
     </div>
     <div class="consum">
@@ -76,7 +76,7 @@ export default {
     gotoNavi (which) {
       let dest = {
         'recharge': '../../pcore/recharge/main',
-        'bounds': '../../pcore/recharge/main'
+        'load': '../../pcore/load/main'
       }
       if (which === 'bounds') {
         $Toast({
