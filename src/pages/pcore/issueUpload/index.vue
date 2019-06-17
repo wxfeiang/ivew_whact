@@ -1,5 +1,22 @@
 <template>
   <div class="upload">
+    <div class="uid">
+      <span class="utitle">身份证及车头照</span>
+      <div class="tphoto">
+        <div class="tpc">
+          <div class="font" @click="jectModel('carHead')">
+            <image src="/static/images/ct.jpg" mode="scaleToFill" class="ppimg" v-if="!ocrData.carHead"/>
+            <image :src="ocrData.carHead" mode="scaleToFill" class="ppimg" v-else/>
+          </div>
+        </div>
+        <div class="tpc">
+          <div class="font" @click="jectModel('idFront')">
+            <image src="/static/images/sfz.jpg" mode="scaleToFill" class="ppimg" v-if="!ocrData.uFront"/>
+            <image :src="ocrData.uFront" mode="scaleToFill" class="ppimg" v-else/>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="ucar">
       <span class="utitle">行驶证照</span>
       <div class="tphoto">
@@ -13,23 +30,6 @@
           <div class="back" @click="jectModel('vehicleLicenseSub')">
             <image src="/static/images/xsz2.jpg" mode="scaleToFill" class="ppimg" v-if="!ocrData.vehicleSub"/>
             <image :src="ocrData.vehicleSub" mode="scaleToFill" class="ppimg" v-else/>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="uid">
-      <span class="utitle">身份证及车头照</span>
-      <div class="tphoto">
-        <div class="tpc">
-          <div class="font" @click="jectModel('idFront')">
-            <image src="/static/images/sfz.jpg" mode="scaleToFill" class="ppimg" v-if="!ocrData.uFront"/>
-            <image :src="ocrData.uFront" mode="scaleToFill" class="ppimg" v-else/>
-          </div>
-        </div>
-        <div class="tpc">
-          <div class="font" @click="jectModel('carHead')">
-            <image src="/static/images/ct.jpg" mode="scaleToFill" class="ppimg" v-if="!ocrData.carHead"/>
-            <image :src="ocrData.carHead" mode="scaleToFill" class="ppimg" v-else/>
           </div>
         </div>
       </div>
@@ -98,6 +98,12 @@ export default {
           carHeadPlateNo: '',
           plateNoColor: '',
           carImgId: ''
+        },
+        address: {
+          tel: '',
+          post: '',
+          detail: '',
+          region: '甘肃省-兰州市-城关区'
         }
       },
       applyId: ''
@@ -337,8 +343,7 @@ export default {
           success: function (res) {
             const iReturn = JSON.parse(res.data)
             if (iReturn.status === 200 && iReturn.data && iReturn.data.length > 0) {
-              let ddata = Object.assign(iReturn.data[0], {'imgPath': imgPath})
-              resolve(ddata)
+              iReturn.data[0].id ? resolve(iReturn.data[0]) : reject('上传失败,未返回结果,请稍后重试!')
             } else {
               reject('上传失败,未返回结果,请稍后重试!')
             }
@@ -509,9 +514,18 @@ export default {
         $Toast({
           type: 'error',
           duration: 5,
-          content: '行驶证识别失败或上传的不是正确行驶证!'
+          content: '行驶证印章页识别失败或上传的不是正确行驶证!'
         })
-        console.log('识别的行驶证: ' + JSON.stringify(this.ocrData.vehicle))
+        console.log('识别的行驶证印章页: ' + JSON.stringify(this.ocrData.vehicle))
+        return false
+      }
+      if (this.ocrData.vehicle.approvedCount === '未识别' || this.ocrData.vehicle.splateNo === '未识别') {
+        $Toast({
+          type: 'error',
+          duration: 5,
+          content: '行驶证条码页识别失败或上传的不是正确行驶证!'
+        })
+        console.log('识别的行驶证条码页: ' + JSON.stringify(this.ocrData.vehicle))
         return false
       }
       if (this.ocrData.car.carHeadPlateNo !== this.ocrData.vehicle.plateNo) {
@@ -545,6 +559,7 @@ export default {
           userId: this.openid
         }
         let iReturn = await hasOrder(params)
+        this.ocrData = this.issueData
         if (iReturn.status === 200 && iReturn.data) {
           this.applyId = iReturn.data
         } else {
@@ -580,8 +595,6 @@ export default {
   },
   mounted() {
     this.getApplyId()
-    console.log('issueData :    ' + JSON.stringify(this.issueData))
-    this.ocrData = this.issueData
   }
 }
 </script>

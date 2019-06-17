@@ -16,7 +16,7 @@ import { $Toast } from '@/utils/iview';
             v-model="uAd.userName"
             type="text"
             disabled="true"
-            maxlength="10"
+            maxlength="15"
             placeholder="请输入车主姓名"
           >
         </div>
@@ -954,11 +954,67 @@ export default {
         address: '',
         regionSelect: '甘肃省-兰州市-城关区'
       },
+      ocrData: {
+        uFront: null,
+        vehicleMain: null,
+        vehicleSub: null,
+        carHead: null,
+        idcard: {
+          name: '',
+          idNo: '',
+          imageId: ''
+        },
+        vehicle: {
+          plateNo: '',
+          vehicleType: '',
+          owner: '',
+          address: '',
+          useCharacter: '',
+          model: '',
+          vin: '',
+          engineNo: '',
+          registerDate: '',
+          issueDate: '',
+          approvedCount: '',
+          vehicleImgOriId: '',
+          vehicleImgDupId: '',
+          splateNo: ''
+        },
+        car: {
+          carHeadPlateNo: '',
+          plateNoColor: '',
+          carImgId: ''
+        },
+        address: {
+          tel: '',
+          post: '',
+          detail: '',
+          region: '甘肃省-兰州市-城关区'
+        }
+      },
       applyId: ''
     }
   },
   computed: {
     ...mapState(['openid', 'mobile', 'issueData'])
+  },
+  watch: {
+    'uAd.mobile'(newValue, oldValue) {
+      this.ocrData.address.tel = newValue
+      this.saveIssue(this.ocrData)
+    },
+    'uAd.pCode'(newValue, oldValue) {
+      this.ocrData.address.post = newValue
+      this.saveIssue(this.ocrData)
+    },
+    'uAd.address'(newValue, oldValue) {
+      this.ocrData.address.detail = newValue
+      this.saveIssue(this.ocrData)
+    },
+    'uAd.regionSelect'(newValue, oldValue) {
+      this.ocrData.address.region = newValue
+      this.saveIssue(this.ocrData)
+    }
   },
   methods: {
     clickConfirm() {
@@ -971,6 +1027,10 @@ export default {
       this.uAd.userName = this.issueData.vehicle.owner
       this.uAd.idNumber = this.issueData.idcard.idNo
       this.uAd.plateNo = this.issueData.car.carHeadPlateNo
+      this.uAd.mobile = this.issueData.address.tel || ''
+      this.uAd.pCode = this.issueData.address.post || ''
+      this.uAd.address = this.issueData.address.detail || ''
+      this.uAd.regionSelect = this.issueData.address.region || ''
     },
     assignData() {
       for (let i = 0, len = allData.length; i < len; i++) {
@@ -1069,10 +1129,6 @@ export default {
       this.citysIndex = citysIndex
       this.uAd.regionSelect = ssq
     },
-    regionChange(e) {
-      this.uAd.regionSelect = e.mp.detail.value
-      console.log('regionChange: ' + JSON.stringify(this.uAd.regionSelect))
-    },
     toAddress() {
       let that = this
       wx.chooseAddress({
@@ -1159,7 +1215,45 @@ export default {
         if (sReturn.status === 200 && sReturn.data === 'success') {
           this.showMask = true
           this.mContent = '请到我的页面-我的订单中关注审核流程'
-          this.saveIssue({})
+          const iData = {
+            uFront: null,
+            vehicleMain: null,
+            vehicleSub: null,
+            carHead: null,
+            idcard: {
+              name: '',
+              idNo: '',
+              imageId: ''
+            },
+            vehicle: {
+              plateNo: '',
+              vehicleType: '',
+              owner: '',
+              address: '',
+              useCharacter: '',
+              model: '',
+              vin: '',
+              engineNo: '',
+              registerDate: '',
+              issueDate: '',
+              approvedCount: '',
+              vehicleImgOriId: '',
+              vehicleImgDupId: '',
+              splateNo: ''
+            },
+            car: {
+              carHeadPlateNo: '',
+              plateNoColor: '',
+              carImgId: ''
+            },
+            address: {
+              tel: '',
+              post: '',
+              detail: '',
+              region: '甘肃省-兰州市-城关区'
+            }
+          }
+          this.saveIssue(iData)
         } else {
           $Toast({
             type: 'error',
@@ -1183,6 +1277,7 @@ export default {
   },
   mounted() {
     this.applyId = this.$root.$mp.query.applyId
+    this.ocrData = this.issueData
     this.setTransData()
     this.assignData()
   }

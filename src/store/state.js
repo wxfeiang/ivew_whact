@@ -43,6 +43,12 @@ const state = {
       carHeadPlateNo: '',
       plateNoColor: '',
       carImgId: ''
+    },
+    address: {
+      tel: '',
+      post: '',
+      detail: '',
+      region: '甘肃省-兰州市-城关区'
     }
   }
 }
