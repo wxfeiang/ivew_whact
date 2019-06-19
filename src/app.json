@@ -10,6 +10,8 @@
         "bindUser/main",
         "load/main",
         "issue/main",
+        "issueSelect/main",
+        "issueStep/main",
         "issueAddress/main",
         "issueUpload/main",
         "recharge/main"
