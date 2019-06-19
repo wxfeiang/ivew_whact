@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "选择办理方式",
+  "navigationBarTitleText": "办理流程",
   "usingComponents": {
     "i-toast": "/iview/toast/index"
   }
