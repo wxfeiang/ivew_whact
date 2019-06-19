@@ -221,13 +221,11 @@ import { $Toast } from '@/utils/iview';
         <button class="bbutton"  @click="toPay()">立即申办</button>
       </div>
     </div>
-    <i-toast id="toast"/>
   </div>
 </template>
 
 <script>
 import { goodsList } from '@/api/goods'
-import { $Toast } from '@/utils/iview'
 export default {
   data() {
     return {
@@ -267,7 +265,7 @@ export default {
     },
     toPay() {
       wx.navigateTo({
-        url: `../issueUpload/main`
+        url: `../issueSelect/main`
       })
     },
     async getGoods() {

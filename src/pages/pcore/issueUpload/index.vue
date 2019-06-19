@@ -553,49 +553,49 @@ export default {
         url: `../issueAddress/main?applyId=${this.applyId}`
       })
     },
-    async getApplyId() {
-      try {
-        let params = {
-          userId: this.openid
-        }
-        let iReturn = await hasOrder(params)
-        this.ocrData = this.issueData
-        if (iReturn.status === 200 && iReturn.data) {
-          this.applyId = iReturn.data
-        } else {
-          console.log('初始化拍照上传失败,未返回数据')
-          $Toast({
-            type: 'error',
-            duration: 3,
-            content: '初始化拍照上传失败!'
-          })
-          setTimeout(function () {
-            wx.navigateBack({
-              delta: 1
-            })
-          }, 3000)
-        }
-      } catch (err) {
-        console.log('初始化拍照上传异常: ' + JSON.stringify(err))
-        $Toast({
-          type: 'error',
-          duration: 3,
-          content: '初始化拍照上传异常!'
-        })
-        setTimeout(function () {
-          wx.navigateBack({
-            delta: 1
-          })
-        }, 3000)
-      }
-    },
+    // async getApplyId() {
+    //   try {
+    //     let params = {
+    //       userId: this.openid
+    //     }
+    //     let iReturn = await hasOrder(params)
+    //     this.ocrData = this.issueData
+    //     if (iReturn.status === 200 && iReturn.data) {
+    //       this.applyId = iReturn.data
+    //     } else {
+    //       console.log('初始化拍照上传失败,未返回数据')
+    //       $Toast({
+    //         type: 'error',
+    //         duration: 3,
+    //         content: '初始化拍照上传失败!'
+    //       })
+    //       setTimeout(function () {
+    //         wx.navigateBack({
+    //           delta: 1
+    //         })
+    //       }, 3000)
+    //     }
+    //   } catch (err) {
+    //     console.log('初始化拍照上传异常: ' + JSON.stringify(err))
+    //     $Toast({
+    //       type: 'error',
+    //       duration: 3,
+    //       content: '初始化拍照上传异常!'
+    //     })
+    //     setTimeout(function () {
+    //       wx.navigateBack({
+    //         delta: 1
+    //       })
+    //     }, 3000)
+    //   }
+    // },
     ...mapMutations({
       saveIssue: types.SYSTEM_ISSUEDATA
     })
-  },
-  mounted() {
-    this.getApplyId()
   }
+  // mounted() {
+  //   this.getApplyId()
+  // }
 }
 </script>
 <style scoped lang='stylus'>
