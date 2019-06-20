@@ -57,7 +57,8 @@ import { $Toast } from '@/utils/iview';
       <div class="ordercontent">
         <div class="ordername">{{orderData.bankName}}</div>
         <div class="ordernum">
-          <span>订单编号</span> {{orderData.orderId}}
+          <span>订单编号</span>
+          {{orderData.orderId}}
         </div>
         <div class="ordercancel">取消订单</div>
       </div>
@@ -95,7 +96,7 @@ export default {
             duration: 3,
             content: '初始化订单失败!'
           })
-          setTimeout(function () {
+          setTimeout(function() {
             wx.navigateBack({
               delta: 1
             })
@@ -108,7 +109,7 @@ export default {
           duration: 3,
           content: '初始化订单传异常!'
         })
-        setTimeout(function () {
+        setTimeout(function() {
           wx.navigateBack({
             delta: 1
           })
@@ -116,7 +117,7 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     this.orderData.bankName = this.$root.$mp.query.bankName
     this.getApplyId()
   }
@@ -140,7 +141,7 @@ export default {
   justify-content center
   align-items center
   &-content
-    width 89%
+    width 88%
     height 100%
     display flex
     flex-flow row nowrap
@@ -187,7 +188,7 @@ export default {
   align-items center
   position relative
 .midstepicon
-  width 15%
+  width 13%
   height 100%
   display flex
   flex-flow row nowrap
@@ -197,7 +198,7 @@ export default {
   color main-color
   z-index 1
 .midstateicon
-  width 15%
+  width 17%
   height 100%
   display flex
   flex-flow row nowrap
@@ -205,12 +206,13 @@ export default {
   align-items center
   font-size 10px
   color sub-font
+  margin-right 7px
 .midstepline
-  width 2px
-  height 57px
+  width 0.5px
+  height 52px
   background-color sub-font
   position absolute
-  top 47px
+  top 52px
   left 28px
 .midsteptext
   width 50%
@@ -294,7 +296,7 @@ export default {
   flex-flow row nowrap
   justify-content flex-start
   align-items center
-  border-bottom 1px solid sub-font
+  border-bottom 0.5px solid sub-font
   color main-font
   font-size 15px
 .ordernum
@@ -317,7 +319,7 @@ export default {
   flex-flow row nowrap
   justify-content center
   align-items center
-  margin-bottom 5px
+  margin-bottom 8px
   color #999
   font-size 12px
 </style>
