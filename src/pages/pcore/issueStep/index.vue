@@ -16,10 +16,10 @@ import { $Toast } from '@/utils/iview';
     <div class="middlepart">
       <div class="midpartstep">
         <div class="midstepline"></div>
-        <i class="icon iconfont icon-biaodan1 midstepicon"></i>
+        <i class="icon iconfont icon-yk_yuanquan_fill midstateicon"></i>
         <div class="midsteptext">
           <div class="steptexttop">选择办理方式</div>
-          <div class="steptextbottom">确认办理信用卡的姓名和身份证</div>
+          <div class="steptextbottom">选择信用卡或微信车主服务</div>
         </div>
         <div class="mistepbtn">去选择</div>
       </div>
@@ -28,16 +28,16 @@ import { $Toast } from '@/utils/iview';
         <i class="icon iconfont icon-biaodan1 midstepicon"></i>
         <div class="midsteptext">
           <div class="steptexttop">填写信用卡资料</div>
-          <div class="steptextbottom">通过ETC助手提交平安银行信用卡办理申请</div>
+          <div class="steptextbottom">跳转银行提交信用卡办理申请</div>
         </div>
         <div class="mistepbtn">去填写</div>
       </div>
       <div class="midpartstep">
         <div class="midstepline"></div>
-        <i class="icon iconfont icon-biaodan1 midstepicon"></i>
+        <i class="icon iconfont icon-yk_yuanquan_fill midstateicon"></i>
         <div class="midsteptext">
-          <div class="steptexttop">登记信息</div>
-          <div class="steptextbottom">确认办理信用卡的姓名和身份证</div>
+          <div class="steptexttop">上传信息</div>
+          <div class="steptextbottom">上传身份证、行驶证和车头照片</div>
         </div>
         <div class="mistepbtn">去上传</div>
       </div>
@@ -45,7 +45,7 @@ import { $Toast } from '@/utils/iview';
         <i class="icon iconfont icon-yk_yuanquan_fill midstateicon"></i>
         <div class="midsteptext">
           <div class="steptexttop">等待审核</div>
-          <div class="steptextbottom">1~3个工作日确认资格，信用卡新用户可在一个月内免费办理ETC</div>
+          <div class="steptextbottom">1~3个工作日审核完成，开始发货</div>
         </div>
         <div class="midstepstate">未完成</div>
       </div>
@@ -196,9 +196,9 @@ export default {
   align-items center
   font-size 30px
   color main-color
-  z-index 2
+  z-index 1
 .midstateicon
-  width 17.5%
+  width 17%
   height 100%
   display flex
   flex-flow row nowrap
@@ -206,15 +206,14 @@ export default {
   align-items center
   font-size 10px
   color sub-font
-  margin-right 6px
+  margin-right 7px
 .midstepline
-  width 1px
+  width 0.5px
   height 52px
   background-color sub-font
   position absolute
-  top 50px
-  left 28.5px
-  z-index 1
+  top 52px
+  left 28px
 .midsteptext
   width 50%
   height 70%
@@ -251,7 +250,6 @@ export default {
   color white-color
   border-radius 15px
   background-color main-color
-  margin-left 10px
 .midstepstate
   width 30%
   height 30px
@@ -261,7 +259,6 @@ export default {
   align-items center
   font-size 13px
   color sub-font
-  margin-left 30px
 .ordermsg
   width 100%
   display flex
