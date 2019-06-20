@@ -188,7 +188,7 @@ export default {
   align-items center
   position relative
 .midstepicon
-  width 13%
+  width 12%
   height 100%
   display flex
   flex-flow row nowrap
@@ -198,7 +198,7 @@ export default {
   color main-color
   z-index 1
 .midstateicon
-  width 17%
+  width 12%
   height 100%
   display flex
   flex-flow row nowrap
@@ -206,14 +206,14 @@ export default {
   align-items center
   font-size 10px
   color sub-font
-  margin-right 7px
 .midstepline
-  width 0.5px
+  width 1.5px
   height 52px
   background-color sub-font
   position absolute
-  top 52px
-  left 28px
+  top 48.5px
+  left 28.5px
+  z-index 1
 .midsteptext
   width 50%
   height 70%
@@ -251,7 +251,7 @@ export default {
   border-radius 15px
   background-color main-color
 .midstepstate
-  width 30%
+  width 25%
   height 30px
   display flex
   flex-flow row nowrap
