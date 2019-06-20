@@ -213,7 +213,6 @@ export default {
   position absolute
   top 48.5px
   left 28.5px
-  z-index 1
 .midsteptext
   width 50%
   height 70%
