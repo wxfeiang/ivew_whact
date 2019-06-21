@@ -46,8 +46,8 @@
         </div>
         <div class="bind-carnumber-content-item-sub">
           <div class="bind-carnumber-content-item-sub-release">
-            <div class="bind-carnumber-content-item-sub-release-title" @click="cardList(item)">
-              <i class="icon iconfont icon-cheliangxinxi imgs"></i>
+            <div class="bind-carnumber-content-item-sub-release-title">
+              <!-- <i class="icon iconfont icon-cheliangxinxi imgs"></i> -->
             </div>
             <div class="bind-carnumber-content-item-sub-release-func" @click="carRelease(item)">
               <i class="icon iconfont icon-lajitong imgs"></i>
