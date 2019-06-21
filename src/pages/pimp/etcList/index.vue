@@ -61,19 +61,6 @@
 import { $Toast } from '@/utils/iview'
 import { queryList } from '@/api/goods'
 import {mapState} from 'vuex'
-const bankType = {
-  '0': '微信车主会员',
-  '1': '兰州银行',
-  '2': '中国农业银行',
-  '3': '中国银行',
-  '4': '中国建设银行',
-  '5': '交通银行',
-  '6': '中国民生银行',
-  '7': '招商银行',
-  '8': '农信银行',
-  '9': '中国工商银行',
-  '999': '未选择办理方式'
-}
 export default {
   data() {
     return {
