@@ -103,6 +103,12 @@ const bankType = {
   '9': '中国工商银行',
   '999': '未选择办理方式'
 }
+const bankApplyState = {
+  '-1': '未办卡',
+  '0': '办卡审核中',
+  '1': '办卡通过',
+  '2': '办卡驳回'
+}
 export default {
   data() {
     return {
@@ -175,17 +181,18 @@ export default {
           }
           this.orderDetail.ems = iReturn.data.ems
           this.orderDetail.bankApplyState = iReturn.data.bankApplyState
-          if (iReturn.data.bankApplyState === '-1') {
-            this.orderDetail.bankApplyStateName = '未办卡'
-          } else if (iReturn.data.bankApplyState === '0') {
-            this.orderDetail.bankApplyStateName = '办卡审核中'
-          } else if (iReturn.data.bankApplyState === '1') {
-            this.orderDetail.bankApplyStateName = '办卡通过'
-          } else if (iReturn.data.bankApplyState === '2') {
-            this.orderDetail.bankApplyStateName = '办卡驳回'
-          }
+          // if (iReturn.data.bankApplyState === '-1') {
+          //   this.orderDetail.bankApplyStateName = '未办卡'
+          // } else if (iReturn.data.bankApplyState === '0') {
+          //   this.orderDetail.bankApplyStateName = '办卡审核中'
+          // } else if (iReturn.data.bankApplyState === '1') {
+          //   this.orderDetail.bankApplyStateName = '办卡通过'
+          // } else if (iReturn.data.bankApplyState === '2') {
+          //   this.orderDetail.bankApplyStateName = '办卡驳回'
+          // }
+          this.orderDetail.bankApplyStateName = bankApplyState[this.orderDetail.bankApplyState] || '未知'
           this.orderDetail.bankType = iReturn.data.bankType === '-1' ? '999' : iReturn.data.bankType || '999'
-          this.orderDetail.bankTypeName = bankType[this.orderDetail.bankType]
+          this.orderDetail.bankTypeName = bankType[this.orderDetail.bankType] || '未知'
         } else {
           this.hasData = false
           console.log('获取订单信息失败' + JSON.stringify(iReturn.data))
