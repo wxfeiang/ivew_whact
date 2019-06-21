@@ -219,9 +219,10 @@ export default {
     async isOpenCarService(plateNo) {
       wx.showLoading({ title: '加载中', mask: true })
       let params = {
-        tradeScene: 'PARKING',
+        tradeScene: 'HIGHWAY',
         subOpenid: this.openid || '',
-        plateNumber: plateNo || ''
+        plateNumber: plateNo || '',
+        channelType: 'ETC'
       }
       try {
         let iReturn = await carServices(params)
@@ -280,7 +281,7 @@ export default {
     },
     async carNotify(plateNo) {
       let params = {
-        tradeScene: 'PARKING',
+        tradeScene: 'HIGHWAY',
         subOpenid: this.openid,
         plateNumber: plateNo
       }

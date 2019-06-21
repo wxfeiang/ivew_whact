@@ -18,6 +18,14 @@
             <i class="icon iconfont icon-qunfengshenheshibai ifail" v-if="item.applyStatus === 2"></i>
             <i class="icon iconfont icon-qunfengshenhechulizhong iwait" v-if="item.applyStatus === 0"></i>
             <span class="iim">{{item.plateNumber}}</span>
+            <div class="iimcardwx" v-if="item.bankType === '0'">微信车主会员</div>
+            <div class="iimcardnothing" v-else-if="item.bankType === '-1'">未选择开通方式</div>
+            <div class="iimcardcard" v-else>
+              <span class="iimcardno" v-if="item.bankApplyState === '-1'">未办卡</span>
+              <span class="iimcardwait" v-if="item.bankApplyState === '0'">办卡审核中</span>
+              <span class="iimcardyes" v-if="item.bankApplyState === '1'">办卡通过</span>
+              <span class="iimcardfail" v-if="item.bankApplyState === '2'">办卡驳回</span>
+            </div>
           </div>
           <div class="splice"></div>
           <div class="idetail">
@@ -53,6 +61,19 @@
 import { $Toast } from '@/utils/iview'
 import { queryList } from '@/api/goods'
 import {mapState} from 'vuex'
+const bankType = {
+  '0': '微信车主会员',
+  '1': '兰州银行',
+  '2': '中国农业银行',
+  '3': '中国银行',
+  '4': '中国建设银行',
+  '5': '交通银行',
+  '6': '中国民生银行',
+  '7': '招商银行',
+  '8': '农信银行',
+  '9': '中国工商银行',
+  '999': '未选择办理方式'
+}
 export default {
   data() {
     return {
@@ -215,10 +236,78 @@ export default {
             height 100%
             display flex
             flex-flow row nowrap
-            justify-content space-around
+            justify-content center
             align-items center
             font-size 35px
             color main-font
+          .iimcardcard
+            width 28%
+            height 25%
+            position absolute
+            top 4px
+            right 8px
+            .iimcardyes
+              width 100%
+              height 100%
+              display flex
+              flex-flow row nowrap
+              justify-content center
+              align-items center
+              color #28C200
+              font-size 13px
+            .iimcardno
+              width 100%
+              height 100%
+              display flex
+              flex-flow row nowrap
+              justify-content center
+              align-items center
+              color #F9A14A
+              font-size 13px
+            .iimcardwait
+              width 100%
+              height 100%
+              display flex
+              flex-flow row nowrap
+              justify-content center
+              align-items center
+              color #009efb
+              font-size 13px
+            .iimcardfail
+              width 100%
+              height 100%
+              display flex
+              flex-flow row nowrap
+              justify-content center
+              align-items center
+              color #FF8C00
+              font-size 13px
+          .iimcardnothing
+            width 28%
+            height 25%
+            display flex
+            flex-flow row nowrap
+            justify-content center
+            align-items center
+            color #009efb
+            font-size 13px
+            border-radius 5px
+            position absolute
+            top 4px
+            right 8px
+          .iimcardwx
+            width 28%
+            height 25%
+            display flex
+            flex-flow row nowrap
+            justify-content center
+            align-items center
+            color #28C200
+            font-size 13px
+            border-radius 5px
+            position absolute
+            top 4px
+            right 8px
           .isuccess
             width 20%
             font-size 60px

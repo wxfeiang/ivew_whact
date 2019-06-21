@@ -100,7 +100,7 @@ export default {
             })
             this.saveCar(tmpNewList)
           } else {
-            this.saveCar(iReturn.data)
+            this.saveCar([])
           }
         }
       } catch (err) {
@@ -108,17 +108,19 @@ export default {
         console.log('App.vue 获取车辆数据失败!')
       }
     },
-    async carNotify(plateNo) {
+    async carNotify() {
       wx.showLoading({ title: '加载中', mask: true })
-      let params = {
-        tradeScene: 'PARKING',
-        subOpenid: this.openid,
-        plateNumber: plateNo
+      let iParams = {
+        plateColor: '0',
+        plateNumber: this.plateNo,
+        openid: this.openid,
+        tradeScene: 'HIGHWAY',
+        phone: this.mobile
       }
       try {
-        let iReturn = await carServiceNotify(params)
+        let iReturn = await carServiceNotify(iParams)
         wx.hideLoading()
-        this.getCarList()
+        await this.getCarList()
       } catch (err) {
         wx.hideLoading()
         console.log('车主服务上报通知失败!')
@@ -166,9 +168,10 @@ export default {
           console.log(`免密支付签约失败${extraData.return_msg}`)
         }
       } else if (appId === 'wxbcad394b3d99dac9') {
-        if (this.car && this.car.length > 0 && this.plateNo) {
-          console.log('车主服务的车牌: ' + this.plateNo)
-          this.carNotify(this.plateNo)
+        // 车主服务
+        console.log('开通车主服务的车牌: ' + this.plateNo)
+        if (this.plateNo) {
+          this.carNotify()
         }
         // 车主服务
         // if (typeof extraData === 'undefined') {

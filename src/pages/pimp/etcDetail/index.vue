@@ -23,6 +23,16 @@
           <span class="isuccess" v-if="orderDetail.audit.applyStatus === '1'">{{orderDetail.audit.applyStatusName}}</span>
           <span class="ifail" v-if="orderDetail.audit.applyStatus === '2'">{{orderDetail.audit.applyStatusName}}</span>
         </div>
+        <div class="splice"></div>
+        <div class="etitem">
+          <span class="left">办理方式</span>
+          <span class="right">{{orderDetail.bankTypeName}}</span>
+        </div>
+        <div class="splice"></div>
+        <div class="etitem" v-if="orderDetail.bankType !== '0' && orderDetail.bankType !== '999'">
+          <span class="left">办卡状态</span>
+          <span class="right">{{orderDetail.bankApplyStateName}}</span>
+        </div>
       </div>
       <div class="econtent" v-if="orderDetail.ems.length > 0">
         <div class="ecitem" v-for="item in orderDetail.ems" :key="item.id">
@@ -67,6 +77,9 @@
     <div class="pbutton" v-if="orderDetail.audit.applyStatus === '2'">
       <button class="ppbutton" @click="reSupply()">订单重提</button>
     </div>
+    <div class="pbutton" v-if="orderDetail.bankType === '999'">
+      <button class="ppbutton" @click="reSelect()">选择办理方式</button>
+    </div>
     <i-toast id="toast"/>
     <i-modal title="是否确认收货" :visible="showMask" @cancel="clickCancel" @ok="clickConfirm">
     </i-modal>
@@ -77,6 +90,19 @@
 import { $Toast } from '@/utils/iview'
 import { queryDetail, confirmReceipt } from '@/api/goods'
 import {mapState} from 'vuex'
+const bankType = {
+  '0': '微信车主会员',
+  '1': '兰州银行',
+  '2': '中国农业银行',
+  '3': '中国银行',
+  '4': '中国建设银行',
+  '5': '交通银行',
+  '6': '中国民生银行',
+  '7': '招商银行',
+  '8': '农信银行',
+  '9': '中国工商银行',
+  '999': '未选择办理方式'
+}
 export default {
   data() {
     return {
@@ -95,7 +121,11 @@ export default {
         pay: {
           state: ''
         },
-        ems: []
+        ems: [],
+        bankApplyState: '',
+        bankApplyStateName: '',
+        bankType: '',
+        bankTypeName: ''
       },
       applyId: ''
     }
@@ -119,6 +149,11 @@ export default {
         url: `../etcSupply/main?applyId=${this.orderDetail.audit.id}`
       })
     },
+    reSelect() {
+      wx.navigateTo({
+        url: `../../pissue/issueSelect/main?applyId=${this.orderDetail.audit.id}&plateNo=${this.orderDetail.audit.plateNumber}`
+      })
+    },
     async getOrderDetail(applyId) {
       wx.showLoading({ title: '加载中', mask: true })
       let params = {
@@ -139,6 +174,18 @@ export default {
             this.orderDetail.pay.state = iReturn.data.pay.state || ''
           }
           this.orderDetail.ems = iReturn.data.ems
+          this.orderDetail.bankApplyState = iReturn.data.bankApplyState
+          if (iReturn.data.bankApplyState === '-1') {
+            this.orderDetail.bankApplyStateName = '未办卡'
+          } else if (iReturn.data.bankApplyState === '0') {
+            this.orderDetail.bankApplyStateName = '办卡审核中'
+          } else if (iReturn.data.bankApplyState === '1') {
+            this.orderDetail.bankApplyStateName = '办卡通过'
+          } else if (iReturn.data.bankApplyState === '2') {
+            this.orderDetail.bankApplyStateName = '办卡驳回'
+          }
+          this.orderDetail.bankType = iReturn.data.bankType === '-1' ? '999' : iReturn.data.bankType || '999'
+          this.orderDetail.bankTypeName = bankType[this.orderDetail.bankType]
         } else {
           this.hasData = false
           console.log('获取订单信息失败' + JSON.stringify(iReturn.data))
@@ -215,7 +262,7 @@ export default {
     flex 1
     .etitle
       width 100%
-      height 180px
+      flex 1
       background-color white-color
       display flex
       flex-flow column nowrap

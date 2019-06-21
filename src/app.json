@@ -4,16 +4,12 @@
     {
       "root": "pages/pcore/",
       "pages": [
+        "active/main",
         "bindMain/main",
         "bindNumber/main",
         "bindVerify/main",
         "bindUser/main",
         "load/main",
-        "issue/main",
-        "issueSelect/main",
-        "issueStep/main",
-        "issueAddress/main",
-        "issueUpload/main",
         "recharge/main"
       ]
     },
@@ -26,10 +22,20 @@
         "etcList/main",
         "etcSupply/main",
         "etcDetail/main",
-        "help/main",
         "orderDetail/main",
         "userInfo/main",
         "wallet/main"
+      ]
+    },
+    {
+      "root": "pages/pissue/",
+      "pages": [
+        "issue/main",
+        "issueAddress/main",
+        "issueCredit/main",
+        "issueSelect/main",
+        "issueStep/main",
+        "issueUpload/main"
       ]
     }
   ],

@@ -265,7 +265,7 @@ export default {
     },
     toPay() {
       wx.navigateTo({
-        url: `../issueSelect/main`
+        url: `../issueUpload/main`
       })
     },
     async getGoods() {

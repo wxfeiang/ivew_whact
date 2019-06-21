@@ -108,7 +108,7 @@ import { $Toast } from '@/utils/iview';
       <button class="bbutton" @click="comfirmInfo()">提交收货信息</button>
     </div>
     <i-toast id="toast"/>
-    <i-modal title="在线申办成功" :visible="showMask"  :show-cancel="showCancel" @ok="clickConfirm">
+    <i-modal title="订单申请成功" :visible="showMask" :show-cancel="showCancel" @ok="clickConfirm">
       <view>{{mContent}}</view>
     </i-modal>
   </div>
@@ -1019,8 +1019,8 @@ export default {
   methods: {
     clickConfirm() {
       this.showMask = false
-      wx.switchTab({
-        url: '../../my/main'
+      wx.reLaunch({
+        url: `../issueSelect/main?applyId=${this.applyId}&plateNo=${this.uAd.plateNo}`
       })
     },
     setTransData() {
@@ -1214,7 +1214,7 @@ export default {
         console.log('提交申请返回: ' + JSON.stringify(sReturn))
         if (sReturn.status === 200 && sReturn.data === 'success') {
           this.showMask = true
-          this.mContent = '请到我的页面-我的订单中关注审核流程'
+          this.mContent = '将跳转办理方式选择页面'
           const iData = {
             uFront: null,
             vehicleMain: null,

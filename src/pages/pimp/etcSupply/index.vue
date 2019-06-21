@@ -1730,9 +1730,14 @@ export default {
         } else {
           $Toast({
             type: 'error',
-            duration: 3,
+            duration: 4,
             content: '获取申请单数据失败!'
           })
+          setTimeout(function () {
+            wx.navigateBack({
+              delta: 1
+            })
+          }, 3000)
         }
         wx.hideLoading()
       } catch (err) {
@@ -1743,6 +1748,11 @@ export default {
           duration: 4,
           content: '获取申请单数据异常!'
         })
+        setTimeout(function () {
+          wx.navigateBack({
+            delta: 1
+          })
+        }, 3000)
       }
     }
   },

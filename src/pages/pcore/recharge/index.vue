@@ -160,7 +160,7 @@ export default {
           openid: this.openid || '',
           ip: '127.0.0.1',
           signType: 'MD5',
-          totalFee: this.rechargeMoney,
+          totalFee: '0.01', // this.rechargeMoney,
           body: '甘肃高速e付etc充值',
           channel: 'wx_jsapi',
           mchNo: '1000',

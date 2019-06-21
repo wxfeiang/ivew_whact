@@ -16,7 +16,7 @@ export function goodsSave(data) {
 }
 
 // 新申请获取上传id 接口
-export function hasOrder(data) {
+export function getApplyId(data) {
   return fly.request('busi/etcissue/userid', data, {
     method: 'GET'
   })
@@ -60,7 +60,7 @@ export function supplyOCR(data) {
 // 补单 获取照片数据
 export function supplyPhoto(data) {
   return fly.request(
-    `/gfs/img/read/${data}`,
+    `gfs/img/read/${data}`,
     {},
     {
       method: 'GET'
@@ -70,7 +70,14 @@ export function supplyPhoto(data) {
 
 // 补单 获取照片数据
 export function reSupply(data) {
-  return fly.request('/busi/etcapply/update', data, {
+  return fly.request('busi/etcapply/update', data, {
     method: 'POST'
+  })
+}
+
+// 补单 获取照片数据
+export function hasOrder(data) {
+  return fly.request(`busi/etcapply/progress`, data, {
+    method: 'GET'
   })
 }

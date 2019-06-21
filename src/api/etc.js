@@ -63,3 +63,11 @@ export function epayEnd(data) {
     baseURL: 'http://61.178.107.23/test/esb/3000/'
   })
 }
+
+// OBU激活取3mac数据
+export function getTMAC(data) {
+  return fly.request('', data, {
+    method: 'POST',
+    baseURL: 'http://61.178.107.23/test/esb/2000/'
+  })
+}

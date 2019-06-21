@@ -44,7 +44,7 @@
 
 <script>
 import { $Toast } from '@/utils/iview'
-import { goodsPhotoUpload, hasOrder } from '@/api/goods'
+import { goodsPhotoUpload, getApplyId } from '@/api/goods'
 import { mapState, mapMutations } from 'vuex'
 import * as types from '@/store/mutation-types'
 import upload from '@/components/upload.vue'
@@ -462,6 +462,14 @@ export default {
       })
     },
     toAddress() {
+      if (!this.ocrData.carHead) {
+        $Toast({
+          type: 'warning',
+          duration: 5,
+          content: '请上传车头照!'
+        })
+        return false
+      }
       if (!this.ocrData.uFront) {
         $Toast({
           type: 'warning',
@@ -483,14 +491,6 @@ export default {
           type: 'warning',
           duration: 5,
           content: '请上传行驶证条码页照!'
-        })
-        return false
-      }
-      if (!this.ocrData.carHead) {
-        $Toast({
-          type: 'warning',
-          duration: 5,
-          content: '请上传车头照!'
         })
         return false
       }
@@ -553,49 +553,49 @@ export default {
         url: `../issueAddress/main?applyId=${this.applyId}`
       })
     },
-    // async getApplyId() {
-    //   try {
-    //     let params = {
-    //       userId: this.openid
-    //     }
-    //     let iReturn = await hasOrder(params)
-    //     this.ocrData = this.issueData
-    //     if (iReturn.status === 200 && iReturn.data) {
-    //       this.applyId = iReturn.data
-    //     } else {
-    //       console.log('初始化拍照上传失败,未返回数据')
-    //       $Toast({
-    //         type: 'error',
-    //         duration: 3,
-    //         content: '初始化拍照上传失败!'
-    //       })
-    //       setTimeout(function () {
-    //         wx.navigateBack({
-    //           delta: 1
-    //         })
-    //       }, 3000)
-    //     }
-    //   } catch (err) {
-    //     console.log('初始化拍照上传异常: ' + JSON.stringify(err))
-    //     $Toast({
-    //       type: 'error',
-    //       duration: 3,
-    //       content: '初始化拍照上传异常!'
-    //     })
-    //     setTimeout(function () {
-    //       wx.navigateBack({
-    //         delta: 1
-    //       })
-    //     }, 3000)
-    //   }
-    // },
+    async getApplyId() {
+      try {
+        let params = {
+          userId: this.openid
+        }
+        let iReturn = await getApplyId(params)
+        this.ocrData = this.issueData
+        if (iReturn.status === 200 && iReturn.data) {
+          this.applyId = iReturn.data
+        } else {
+          console.log('初始化拍照上传失败,未返回数据')
+          $Toast({
+            type: 'error',
+            duration: 3,
+            content: '初始化拍照上传失败!'
+          })
+          setTimeout(function () {
+            wx.navigateBack({
+              delta: 1
+            })
+          }, 3000)
+        }
+      } catch (err) {
+        console.log('初始化拍照上传异常: ' + JSON.stringify(err))
+        $Toast({
+          type: 'error',
+          duration: 3,
+          content: '初始化拍照上传异常!'
+        })
+        setTimeout(function () {
+          wx.navigateBack({
+            delta: 1
+          })
+        }, 3000)
+      }
+    },
     ...mapMutations({
       saveIssue: types.SYSTEM_ISSUEDATA
     })
+  },
+  mounted() {
+    this.getApplyId()
   }
-  // mounted() {
-  //   this.getApplyId()
-  // }
 }
 </script>
 <style scoped lang='stylus'>

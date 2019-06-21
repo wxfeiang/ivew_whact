@@ -16,7 +16,7 @@
     <div class="core">
       <div class="item" @click="gotoNavi('wallet')">
         <div class="icon packet"><i class="icon iconfont icon-accountbook-fill img"></i></div>
-        <div class="content">我的钱包</div>
+        <div class="content">在线充值</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
       <div class="splice"></div>

@@ -8,46 +8,49 @@ import { $Toast } from '@/utils/iview';
           <div class="toptitletext">办理流程</div>
         </div>
         <div class="toptitlemore">
-          <span class="topmoretext">了解更多</span>
-          <i class="icon iconfont icon-question-circle topmoreicon"></i>
+          <!-- <span class="topmoretext">了解更多</span>
+          <i class="icon iconfont icon-question-circle topmoreicon"></i> -->
         </div>
       </div>
     </div>
     <div class="middlepart">
       <div class="midpartstep">
         <div class="midstepline"></div>
-        <i class="icon iconfont icon-yk_yuanquan_fill midstateicon"></i>
-        <div class="midsteptext">
-          <div class="steptexttop">选择办理方式</div>
-          <div class="steptextbottom">选择信用卡或微信车主服务</div>
-        </div>
-        <div class="mistepbtn">去选择</div>
-      </div>
-      <div class="midpartstep">
-        <div class="midstepline"></div>
-        <i class="icon iconfont icon-biaodan1 midstepicon"></i>
+        <i class="icon iconfont icon-biaodan1 midstepicon" v-if="iStep === 0"></i>
+        <i class="icon iconfont icon-yk_yuanquan_fill midstateicon" v-else></i>
         <div class="midsteptext">
           <div class="steptexttop">填写信用卡资料</div>
           <div class="steptextbottom">跳转银行提交信用卡办理申请</div>
         </div>
-        <div class="mistepbtn">去填写</div>
+        <div class="mistepbtn" v-if="iStep === 0" @click="toCredit">去申请</div>
+        <div class="mistepcen" v-else>
+          <div class="midstepstate" v-if="orderData.uploadState">已完成</div>
+          <div class="mistepbtnk" @click="toCredit" v-else>重新申请</div>
+        </div>
       </div>
       <div class="midpartstep">
         <div class="midstepline"></div>
-        <i class="icon iconfont icon-yk_yuanquan_fill midstateicon"></i>
+        <i class="icon iconfont icon-biaodan1 midstepicon" v-if="iStep === 1"></i>
+        <i class="icon iconfont icon-yk_yuanquan_fill midstateicon" v-else></i>
         <div class="midsteptext">
           <div class="steptexttop">上传信息</div>
           <div class="steptextbottom">上传身份证、行驶证和车头照片</div>
         </div>
-        <div class="mistepbtn">去上传</div>
+        <div class="mistepbtn" v-if="iStep === 1">去上传</div>
+        <div class="mistepcen" v-else>
+          <div class="midstepstate" v-if="orderData.uploadState">已完成</div>
+          <div class="midstepstate" v-else>未完成</div>
+        </div>
       </div>
       <div class="midpartstep">
-        <i class="icon iconfont icon-yk_yuanquan_fill midstateicon"></i>
+        <i class="icon iconfont icon-biaodan1 midstepicon" v-if="iStep === 2"></i>
+        <i class="icon iconfont icon-yk_yuanquan_fill midstateicon" v-else></i>
         <div class="midsteptext">
-          <div class="steptexttop">等待审核</div>
+          <div class="steptexttop">审核信息</div>
           <div class="steptextbottom">1~3个工作日审核完成，开始发货</div>
         </div>
-        <div class="midstepstate">未完成</div>
+        <div class="mistepbtn" v-if="iStep === 2">跟踪订单</div>
+        <div class="midstepstatek" v-else>未完成</div>
       </div>
     </div>
     <div class="ordermsg">
@@ -60,7 +63,7 @@ import { $Toast } from '@/utils/iview';
           <span>订单编号</span>
           {{orderData.orderId}}
         </div>
-        <div class="ordercancel">取消订单</div>
+        <!-- <div class="ordercancel">取消订单</div> -->
       </div>
     </div>
     <i-toast id="toast"/>
@@ -69,23 +72,37 @@ import { $Toast } from '@/utils/iview';
 
 <script>
 import { $Toast } from '@/utils/iview'
-import { hasOrder } from '@/api/goods'
+import { getApplyId } from '@/api/goods'
 export default {
   data() {
     return {
+      iStep: 0,
       orderData: {
         bankName: '',
-        orderId: ''
+        bankType: '',
+        orderId: '',
+        uploadState: false
       }
     }
   },
   methods: {
+    toCredit() {
+      if (this.orderData.bankType === 'lz') {
+        wx.navigateTo({
+          url: `../issueCredit/main?link=https://gsunis.cn?orderId=${this.orderData.orderId}`
+        })
+      } else if (this.orderData.bankType === 'gs') {
+        wx.navigateTo({
+          url: `../issueCredit/main?link=https://gsunis.cn?orderId=${this.orderData.orderId}`
+        })
+      }
+    },
     async getApplyId() {
       try {
         let params = {
           userId: this.openid
         }
-        let iReturn = await hasOrder(params)
+        let iReturn = await getApplyId(params)
         this.ocrData = this.issueData
         if (iReturn.status === 200 && iReturn.data) {
           this.orderData.orderId = iReturn.data
@@ -118,7 +135,8 @@ export default {
     }
   },
   mounted() {
-    this.orderData.bankName = this.$root.$mp.query.bankName
+    this.orderData.bankName = this.$root.$mp.query.bankName || ''
+    this.orderData.bankType = this.$root.$mp.query.bankType || ''
     this.getApplyId()
   }
 }
@@ -249,7 +267,27 @@ export default {
   color white-color
   border-radius 15px
   background-color main-color
+.mistepbtnk
+  width 100%
+  height 100%
+  display flex
+  flex-flow row nowrap
+  justify-content center
+  align-items center
+  font-size 15px
+  color main-color
+  border-radius 15px
+  border 1px solid main-color
 .midstepstate
+  width 100%
+  height 100%
+  display flex
+  flex-flow row nowrap
+  justify-content center
+  align-items center
+  font-size 13px
+  color sub-font
+.midstepstatek
   width 25%
   height 30px
   display flex
@@ -258,6 +296,13 @@ export default {
   align-items center
   font-size 13px
   color sub-font
+.mistepcen
+  width 25%
+  height 30px
+  display flex
+  flex-flow row nowrap
+  justify-content center
+  align-items center
 .ordermsg
   width 100%
   display flex

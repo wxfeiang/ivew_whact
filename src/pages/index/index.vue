@@ -19,10 +19,10 @@
             </div>
           </div>
         </div>
-        <div class="cright" @click="gotoNavi('load')">
+        <div class="cright" @click="gotoNavi('active')">
           <div class="citem">
             <div class="cimg"><img class="ccimg" src="/static/images/load.png" alt=""></div>
-            <span class="cititle">圈存</span>
+            <span class="cititle">激活</span>
           </div>
         </div>
       </div>
@@ -64,6 +64,7 @@ import {mapState} from 'vuex'
 import * as types from '@/store/mutation-types'
 import global from '../../utils/global'
 import * as cp from '../../utils/handleLogin'
+import { hasOrder } from '@/api/goods'
 export default {
   data () {
     return {
@@ -87,8 +88,8 @@ export default {
       let dest = {
         'car': '../pcore/bindMain/main',
         'recharge': '../pcore/recharge/main',
-        'load': '../pimp/wallet/main',
-        'issue': '../pcore/issue/main'
+        'active': '../pcore/active/main',
+        'issue': '../pissue/issue/main'
       }
       // cp.isLogin(() => {
       //   // this.modalVisible = true
@@ -101,8 +102,43 @@ export default {
           url: '../pcore/bindUser/main'
         })
       } else {
-        wx.navigateTo({
-          url: dest[which]
+        if (which === 'issue') {
+          this.uHasOrder()
+        } else {
+          wx.navigateTo({
+            url: dest[which]
+          })
+        }
+      }
+    },
+    async uHasOrder() {
+      try {
+        let iparam = {
+          openId: this.openid
+        }
+        let iReturn = await hasOrder(iparam)
+        if (iReturn.status === 200 && iReturn.data && iReturn.data.state) {
+          let which = {
+            '0': '../pissue/issue/main', // 0 未提交任何申请
+            '1': `../pimp/etcSupply/main?applyId=${iReturn.data.applyId}`, // 1 etc审核驳回
+            '2': `../pissue/issueSelect/main?applyId=${iReturn.data.applyId}&plateNo=${iReturn.data.plateNo}`, // 2 未申请银行卡
+            '3': '../pimp/etcList/main'// 3 已申请银行卡
+          }
+          wx.navigateTo({
+            url: which[iReturn.data.state]
+          })
+        } else {
+          $Toast({
+            type: 'warning',
+            duration: 3,
+            content: '初始化在线申办失败,请稍后重试!'
+          })
+        }
+      } catch (err) {
+        $Toast({
+          type: 'warning',
+          duration: 4,
+          content: '初始化在线申办异常,请稍后重试!'
         })
       }
     }
