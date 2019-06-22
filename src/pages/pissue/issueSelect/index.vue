@@ -333,10 +333,10 @@ export default {
   align-items center
 .istitle
   width 100%
-  height 90px
+  height 50px
   display flex
   flex-flow column nowrap
-  justify-content center
+  justify-content flex-end
   align-items center
   .istt
     color main-font
@@ -357,6 +357,7 @@ export default {
   background-color white-color
   border-radius 5px
   border 1px main-color solid
+  margin-top 20px
 .item
   width 95%
   flex 1
