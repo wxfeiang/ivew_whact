@@ -14,12 +14,12 @@
       <div class="more"><i class="icon iconfont icon-right img"></i></div>
     </div>
     <div class="core">
-      <div class="item" @click="gotoNavi('wallet')">
+      <!-- <div class="item" @click="gotoNavi('wallet')">
         <div class="icon packet"><i class="icon iconfont icon-accountbook-fill img"></i></div>
         <div class="content">在线充值</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
-      <div class="splice"></div>
+      <div class="splice"></div> -->
       <!-- <div class="item" @click="gotoNavi('scan')">
         <div class="icon scan"><i class="icon iconfont icon-fukuanma img"></i></div>
         <div class="content">扫码支付</div>
@@ -221,7 +221,7 @@ export default {
       color #ffffff
   .core
     width 100%
-    height 203px
+    height 153px
     background-color #ffffff
     display flex
     flex-flow column nowrap
