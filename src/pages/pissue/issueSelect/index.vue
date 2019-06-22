@@ -274,13 +274,13 @@ export default {
           console.log('bindMain success: ' + JSON.stringify(res))
           console.log('开通车主服务的车牌写入缓存: ' + that.baseData.plateNo)
           that.savePlateNo(that.baseData.plateNo)
-          console.log('开通车主服务回写: ' + that.reBack)
         },
         fail: function (res) {
           console.log('bindMain fail: ' + JSON.stringify(res))
         },
         complete: function (res) {
           console.log('bindMain complete: ' + JSON.stringify(res))
+          console.log('开通车主服务回写: ' + that.reBack)
           that.reBack = true
           // wx.switchTab({
           //   url: '../../index/main'
