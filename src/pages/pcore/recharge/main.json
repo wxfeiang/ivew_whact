@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "i-toast": "/iview/toast/index",
-    "i-modal": "/iview/modal/index"
-  },
-  "navigationBarTitleText": "账户充值"
-}

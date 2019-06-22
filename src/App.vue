@@ -79,7 +79,8 @@ export default {
     ...mapMutations({
       saveAuthenticated: types.SYSTEM_AUTHENTICATED,
       saveCar: types.SYSTEM_CAR,
-      saveBalance: types.SYSTEM_BALANCE
+      saveBalance: types.SYSTEM_BALANCE,
+      savePlateNo: types.SYSTEM_PLATENO
     }),
     async getCarList() {
       wx.showLoading({ title: '加载中', mask: true })
@@ -119,7 +120,10 @@ export default {
       }
       try {
         let iReturn = await carServiceNotify(iParams)
+        console.log('carNotify 返回: ' + JSON.stringify(iReturn))
         wx.hideLoading()
+        this.savePlateNo('')
+        console.log('清楚开通车主服务 车牌缓存: ' + this.plateNo)
         await this.getCarList()
       } catch (err) {
         wx.hideLoading()
@@ -189,7 +193,7 @@ export default {
     } else {
       if (this.openid) {
         this.getCarList()
-        this.balanceQuery()
+        // this.balanceQuery()
       }
     }
   },

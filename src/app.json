@@ -8,16 +8,13 @@
         "bindMain/main",
         "bindNumber/main",
         "bindVerify/main",
-        "bindUser/main",
-        "load/main",
-        "recharge/main"
+        "bindUser/main"
       ]
     },
     {
       "root": "pages/pimp/",
       "pages": [
         "about/main",
-        "card/main",
         "consum/main",
         "etcList/main",
         "etcSupply/main",

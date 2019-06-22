@@ -23,7 +23,6 @@ import { $Toast } from '@/utils/iview'
 import global from '../../../utils/global'
 import * as genUtils from '../../../utils/GenvictBleUtil'
 import * as genDataUtils from '../../../utils/GenvictDataUtil'
-import * as n from '../../../../static/js/gbk'
 import * as util from '../../../utils/index'
 import {getTMAC} from '@/api/etc'
 import {mapState} from 'vuex'
@@ -187,8 +186,8 @@ export default {
             genUtils.getICCInfo(function (code, res) {
               if (code === '0') {
                 that.cardInfo.cardNo = res.cardId
-                that.cardInfo.carNo = that.convertLisenceNo(res.vehicleNumber)
-                that.cardInfo.licencseColor = res.plateColor
+                // that.cardInfo.carNo = that.convertLisenceNo(res.vehicleNumber)
+                // that.cardInfo.licencseColor = res.plateColor
                 that.bleText = '查询成功'
                 that.toActive()
               } else {
@@ -217,14 +216,6 @@ export default {
           })
         }
       })
-    },
-    convertLisenceNo (e) {
-      e = e.toUpperCase()
-      for (var a = '', t = 0; t < e.length;) {
-        a = a + '%' + e.substr(t, 2)
-        t += 2
-      }
-      return n.decodeFromGb2312(a)
     },
     convertCardMoney (t) {
       return parseFloat(t / 100).toFixed(2)

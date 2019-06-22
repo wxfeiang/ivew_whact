@@ -61,6 +61,7 @@ import * as types from '@/store/mutation-types'
 export default {
   data() {
     return {
+      reBack: false,
       showMask: false,
       showCancel: false,
       mContent: '',
@@ -269,19 +270,21 @@ export default {
         appId: 'wxbcad394b3d99dac9',
         path: ipath || '/pages/route/index',
         extraData: iparm.extraData,
-        success(res) {
+        success: function (res) {
           console.log('bindMain success: ' + JSON.stringify(res))
-        },
-        fail(res) {
-          console.log('bindMain fail: ' + JSON.stringify(res))
-        },
-        complete(res) {
-          console.log('bindMain complete: ' + JSON.stringify(res))
           console.log('开通车主服务的车牌写入缓存: ' + that.baseData.plateNo)
           that.savePlateNo(that.baseData.plateNo)
-          wx.switchTab({
-            url: '../../index/main'
-          })
+          that.reBack = true
+          console.log('开通车主服务回写: ' + that.reBack)
+        },
+        fail: function (res) {
+          console.log('bindMain fail: ' + JSON.stringify(res))
+        },
+        complete: function (res) {
+          console.log('bindMain complete: ' + JSON.stringify(res))
+          // wx.switchTab({
+          //   url: '../../index/main'
+          // })
         }
       })
     },
@@ -320,6 +323,13 @@ export default {
   mounted () {
     this.baseData.applyId = this.$root.$mp.query.applyId || '9527'
     this.baseData.plateNo = this.$root.$mp.query.plateNo || '甘ANS109'
+  },
+  onShow() {
+    if (this.reBack) {
+      wx.switchTab({
+        url: '../../index/main'
+      })
+    }
   }
 }
 </script>
