@@ -101,7 +101,7 @@ const bankType = {
   '7': '招商银行',
   '8': '农信银行',
   '9': '中国工商银行',
-  '999': '未选择办理方式'
+  '-1': '未选择办理方式'
 }
 const bankApplyState = {
   '-1': '未办卡',
@@ -177,21 +177,12 @@ export default {
           this.orderDetail.audit.plateNumber = iReturn.data.audit.plateNumber
           this.orderDetail.audit.applyStatus = iReturn.data.audit.applyStatus
           if (iReturn.data.pay && iReturn.data.pay.state) {
-            this.orderDetail.pay.state = iReturn.data.pay.state || ''
+            this.orderDetail.pay.state = iReturn.data.pay.state || '3'
           }
           this.orderDetail.ems = iReturn.data.ems
           this.orderDetail.bankApplyState = iReturn.data.bankApplyState
-          // if (iReturn.data.bankApplyState === '-1') {
-          //   this.orderDetail.bankApplyStateName = '未办卡'
-          // } else if (iReturn.data.bankApplyState === '0') {
-          //   this.orderDetail.bankApplyStateName = '办卡审核中'
-          // } else if (iReturn.data.bankApplyState === '1') {
-          //   this.orderDetail.bankApplyStateName = '办卡通过'
-          // } else if (iReturn.data.bankApplyState === '2') {
-          //   this.orderDetail.bankApplyStateName = '办卡驳回'
-          // }
           this.orderDetail.bankApplyStateName = bankApplyState[this.orderDetail.bankApplyState] || '未知'
-          this.orderDetail.bankType = iReturn.data.bankType === '-1' ? '999' : iReturn.data.bankType || '999'
+          this.orderDetail.bankType = iReturn.data.bankType
           this.orderDetail.bankTypeName = bankType[this.orderDetail.bankType] || '未知'
         } else {
           this.hasData = false

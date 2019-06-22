@@ -103,7 +103,8 @@ export default {
       let params = {
         tradeScene: 'HIGHWAY',
         subOpenid: this.openid || '',
-        plateNumber: this.plateNumber || ''
+        plateNumber: this.plateNumber || '',
+        channelType: 'ETC'
       }
       try {
         let iReturn = await carServices(params)

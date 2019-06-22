@@ -4,15 +4,6 @@
       <div class="items" v-for="(item, index) in etcList" :key="item.id" @click="gotoDetail(item)">
         <div class="itime">{{item.applyTime}}</div>
         <div class="icontent">
-          <!-- <div class="ilogo">
-              <i class="icon iconfont icon-qunfengshenhetongguo isuccess" v-if="item.applyStatus === 1"></i>
-              <i class="icon iconfont icon-qunfengshenheshibai ifail" v-if="item.applyStatus === 2"></i>
-              <i class="icon iconfont icon-qunfengshenhechulizhong iwait" v-if="item.applyStatus === 0"></i>
-
-              <span class="isuccess" v-if="item.applyStatus === 1">{{item.applyStatusName}}</span>
-              <span class="ifail" v-if="item.applyStatus === 2">{{item.applyStatusName}}</span>
-              <span class="iwait" v-if="item.applyStatus === 0">{{item.applyStatusName}}</span>
-          </div> -->
           <div class="ititel">
             <i class="icon iconfont icon-qunfengshenhetongguo isuccess" v-if="item.applyStatus === 1"></i>
             <i class="icon iconfont icon-qunfengshenheshibai ifail" v-if="item.applyStatus === 2"></i>
