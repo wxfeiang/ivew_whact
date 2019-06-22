@@ -1,6 +1,10 @@
 import { $Toast } from '@/utils/iview';
 <template>
   <div class="iselect">
+    <div class="istitle">
+      <span class="istt">选择以下方式，免费办ETC</span>
+      <span class="istb"></span>
+    </div>
     <div :class="[items.isSelected ? 'sitem' : 'item']" v-for="(items, index) in bankList " :key="items.id" @click="chooseItem(index)">
       <div class="iup">
         <div class="iupleft">
@@ -95,11 +99,11 @@ export default {
         {
           id: 1002,
           isCollapse: false,
-          name: '兰州银行信用卡',
+          name: '兰州银行联名卡',
           type: 'lz',
-          title: '办兰州银行信用卡',
+          title: '办兰州银行联名卡',
           stitle: '5-7天拿到设备',
-          tail: '可选腾讯视频会员或海陆空意外险',
+          tail: '限新用户,可选腾讯视频会员或海陆空意外险',
           isSelected: false,
           imgUrl: '/static/images/lz.png',
           links: 'https://www.gsunis.cn/',
@@ -121,11 +125,11 @@ export default {
         {
           id: 1003,
           isCollapse: false,
-          name: '工商银行信用卡',
+          name: '工商银行联名卡',
           type: 'gs',
-          title: '办工商银行信用卡',
+          title: '办工商银行联名卡',
           stitle: '5-7天拿到设备',
-          tail: '可选腾讯视频会员或海陆空意外险',
+          tail: '限新用户,可选腾讯视频会员或海陆空意外险',
           isSelected: false,
           imgUrl: '/static/images/gs.png',
           links: 'https://www.gsunis.cn/',
@@ -327,6 +331,22 @@ export default {
   flex-flow column nowrap
   justify-content flex-start
   align-items center
+.istitle
+  width 100%
+  height 90px
+  display flex
+  flex-flow column nowrap
+  justify-content center
+  align-items center
+  .istt
+    color main-font
+    font-size 20px
+    font-weight 700
+  .istb
+    width 10%
+    height 3px
+    background-color main-color
+    border-radius 5px
 .sitem
   width 95%
   flex 1
@@ -336,7 +356,6 @@ export default {
   align-items center
   background-color white-color
   border-radius 5px
-  margin-top 15px
   border 1px main-color solid
 .item
   width 95%
@@ -426,7 +445,7 @@ export default {
   align-items center
   margin-bottom 5px
   .ictitle
-    font-size 15px
+    font-size 14px
     color main-font
   .dimg
     line-height 100%
