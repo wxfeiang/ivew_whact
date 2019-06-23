@@ -63,7 +63,7 @@ export default {
       system: ''
     }
   },
-  beforeMount() {
+  onLoad() {
     const self = this
     wx.getSystemInfo({
       success(system) {
