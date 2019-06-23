@@ -31,7 +31,6 @@
         "issueAddress/main",
         "issueCredit/main",
         "issueSelect/main",
-        "issueStep/main",
         "issueUpload/main"
       ]
     }
