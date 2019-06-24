@@ -29,7 +29,7 @@
           <span class="right">{{orderDetail.bankTypeName}}</span>
         </div>
         <div class="splice"></div>
-        <div class="etitem" v-if="orderDetail.bankType !== '0' && orderDetail.bankType !== '999'">
+        <div class="etitem" v-if="orderDetail.bankType !== '0' && orderDetail.bankType !== '-1'">
           <span class="left">办卡状态</span>
           <span class="right">{{orderDetail.bankApplyStateName}}</span>
         </div>
@@ -77,7 +77,7 @@
     <div class="pbutton" v-if="orderDetail.audit.applyStatus === '2'">
       <button class="ppbutton" @click="reSupply()">订单重提</button>
     </div>
-    <div class="pbutton" v-if="orderDetail.bankType === '999'">
+    <div class="pbutton" v-if="orderDetail.bankType === '-1'">
       <button class="ppbutton" @click="reSelect()">选择办理方式</button>
     </div>
     <i-toast id="toast"/>
