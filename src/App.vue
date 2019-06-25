@@ -2,6 +2,7 @@
 import { mapState, mapMutations } from 'vuex'
 import * as types from '@/store/mutation-types'
 import * as cp from './utils/handleLogin'
+import global from './utils/global'
 import { carBindList, carServiceNotify } from '@/api/car'
 import { walletQuery } from '@/api/pay'
 export default {
@@ -70,6 +71,14 @@ export default {
         content: '当前微信版本过低,请升级到最新微信版本后重试!'
       })
     }
+
+    wx.getSystemInfo({
+      success(system) {
+        console.log(`system:`, system)
+        global.mobileInfo.brand = system.brand
+        global.mobileInfo.model = system.model
+      }
+    })
   },
   log() {},
   onError(err) {

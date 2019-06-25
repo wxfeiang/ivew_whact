@@ -30,7 +30,7 @@
         </div>
         <div class="splice"></div>
         <div class="etitem" v-if="orderDetail.bankType !== '0' && orderDetail.bankType !== '-1'">
-          <span class="left">办卡状态</span>
+          <span class="left">银行卡状态</span>
           <span class="right">{{orderDetail.bankApplyStateName}}</span>
         </div>
       </div>

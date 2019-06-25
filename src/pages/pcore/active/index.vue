@@ -25,8 +25,8 @@ import * as genUtils from '../../../utils/GenvictBleUtil'
 import * as genDataUtils from '../../../utils/GenvictDataUtil'
 import * as n from '../../../../static/js/gbk'
 import * as util from '../../../utils/index'
-import {getTMAC} from '@/api/etc'
-import {mapState} from 'vuex'
+import { getTMAC, getObuCount, saveObuFinish } from '@/api/etc'
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -45,7 +45,7 @@ export default {
   },
   computed: {
     ...mapState([
-      'openid'
+      'openid', 'mobile'
     ])
   },
   methods: {
@@ -188,6 +188,7 @@ export default {
               if (code === '0') {
                 that.cardInfo.cardNo = res.cardId
                 that.cardInfo.carNo = that.convertLisenceNo(res.vehicleNumber)
+                console.log('车牌号: ' + that.cardInfo.carNo)
                 that.cardInfo.licencseColor = res.plateColor
                 that.bleText = '查询成功'
                 that.toActive()
@@ -238,6 +239,7 @@ export default {
         console.log('读取系统防拆为和合同序列号成功： ' + JSON.stringify(bbb))
         let hth = bbb[0].substring(20, 36)
         console.log('合同序列号: ' + hth)
+        let qc = await this.queryCount(hth)
         let ccc = await this.enterESAM('20', ['0084000004'])
         console.log('读取随机数成功： ' + JSON.stringify(ccc))
         let radm = ccc[0].substr(0, 8)
@@ -252,14 +254,15 @@ export default {
         console.log('激活指令:   ' + JSON.stringify(ta))
         let iFinish = await this.enterESAM('20', ta)
         console.log('激活结果: ' + JSON.stringify(iFinish))
-        if (iFinish[0] === '9000') {
-          $Toast({
-            type: 'success',
-            duration: 5,
-            content: `激活成功!`
-          })
-        }
-        this.powerOff()
+        // if (iFinish[0] === '9000') {
+        $Toast({
+          type: 'success',
+          duration: 5,
+          content: `激活成功!`
+        })
+        this.obuFinish(hth)
+        // }
+        const poCode = await this.powerOff()
         this.gotoHome()
         wx.hideLoading()
       } catch (err) {
@@ -270,6 +273,8 @@ export default {
           duration: 5,
           content: `激活失败 ${err}`
         })
+        const poCode = await this.powerOff()
+        this.gotoHome()
       }
     },
     enterESAM (dType, cosArr) {
@@ -325,6 +330,42 @@ export default {
         console.log('截取的TMAC： ' + TMac)
       }
       return TMac
+    },
+    async queryCount(obuId) {
+      let params = {
+        obuId: obuId
+      }
+      return new Promise((resolve, reject) => {
+        getObuCount(params).then(res => {
+          console.log('getObuCount: ' + JSON.stringify(res))
+          if (res.status === 200 && res.data) {
+            res.data === '0' ? reject('同一标签一天只能激活3次!') : resolve('ok')
+          } else {
+            reject('同一标签一天只能激活3次!')
+          }
+        }).catch(err => {
+          reject('同一标签一天只能激活3次!')
+          console.log(`同一标签一天只能激活3次! ${err}`)
+        })
+      })
+    },
+    async obuFinish(obuId) {
+      let params = {
+        userId: this.openid,
+        mobile: this.mobile,
+        obuId: obuId,
+        obuSn: this.obuContractNo,
+        plateNumber: this.cardInfo.carNo,
+        plateColor: this.cardInfo.licencseColor,
+        cardId: this.cardInfo.cardNo,
+        terminalNo: global.mobileInfo.model || '手机'
+      }
+      try {
+        let iReturn = await saveObuFinish(params)
+        console.log('obu激活成功上报返回: ' + JSON.stringify(iReturn))
+      } catch (err) {
+        console.log('obu激活成功上报异常: ' + JSON.stringify(err))
+      }
     },
     powerOff() {
       console.log('powerOff')
