@@ -49,69 +49,44 @@ export default {
     ])
   },
   methods: {
-    heartFunc () {
-      this.heartbeat = setInterval(function () {
-        wjBleAPI.getDeviceInfo('C0', function (code, res) {
-        })
-      }, 10000)
-    },
-    startScanTimer () {
-      let that = this
-      this.scanTimer = setTimeout(function () {
-        wx.hideLoading()
-        $Toast({
-          type: 'warning',
-          duration: 3,
-          content: `没有搜索到设备!`
-        })
-        that.bleText = '未连接'
-      }, 10000)
-    },
-    listenBle () {
-      let that = this
-      wx.onBLEConnectionStateChange(function (a) {
-        if (a.connected) {
-          wx.onBluetoothAdapterStateChange(function (e) {
-            that.bleText = e.discovering ? '正在搜索' : '停止搜索'
-            that.bleStatus = !!e.available
-          })
-        } else {
-          wx.hideLoading()
-          that.closeBlue()
-        }
-      })
-    },
     gotoLink () {
       let that = this
-      wx.showLoading({title: '正在连接设备', mask: true})
+      // wx.showLoading({title: '正在连接设备', mask: true})
       wjBleAPI.connectDevice(function (serviceResult) {
         if (serviceResult.serviceCode === 0) {
           wjUtils.showLog(serviceResult.serviceInfo)
+          console.log('connectDevice success: ' + JSON.stringify(serviceResult.serviceInfo))
           that.readCardInfo()
         } else {
           wjUtils.showError(serviceResult.serviceCode, serviceResult.serviceInfo)
+          console.log('connectDevice fail: ' + JSON.stringify(serviceResult.serviceInfo))
         }
       })
     },
     readCardInfo () {
       let that = this
+      console.log('1 readCardInfo start')
       wjBleAPI.selectDir('1001', '10', function (serviceResult) {
+        console.log('2 readCardInfo selectDir: ' + JSON.stringify(serviceResult))
         if (serviceResult.serviceCode === 0) {
           wjUtils.showLog(serviceResult.serviceCode, serviceResult.serviceInfo)
+          console.log('3 readCardInfo selectDir success: ' + JSON.stringify(serviceResult))
           wjBleAPI.getCardInfo(function (serviceResult) {
+            console.log('4 readCardInfo getCardInfo: ' + JSON.stringify(serviceResult))
             if (serviceResult.serviceCode === 0) {
               wjUtils.showLog(serviceResult.serviceCode, serviceResult.serviceInfo)
+              console.log('5 readCardInfo getCardInfo success: ' + JSON.stringify(serviceResult))
               var str = ''
               var data = serviceResult.serviceData
               for (var p in data) {
                 str += p + ':' + data[p] + ' '
               }
-              console.log('readCardInfo success: ' + str)
+              console.log('6 readCardInfo success: ' + str)
               that.gotoHome()
               // that.setData({ msg: str })
             } else {
               // that.setData({ msg: serviceResult.serviceInfo })
-              console.log('readCardInfo serviceCode fail')
+              console.log('5 readCardInfo getCardInfo fail')
             }
           })
         } else {

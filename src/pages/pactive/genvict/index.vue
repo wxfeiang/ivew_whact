@@ -189,7 +189,7 @@ export default {
                 that.cardInfo.cardNo = res.cardId
                 that.cardInfo.carNo = that.convertLisenceNo(res.vehicleNumber)
                 console.log('车牌号: ' + that.cardInfo.carNo)
-                that.cardInfo.licencseColor = res.plateColor
+                that.cardInfo.licencseColor = parseInt(res.plateColor, 16) || 0
                 that.bleText = '查询成功'
                 that.toActive()
               } else {
