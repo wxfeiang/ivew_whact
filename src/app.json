@@ -4,7 +4,6 @@
     {
       "root": "pages/pcore/",
       "pages": [
-        "active/main",
         "bindMain/main",
         "bindNumber/main",
         "bindVerify/main",
@@ -33,6 +32,10 @@
         "issueSelect/main",
         "issueUpload/main"
       ]
+    },
+    {
+      "root": "pages/pactive/",
+      "pages": ["select/main", "genvict/main", "wanji/main"]
     }
   ],
   "permission": {

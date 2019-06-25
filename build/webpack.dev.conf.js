@@ -6,19 +6,18 @@ var baseWebpackConfig = require('./webpack.base.conf')
 // var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 var MpvueVendorPlugin = require('webpack-mpvue-vendor-plugin')
-
 // copy from ./webpack.prod.conf.js
 var path = require('path')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 // add hot-reload related code to entry chunks
 // Object.keys(baseWebpackConfig.entry).forEach(function (name) {
 //   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
 // })
 
-module.exports = merge(baseWebpackConfig, {
+var webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.dev.cssSourceMap,
@@ -55,13 +54,14 @@ module.exports = merge(baseWebpackConfig, {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common/vendor',
-      minChunks: function (module, count) {
+      minChunks: function(module, count) {
         // any required modules inside node_modules are extracted to vendor
         return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf('node_modules') >= 0
-        ) || count > 1
+          (module.resource &&
+            /\.js$/.test(module.resource) &&
+            module.resource.indexOf('node_modules') >= 0) ||
+          count > 1
+        )
       }
     }),
     new webpack.optimize.CommonsChunkPlugin({
@@ -83,3 +83,21 @@ module.exports = merge(baseWebpackConfig, {
     new FriendlyErrorsPlugin()
   ]
 })
+
+var useUglifyJs = process.env.PLATFORM !== 'swan'
+if (useUglifyJs) {
+  webpackConfig.plugins.push(
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        compress: {
+          warnings: false,
+          drop_console: false,
+          drop_debugger: false
+        }
+      },
+      sourceMap: true
+    })
+  )
+}
+
+module.exports = webpackConfig
