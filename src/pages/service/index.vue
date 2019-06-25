@@ -6,6 +6,28 @@
         <i class="icon iconfont icon-search img" @click="gotoQuery"></i>
       </div>
     </div> -->
+    <div class="select">
+      <div class="date">
+        <picker
+          class="picker"
+          :value="placeIndex"
+          :range="placeData"
+          :range-key="'name'"
+          @change="placeChange"
+        >
+          <div class="show">
+            <div class="title" v-if="placeSelect.name === ''">
+              <span class="title">选择网点</span>
+              <i class="icon iconfont icon-caret-down img"></i>
+            </div>
+            <div class="title" v-else>
+              {{ placeSelect.name }}
+              <i class="icon iconfont icon-caret-down img"></i>
+            </div>
+          </div>
+        </picker>
+      </div>
+    </div>
     <div class="imap">
       <map
         id="imaps"
@@ -21,13 +43,13 @@
       ></map>
     </div>
     <div class="splice"></div>
-    <div class="content">
+    <div class="content" v-if="hasData">
       <div class="main" v-for="(item, index) in serviceList" :key="item.id">
         <div class="title">
-          <div class="tmain">{{item.title}}</div>
+          <div class="tmain">{{item.name}}</div>
           <div class="tsub">
-            <div class="selfmark" v-if="item.markType === '0'">自营</div>
-            <div class="othermark" v-else>代理</div>
+            <div class="selfmark" v-if="item.serviceHallType === 2">{{item.serviceHallTypeName}}</div>
+            <div class="othermark" v-else>{{item.serviceHallTypeName}}</div>
           </div>
         </div>
         <div class="content">
@@ -42,6 +64,18 @@
         <div class="csplice"></div>
       </div>
     </div>
+    <div class="content" v-if="!hasData">
+      <div class="iicon">
+        <i class="icon iconfont icon-wushuju iimg"></i>
+        <span class="iifont">未查询到数据</span>
+      </div>
+    </div>
+    <div class="loadmore" v-if="loadMore">
+      <i-load-more  class="load" i-class="view-loadmore" tip="加载中" :loading="loadMore" />
+    </div>
+    <div class="loadmore"  v-if="noData">
+      <i-load-more  class="load" i-class="view-loadmore" tip="我是有底线的" :loading="loadMore" />
+    </div>
   </div>
 </template>
 
@@ -51,6 +85,7 @@ import global from '../../utils/global'
 import QQMapWX from '../../../static/js/qqmap-wx-jssdk.min.js'
 import {mapState, mapMutations} from 'vuex'
 import * as types from '@/store/mutation-types'
+import { getSelect, getSelectList } from '@/api/service'
 const wxmapsdk = new QQMapWX({
   key: global.QQMapKey
 })
@@ -81,10 +116,29 @@ export default {
           address: '兰州市城关区雁北路2828号',
           tel: '0931-9393939',
           markType: '0',
-          latitude: 36.076167,
-          longitude: 103.868673
+          lat: 36.076167,
+          lng: 103.868673
         }
-      ]
+      ],
+      pagination: {
+        pageNum: 1,
+        pageSize: 10,
+        totalPage: 0
+      },
+      loadMore: false,
+      noData: true,
+      hasData: false,
+      placeIndex: 0,
+      placeData: [
+        {
+          name: '省高速公路局',
+          value: 62010199999
+        }
+      ],
+      placeSelect: {
+        name: '省高速公路局',
+        value: 62010199999
+      }
     }
   },
   computed: {
@@ -93,6 +147,15 @@ export default {
     ])
   },
   methods: {
+    placeChange(e) {
+      this.placeIndex = e.mp.detail.value
+      this.placeSelect.name = this.placeData[this.placeIndex].name
+      this.placeSelect.value = this.placeData[this.placeIndex].value
+      this.pagination.pageNum = 1
+      this.pagination.pageSize = 10
+      this.pagination.totalPage = 0
+      this.getDefaultList()
+    },
     makCall(itel) {
       wx.makePhoneCall({
         phoneNumber: `${itel}`
@@ -132,17 +195,17 @@ export default {
     gotoLoc(item) {
       console.log('item: ' + JSON.stringify(item))
       this.mapCtx.translateMarker({
-        markerId: 1,
+        markerId: item.id,
         autoRotate: false,
         duration: 500,
         destination: {
-          latitude: item.latitude,
-          longitude: item.longitude
+          latitude: Number(item.lat) || 36.076167,
+          longitude: Number(item.lng) || 103.868673
         },
         animationEnd() {
           wx.openLocation({
-            latitude: item.latitude,
-            longitude: item.longitude,
+            latitude: Number(item.lat) || 36.076167,
+            longitude: Number(item.lng) || 103.868673,
             scale: 13
           })
         }
@@ -187,13 +250,123 @@ export default {
         }
       })
     },
+    async getDefaultList() {
+      let params = {
+        parentId: this.placeSelect.value,
+        pageNum: this.pagination.pageNum,
+        pageSize: this.pagination.pageSize
+      }
+      try {
+        let iReturn = await getSelectList(params)
+        if (iReturn.status === 200 && iReturn.data && iReturn.data.list.length > 0) {
+          this.serviceList = iReturn.data.list
+          this.pagination.totalPage = iReturn.data.pages
+          this.mapDatas.markers = this.serviceList.map((item) => {
+            item.iconPath = '/static/images/DW.png'
+            item.id = item.id || 0
+            item.title = item.name || '甘肃高速公路局'
+            item.latitude = Number(item.lat) || 36.076167
+            item.longitude = Number(item.lng) || 103.868673
+            item.height = 30
+            return item
+          })
+          console.log('返回新数组: ' + JSON.stringify(this.mapDatas.markers))
+          this.hasData = true
+        } else {
+          this.hasData = false
+          this.loadMore = false
+          this.recordData.itemList = []
+          this.mapDatas.markers = []
+        }
+        this.noData = false
+      } catch (err) {
+        console.log('获取默认数据异常: ' + JSON.stringify(err))
+      }
+    },
+    async getDefaultListForMore() {
+      let params = {
+        parentId: this.placeSelect.value,
+        pageNum: this.pagination.pageNum,
+        pageSize: this.pagination.pageSize
+      }
+      try {
+        let iReturn = await getSelectList(params)
+        if (iReturn.status === 200 && iReturn.data && iReturn.data.list.length > 0) {
+          let tmpList = iReturn.data.list
+          let tmpNewList = this.serviceList
+          this.serviceList = []
+          let tmpMarkList = this.mapDatas.markers
+          this.mapDatas.markers = []
+          tmpList.forEach((item, index) => {
+            let tp = {}
+            tp.iconPath = '/static/images/DW.png'
+            tp.id = item.id || 0
+            tp.title = item.name || '甘肃高速公路局'
+            tp.latitude = Number(item.lat) || 36.076167
+            tp.longitude = Number(item.lng) || 103.868673
+            tp.height = 30
+            tmpNewList.push(item)
+            tmpMarkList.push(tp)
+          })
+          this.serviceList = tmpNewList
+          this.mapDatas.markers = tmpMarkList
+          this.loadMore = false
+          this.noData = false
+        }
+      } catch (err) {
+        this.loadMore = false
+        console.log('获取更多默认数据异常: ' + JSON.stringify(err))
+      }
+    },
+    async getParent() {
+      try {
+        let iReturn = await getSelect({parentId: '0'})
+        if (iReturn.status === 200 && iReturn.data && iReturn.data.list.length > 0) {
+          let tmpNewList = []
+          iReturn.data.list.forEach((item, index) => {
+            let tmpItem = {}
+            tmpItem.value = item.id
+            tmpItem.name = item.name
+            tmpNewList.push(tmpItem)
+          })
+          this.placeData = tmpNewList
+          this.placeSelect.name = this.placeData[0].name
+          this.placeSelect.value = this.placeData[0].value
+          this.getDefaultList()
+        }
+      } catch (err) {
+        console.log('获取父级网点数据异常: ' + JSON.stringify(err))
+      }
+    },
     ...mapMutations({
       saveLocation: types.SYSTEM_LOCATION
     })
   },
+  onReachBottom() {
+    if (this.pagination.pageNum === this.pagination.totalPage) {
+      this.loadMore = false
+      this.noData = true
+    } else {
+      this.loadMore = true
+      this.noData = false
+      this.pagination.pageNum = this.pagination.pageNum + 1
+      this.getDefaultListForMore()
+    }
+  },
+  onPullDownRefresh () {
+    this.pagination.pageNum = 1
+    this.pagination.pageSize = 10
+    this.pagination.totalPage = 0
+    this.getDefaultList()
+    this.noData = false
+    wx.stopPullDownRefresh()
+  },
   onShow () {
     this.mapCtx = wx.createMapContext('imaps')
     this.getLocation()
+  },
+  mounted() {
+    this.getParent()
   }
 }
 </script>
@@ -234,6 +407,55 @@ export default {
         flex-flow row nowrap
         justify-content center
         align-items center
+  .select
+    width 100%
+    height 40px
+    background-color bg-color
+    display flex
+    flex-flow row nowrap
+    justify-content center
+    align-items center
+    z-index 10
+    position fixed
+    border-bottom 1px #efefef solid
+    .date
+      width 100%
+      height 100%
+      display flex
+      flex-flow row nowrap
+      justify-content center
+      align-items center
+      .picker
+        width 90%
+        height 60%
+        color main-color
+        font-size 15px
+        display flex
+        flex-flow row nowrap
+        justify-content center
+        align-items center
+        .show
+          width 100%
+          height 100%
+          display flex
+          flex-flow row nowrap
+          justify-content center
+          align-items center
+          .title
+            width 100%
+            height 100%
+            font-size 15px
+            display flex
+            flex-flow row nowrap
+            justify-content space-around
+            align-items center
+            .title
+              width 90%
+              height 100%
+            .img
+              width 10%
+              height 100%
+              font-size 10px
   .splice
     width 100%
     height 1px
@@ -284,7 +506,7 @@ export default {
           justify-content center
           align-items center
           .selfmark
-            width 60%
+            width 80%
             height 50%
             font-size 12px
             color #00a451
@@ -295,7 +517,7 @@ export default {
             justify-content center
             align-items center
           .othermark
-            width 60%
+            width 80%
             height 60%
             font-size 12px
             color #009efb
@@ -330,6 +552,9 @@ export default {
             color sub-font
             .idtitle
               text-indent 5px
+              overflow hidden
+              text-overflow ellipsis
+              white-space  nowrap
           .tel
             width 100%
             height 50%
@@ -356,4 +581,32 @@ export default {
         width 100%
         height 1px
         background-color  bg-color
+    .iicon
+      width 100%
+      height 200px
+      font-size 15px
+      color #989898
+      display flex
+      flex-flow column nowrap
+      justify-content center
+      align-items center
+      .iimg
+        width 100%
+        height 70%
+        line-height 100%
+        display flex
+        flex-flow row nowrap
+        justify-content center
+        align-items flex-end
+        font-size 100px
+      .iifont
+        width 100%
+        height 20%
+        display flex
+        flex-flow row nowrap
+        justify-content center
+        align-items center
+  .loadmore
+    width 100%
+    height 50px
 </style>

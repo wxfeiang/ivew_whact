@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "i-load-more": "/iview/load-more/index"
+  },
   "navigationBarTitleText": "服务网点"
 }
