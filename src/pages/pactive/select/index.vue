@@ -96,7 +96,8 @@ export default {
   align-items center
   background-color white-color
   border-radius 5px
-  margin-top 15px
+  border 1px white-color solid
+  margin-top 20px
 .iup
   width 95%
   height 100px
@@ -105,7 +106,7 @@ export default {
   justify-content space-around
   align-items center
 .iupleft
-  width 30%
+  width 40%
   height 100%
   display flex
   flex-flow row nowrap
@@ -115,7 +116,7 @@ export default {
     width 90%
     height 60%
 .iupcenter
-  width 50%
+  width 40%
   height 100%
   display flex
   flex-flow column nowrap
