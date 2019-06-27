@@ -1,6 +1,7 @@
 {
   "usingComponents": {
     "i-toast": "/iview/toast/index",
-    "i-load-more": "/iview/load-more/index"
+    "i-load-more": "/iview/load-more/index",
+    "i-modal": "/iview/modal/index"
   }
 }

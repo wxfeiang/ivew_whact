@@ -77,6 +77,9 @@
       <button class="button" @getuserinfo="bindGetUserInfo" open-type="getUserInfo"></button>
     </div>
     <i-toast id="toast"/>
+    <i-modal title="您有垫资还款的欠费" :visible="showMark" @cancel="clickCancel" @ok="clickConfirm">
+      <view>点击确认跳转紫光e付进行还款</view>
+    </i-modal>
   </div>
 </template>
 
@@ -91,7 +94,8 @@ export default {
       userInfo: {
         sales: '0',
         credit: '0'
-      }
+      },
+      showMark: false
     }
   },
   computed: {
@@ -99,10 +103,30 @@ export default {
       'openid',
       'user',
       'mobile',
-      'authenticated'
+      'authenticated',
+      'repayment'
     ])
   },
   methods: {
+    clickCancel() {
+      this.showMark = false
+    },
+    clickConfirm() {
+      this.showMark = false
+      wx.navigateToMiniProgram({
+        appId: 'wx71ed9a74b2a75c42',
+        path: 'pages/index/main',
+        extraData: {
+          foo: 'bar'
+        },
+        success: res => {
+          console.log('跳转垫资还款小程序成功: ' + JSON.stringify(res))
+        },
+        fail: res => {
+          console.log('跳转垫资还款小程序失败: ' + JSON.stringify(res))
+        }
+      })
+    },
     bindGetUserInfo (e) {
       if (e.mp.detail.userInfo) {
         cp.login(() => {
@@ -141,6 +165,8 @@ export default {
         wx.navigateTo({
           url: '../pcore/bindUser/main'
         })
+      } else if (this.repayment) {
+        this.showMark = true
       } else {
         if (which === 'traffic') {
           wx.navigateTo({
