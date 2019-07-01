@@ -1,0 +1,1 @@
+export function connectTimeOut(){return 2e4};export function sendTime(){return 2e4};

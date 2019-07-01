@@ -50,53 +50,48 @@ export default {
   methods: {
     gotoLink () {
       let that = this
-      // wx.showLoading({title: '正在连接设备', mask: true})
-      JLObuSDK.ScanDevice(null, (res) => {
-        console.info('scanDevice-Time out test:' + JSON.stringify(res))
-        if (res.data != null && res.code === 0) {
-          wx.hideLoading()
-          console.log('搜索到的设备: ' + JSON.stringiyf(res))
-          var dev = res.data[0]
+      wx.showLoading({title: '正在连接设备', mask: true})
+      JLObuSDK.ScanDevice(null, 10000, (res) => {
+        if (res.data && res.data.length > 0 && res.code === 0) {
+          console.log('搜索到的设备: ' + JSON.stringify(res))
+          let dev = res.data[0]
           JLObuSDK.StopScanDevice((res) => {
-            wx.showModal({
-              title: res.err_msg,
-              content: res.data
-            })
+            console.log('停止搜索设备: ' + JSON.stringify(res))
           })
           JLObuSDK.ConnectDevice(dev, (res) => {
-            // 连接状态
-            console.log('连接状态1: ' + JSON.stringify(res))
-          },
-          (res) => {
-            console.log('连接状态2: ' + JSON.stringify(res))
-            wx.hideLoading()
-            wx.showModal({
-              title: res.err_msg,
-              content: JSON.stringify(res.data)
-            })
+            console.log('连接状态: ' + JSON.stringify(res))
+            that.readCardInfo()
           })
         } else {
           wx.hideLoading()
           $Toast({
             type: 'warning',
             duration: 5,
-            content: `未找到设备 ${res.err_msg}`
+            content: `未找到聚利设备 ${res.err_msg}`
           })
         }
       })
     },
     readCardInfo () {
       let that = this
-      console.log('1 readCardInfo start')
-      JLObuSDK.ESAMRset((res) => {
-        wx.showModal({
-          title: res.err_msg,
-          content: JSON.stringify(res.data)
-        })
+      JLObuSDK.GetCardInfo((res) => {
+        console.log('>>>>>>> 读卡信息:  ' + JSON.stringify(res))
+        if (res.code === 0) {
+          that.cardInfo.cardNo = res.data.substring(20, 40)
+          that.cardInfo.carNo = that.convertLisenceNo(res.data.substring(56, 80)) || ''
+          that.cardInfo.licencseColor = parseInt(res.data.substring(res.data.length - 4), 16) || '0'
+          that.bleText = '查询成功'
+          console.log('卡信息: ' + JSON.stringify(that.cardInfo))
+          that.toActive()
+        } else {
+          wx.hideLoading()
+          $Toast({
+            type: 'warning',
+            duration: 3,
+            content: `读取卡片信息失败!`
+          })
+        }
       })
-    },
-    readObuSysInfo() {
-      var that = this
     },
     convertLisenceNo (e) {
       e = e.toUpperCase()
@@ -111,61 +106,76 @@ export default {
     },
     async toActive() {
       try {
-        console.log('开始激活')
-        let aaa = await this.enterESAM('20', ['00A40000023F00'])
-        console.log('进入ESAM目录成功： ' + JSON.stringify(aaa))
-        let bbb = await this.enterESAM('20', ['00B081001B'])
-        console.log('读取系统防拆为和合同序列号成功： ' + JSON.stringify(bbb))
-        let hth = bbb[0].substring(20, 36)
-        console.log('合同序列号: ' + hth)
-        let qc = await this.queryCount(hth)
-        let ccc = await this.enterESAM('20', ['0084000004'])
-        console.log('读取随机数成功： ' + JSON.stringify(ccc))
-        let radm = ccc[0].substr(0, 8)
-        console.log('返回的随机数: ' + ccc)
-        console.log('截取的随机数: ' + radm)
-        let iReturn = await this.getMac(hth, radm)
-        console.log('获取3mac成功: ' + JSON.stringify(iReturn))
+        console.log('>>>>>> 开始激活')
+        let aaa = await this.readSystem()
+        console.log('>>>>>> 读取系统防拆为和合同序列号成功： ' + JSON.stringify(aaa))
+        let hth = aaa.substring(20, 36)
+        console.log('>>>>>> 合同序列号: ' + hth)
+        // let qc = await this.queryCount(hth)
+        let bbb = await this.readSystemRand()
+        console.log('>>>>>> 读取随机数成功： ' + JSON.stringify(bbb))
+        let iReturn = await this.getMac(hth, bbb)
+        console.log('>>>>>> 获取3mac成功: ' + JSON.stringify(iReturn))
         let iMac = this.validateTMAC(iReturn)
         let ia = '04D6811A0501' + iMac + ''
-        let ta = []
-        ta.push(ia + '')
-        console.log('激活指令:   ' + JSON.stringify(ta))
-        let iFinish = await this.enterESAM('20', ta)
-        console.log('激活结果: ' + JSON.stringify(iFinish))
-        // if (iFinish[0] === '9000') {
+        console.log('>>>>>> 激活指令:   ' + JSON.stringify(ia))
+        // let iFinish = await this.writeSystem(ia)
+        // console.log('>>>>>> 激活结果: ' + JSON.stringify(iFinish))
         $Toast({
           type: 'success',
           duration: 5,
           content: `激活成功!`
         })
         this.obuFinish(hth)
-        // }
-        // const poCode = await this.powerOff()
         this.gotoHome()
         wx.hideLoading()
       } catch (err) {
-        console.log('激活失败' + err)
+        console.log('激活失败' + JSON.stringify(err))
         wx.hideLoading()
         $Toast({
           type: 'error',
           duration: 5,
-          content: `激活失败 ${err}`
+          content: `激活失败`
         })
-        // const poCode = await this.powerOff()
         this.gotoHome()
       }
     },
-    enterESAM (dType, cosArr) {
+    readSystem () {
       let that = this
       return new Promise((resolve, reject) => {
-        // genUtils.gvEsamChannel(dType, cosArr, function (code, res) {
-        //   if (code === '0') {
-        //     resolve(res)
-        //   } else {
-        //     reject(`${res}`)
-        //   }
-        // })
+        JLObuSDK.ReadSystemInfo((res) => {
+          console.log('>>>>>>  读系统信息执行结果: ' + JSON.stringify(res))
+          if (res.code === 0) {
+            resolve(res.data)
+          } else {
+            reject(`${res.err_msg}`)
+          }
+        })
+      })
+    },
+    readSystemRand (cosArr) {
+      let that = this
+      return new Promise((resolve, reject) => {
+        JLObuSDK.ReadObuRandomInfo(0, (res) => {
+          if (res.code === 0) {
+            resolve(res.data)
+          } else {
+            reject(`${res.err_msg}`)
+          }
+        })
+      })
+    },
+    writeSystem(cos) {
+      let that = this
+      return new Promise((resolve, reject) => {
+        JLObuSDK.WriteSystemInfo(cos, (res) => {
+          console.log('>>>>>>>>  写系统信息返回:   ' + JSON.stringify(res))
+          if (res.code === 0) {
+            resolve(res)
+          } else {
+            reject(`${res.err_msg}`)
+          }
+        })
       })
     },
     getMac(coa, radm) {
@@ -246,20 +256,8 @@ export default {
         console.log('obu激活成功上报异常: ' + JSON.stringify(err))
       }
     },
-    powerOff() {
-      console.log('powerOff')
-      return new Promise((resolve, reject) => {
-        // genUtils.deviceChannel('C3', function (code, res) {
-        //   if (code === '0') {
-        //     resolve(code)
-        //   } else {
-        //     resolve(code)
-        //   }
-        // })
-      })
-    },
     closeBlue () {
-      JLObuSDK.DisconnectDevice((res) => {
+      JLObuSDK.DisonnectDevice((res) => {
         console.info('断开连接设备:' + JSON.stringify(res))
       })
       this.bleText = '未连接'
@@ -277,14 +275,14 @@ export default {
     })
     clearInterval(this.heartbeat)
     clearTimeout(this.scanTimer)
-    JLObuSDK.DisconnectDevice((res) => {
+    JLObuSDK.DisonnectDevice((res) => {
       console.info('断开连接设备:' + JSON.stringify(res))
     })
   },
   onUnload () {
     clearInterval(this.heartbeat)
     clearTimeout(this.scanTimer)
-    JLObuSDK.DisconnectDevice((res) => {
+    JLObuSDK.DisonnectDevice((res) => {
       console.info('断开连接设备:' + JSON.stringify(res))
     })
   }

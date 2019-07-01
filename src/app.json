@@ -35,7 +35,7 @@
     },
     {
       "root": "pages/pactive/",
-      "pages": ["select/main", "genvict/main", "wanji/main"]
+      "pages": ["select/main", "genvict/main", "wanji/main", "juli/main"]
     }
   ],
   "permission": {

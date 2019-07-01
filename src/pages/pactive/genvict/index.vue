@@ -239,7 +239,7 @@ export default {
         console.log('读取系统防拆为和合同序列号成功： ' + JSON.stringify(bbb))
         let hth = bbb[0].substring(20, 36)
         console.log('合同序列号: ' + hth)
-        let qc = await this.queryCount(hth)
+        // let qc = await this.queryCount(hth)
         let ccc = await this.enterESAM('20', ['0084000004'])
         console.log('读取随机数成功： ' + JSON.stringify(ccc))
         let radm = ccc[0].substr(0, 8)

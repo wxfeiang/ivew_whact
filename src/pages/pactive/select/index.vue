@@ -16,12 +16,6 @@ import { $Toast } from '@/utils/iview';
         </div>
       </div>
     </div>
-    <div class="isplice"></div>
-    <div class="cbutton">
-      <div class="rbutton">
-        <button class="bbutton"  @click="confirm()">确认</button>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -39,7 +33,7 @@ export default {
           id: 1001,
           name: '金溢设备',
           type: 'genvict',
-          isSelected: true,
+          isSelected: false,
           imgUrl: '/static/images/genvict.png'
         },
         {
@@ -64,13 +58,9 @@ export default {
       this.deviceList.forEach(item => {
         item.isSelected = false
       })
-      this.deviceList[index].isSelected = !this.deviceList[index].isSelected
-    },
-    confirm() {
-      let tSelect = this.deviceList.filter(item => item.isSelected)
-      console.log('跳转设备激活: ' + JSON.stringify(tSelect[0].type))
+      this.deviceList[index].isSelected = true
       wx.navigateTo({
-        url: `${device[tSelect[0].type]}`
+        url: `${device[this.deviceList[index].type]}`
       })
     }
   }
@@ -168,32 +158,4 @@ export default {
     line-height 100%
     font-size 30px
     color sub-font
-.cbutton
-  width 100%
-  height 90px
-  background-color white-color
-  position fixed
-  bottom 0
-  display flex
-  flex-flow column nowrap
-  justify-content center
-  align-items center
-.rbutton
-  width 90%
-  height 42px
-  display flex
-  flex-flow column nowrap
-  justify-content center
-  align-items center
-.bbutton
-  width 100%
-  height 100%
-  display flex
-  flex-flow row nowrap
-  justify-content center
-  align-items center
-  background-color main-color
-  font-size 15px
-  color white-color
-  border-radius 40px
 </style>
