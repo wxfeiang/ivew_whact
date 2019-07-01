@@ -45,14 +45,20 @@
       </div> -->
       <div class="splice"></div>
       <div class="item" @click="gotoNavi('consum')">
-        <div class="icon order"><i class="icon iconfont icon-Dollar-circle-fill img"></i></div>
+        <div class="icon packet"><i class="icon iconfont icon-yiliaozhuanruchaxun img"></i></div>
         <div class="content">消费记录</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
       <div class="splice"></div>
       <div class="item" @click="gotoNavi('order')">
-        <div class="icon order"><i class="icon iconfont icon-number1 img"></i></div>
+        <div class="icon order"><i class="icon iconfont icon-gerenjibenxinxichaxunxiugai img"></i></div>
         <div class="content">我的订单</div>
+        <div class="more"><i class="icon iconfont icon-right img"></i></div>
+      </div>
+      <div class="splice"></div>
+      <div class="item" @click="gotoNavi('debet')">
+        <div class="icon debet"><i class="icon iconfont icon-yibaoyue img"></i></div>
+        <div class="content">垫资还款</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
     </div>
@@ -77,9 +83,6 @@
       <button class="button" @getuserinfo="bindGetUserInfo" open-type="getUserInfo"></button>
     </div>
     <i-toast id="toast"/>
-    <i-modal title="您有垫资还款的欠费" :visible="showMark" @cancel="clickCancel" @ok="clickConfirm">
-      <view>点击确认跳转紫光e付进行还款</view>
-    </i-modal>
   </div>
 </template>
 
@@ -88,14 +91,14 @@ import { $Toast } from '@/utils/iview'
 import {mapState} from 'vuex'
 import * as types from '@/store/mutation-types'
 import * as cp from '../../utils/handleLogin'
+import { queryDebt } from '@/api/pay'
 export default {
   data () {
     return {
       userInfo: {
         sales: '0',
         credit: '0'
-      },
-      showMark: false
+      }
     }
   },
   computed: {
@@ -103,30 +106,10 @@ export default {
       'openid',
       'user',
       'mobile',
-      'authenticated',
-      'repayment'
+      'authenticated'
     ])
   },
   methods: {
-    clickCancel() {
-      this.showMark = false
-    },
-    clickConfirm() {
-      this.showMark = false
-      wx.navigateToMiniProgram({
-        appId: 'wx71ed9a74b2a75c42',
-        path: 'pages/index/main',
-        extraData: {
-          foo: 'bar'
-        },
-        success: res => {
-          console.log('跳转垫资还款小程序成功: ' + JSON.stringify(res))
-        },
-        fail: res => {
-          console.log('跳转垫资还款小程序失败: ' + JSON.stringify(res))
-        }
-      })
-    },
     bindGetUserInfo (e) {
       if (e.mp.detail.userInfo) {
         cp.login(() => {
@@ -154,7 +137,8 @@ export default {
         'help': '../pimp/help/main',
         'about': '../pimp/about/main',
         'issue': '../pimp/issue/main',
-        'order': '../pimp/etcList/main'
+        'order': '../pimp/etcList/main',
+        'debet': ''
       }
       // cp.isLogin(() => {
       // wx.navigateTo({
@@ -165,18 +149,59 @@ export default {
         wx.navigateTo({
           url: '../pcore/bindUser/main'
         })
-      } else if (this.repayment) {
-        this.showMark = true
       } else {
         if (which === 'traffic') {
           wx.navigateTo({
             url: '../pimp/traffic/main?type=all'
           })
+        } else if (which === 'debet') {
+          this.queryRepapment()
         } else {
           wx.navigateTo({
             url: dest[which]
           })
         }
+      }
+    },
+    async queryRepapment() {
+      try {
+        let iparam = {
+          channel: 'wx_repay',
+          openid: this.openid
+        }
+        let iReturn = await queryDebt(iparam)
+        console.log('垫资还款返回:  ' + JSON.stringify(iReturn))
+        if (iReturn.status === 200 && iReturn.data) {
+          if (iReturn.data !== -1) {
+            wx.navigateToMiniProgram({
+              appId: iReturn.data.app_id,
+              path: iReturn.data.app_id === 'wx71ed9a74b2a75c42' ? 'pages/index/main' : 'pages/invest_list/invest_list',
+              extraData: iReturn.data,
+              envVersion: 'develop',
+              success: res => {
+                console.log('跳转垫资还款小程序成功: ' + iReturn.data.app_id + '' + JSON.stringify(res))
+              },
+              fail: res => {
+                console.log('跳转垫资还款小程序失败: ' + iReturn.data.app_id + ' ' + JSON.stringify(res))
+                $Toast({
+                  type: 'warning',
+                  duration: 4,
+                  content: `请允许跳转垫资还款小程序!`
+                })
+              }
+            })
+          } else {
+            $Toast({
+              type: 'success',
+              duration: 4,
+              content: '您的信用良好,暂无欠费!'
+            })
+          }
+        } else {
+          console.log('查询垫资欠费失败: ' + JSON.stringify(iReturn))
+        }
+      } catch (err) {
+        console.log('查询垫资欠费异常: ' + JSON.stringify(err))
       }
     }
   }
@@ -186,7 +211,6 @@ export default {
 .my
   background-color bg-color
   width 100%
-  height 100%
   display flex
   flex-flow column nowrap
   justify-content flex-start
@@ -247,7 +271,7 @@ export default {
       color #ffffff
   .core
     width 100%
-    height 153px
+    flex 1
     background-color #ffffff
     display flex
     flex-flow column nowrap
@@ -281,6 +305,8 @@ export default {
         &.car
           color #4ba0e0
         &.card
+          color #b196c1
+        &.debet
           color #b196c1
       .content
         width 70%

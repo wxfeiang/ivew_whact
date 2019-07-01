@@ -4,7 +4,7 @@ import * as types from '@/store/mutation-types'
 import * as cp from './utils/handleLogin'
 import global from './utils/global'
 import { carBindList, carServiceNotify } from '@/api/car'
-import { walletQuery, queryDebt } from '@/api/pay'
+import { walletQuery } from '@/api/pay'
 export default {
   computed: {
     ...mapState(['openid', 'mobile', 'car', 'plateNo'])
@@ -89,9 +89,7 @@ export default {
       saveAuthenticated: types.SYSTEM_AUTHENTICATED,
       saveCar: types.SYSTEM_CAR,
       saveBalance: types.SYSTEM_BALANCE,
-      savePlateNo: types.SYSTEM_PLATENO,
-      saveRepayment: types.SYSTEM_REPAYMENT,
-      saveRepaymentData: types.SYSTEM_REPAYMENT_DATA
+      savePlateNo: types.SYSTEM_PLATENO
     }),
     async getCarList() {
       wx.showLoading({ title: '加载中', mask: true })
@@ -157,34 +155,9 @@ export default {
         wx.hideLoading()
         console.log('App.vue 获取车辆数据失败!')
       }
-    },
-    async queryRepapment() {
-      try {
-        let iparam = {
-          channel: 'wx_repay',
-          openid: this.openid
-        }
-        let iReturn = await queryDebt(iparam)
-        console.log('垫资还款返回:  ' + JSON.stringify(iReturn))
-        if (iReturn.status === 200 && iReturn.data) {
-          if (iReturn.data !== -1) {
-            this.saveRepayment(true)
-            this.saveRepaymentData(iReturn.data)
-          } else {
-            this.saveRepayment(false)
-            this.saveRepaymentData({})
-          }
-        } else {
-          console.log('查询垫资欠费失败: ' + JSON.stringify(iReturn))
-        }
-      } catch (err) {
-        console.log('查询垫资欠费异常: ' + JSON.stringify(err))
-      }
     }
   },
   onShow(res) {
-    // TODO: 查询垫资还款是否有欠费
-    this.queryRepapment()
     if (res.scene === 1038) {
       const { appId, extraData } = res.referrerInfo
       if (appId === 'wxbd687630cd02ce1d') {

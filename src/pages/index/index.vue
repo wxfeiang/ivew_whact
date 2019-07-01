@@ -55,9 +55,6 @@
       <button class="ibutton" @getuserinfo="bindGetUserInfo" open-type="getUserInfo"></button>
     </div>
     <i-toast id="toast"/>
-    <i-modal title="您有垫资还款的欠费" :visible="showMark" @cancel="clickCancel" @ok="clickConfirm">
-      <view>点击确认跳转紫光e付进行还款</view>
-    </i-modal>
   </div>
 </template>
 
@@ -72,35 +69,10 @@ export default {
   data () {
     return {
       noData: false,
-      animationData: '',
-      showMark: false
+      animationData: ''
     }
   },
   methods: {
-    clickCancel() {
-      this.showMark = false
-    },
-    clickConfirm() {
-      this.showMark = false
-      console.log('跳转垫资还款小程序,传递的参数: ' + JSON.stringify(this.repaymenData))
-      wx.navigateToMiniProgram({
-        appId: this.repaymenData.app_id,
-        path: this.repaymenData.app_id === 'wx71ed9a74b2a75c42' ? 'pages/index/main' : this.repaymenData.path,
-        extraData: this.repaymenData,
-        envVersion: 'develop',
-        success: res => {
-          console.log('跳转垫资还款小程序成功: ' + this.repaymenData.appId + '' + JSON.stringify(res))
-        },
-        fail: res => {
-          console.log('跳转垫资还款小程序失败: ' + this.repaymenData.appId + ' ' + JSON.stringify(res))
-          $Toast({
-            type: 'error',
-            duration: 4,
-            content: `跳转垫资还款小程序失败!`
-          })
-        }
-      })
-    },
     bindGetUserInfo (e) {
       if (e.mp.detail.userInfo) {
         cp.login(() => {})
@@ -129,8 +101,6 @@ export default {
         wx.navigateTo({
           url: '../pcore/bindUser/main'
         })
-      } else if (this.repayment) {
-        this.showMark = true
       } else {
         if (which === 'issue') {
           this.uHasOrder()
@@ -179,9 +149,7 @@ export default {
       'user',
       'authenticated',
       'mobile',
-      'identityId',
-      'repayment',
-      'repaymenData'
+      'identityId'
     ])
   },
   onShareAppMessage () {
