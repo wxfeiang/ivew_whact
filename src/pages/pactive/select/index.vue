@@ -28,25 +28,33 @@ import { $Toast } from '@/utils/iview';
 <script>
 const device = {
   'genvict': '../genvict/main',
-  'wanji': '../wanji/main'
+  'wanji': '../wanji/main',
+  'juli': '../juli/main'
 }
 export default {
   data() {
     return {
       deviceList: [
         {
-          id: 1002,
+          id: 1001,
           name: '金溢设备',
           type: 'genvict',
           isSelected: true,
           imgUrl: '/static/images/genvict.png'
         },
         {
-          id: 1003,
+          id: 1002,
           name: '万集设备',
           type: 'wanji',
           isSelected: false,
           imgUrl: '/static/images/wanji.png'
+        },
+        {
+          id: 1003,
+          name: '聚利设备',
+          type: 'juli',
+          isSelected: false,
+          imgUrl: '/static/images/juli.png'
         }
       ]
     }

@@ -341,8 +341,9 @@ export default {
             sysChannel: '0'
           },
           success: function (res) {
-            const iReturn = JSON.parse(res.data)
-            if (iReturn.status === 200 && iReturn.data && iReturn.data.length > 0) {
+            // const iReturn = JSON.parse(res.data)
+            const iReturn = res.data
+            if (iReturn && iReturn.status === 200 && iReturn.data && iReturn.data.length > 0) {
               iReturn.data[0].id ? resolve(iReturn.data[0]) : reject('上传失败,未返回结果,请稍后重试!')
             } else {
               reject('上传失败,未返回结果,请稍后重试!')

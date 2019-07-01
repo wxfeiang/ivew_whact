@@ -1,0 +1,1 @@
+export function ICCResetCmd(){return"A9"};export function ICCChannelCmd(){return"A3"};export function ESAMResetCmd(){return"AA"};export function ESAMChannelCmd(){return"AC"};export function ICCReset(){return"ZJICCReset"};export function ICCChannel(){return"ZJICCChannel"};export function ESAMReset(){return"ZJESAMReset"};export function ESAMChannel(){return"ZJESAMChannel"};
