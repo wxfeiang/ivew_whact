@@ -82,17 +82,22 @@ export default {
     },
     clickConfirm() {
       this.showMark = false
+      console.log('跳转垫资还款小程序,传递的参数: ' + JSON.stringify(this.repaymenData))
       wx.navigateToMiniProgram({
-        appId: 'wx71ed9a74b2a75c42',
-        path: 'pages/index/main',
-        extraData: {
-          foo: 'bar'
-        },
+        appId: this.repaymenData.app_id,
+        path: this.repaymenData.app_id === 'wx71ed9a74b2a75c42' ? 'pages/index/main' : this.repaymenData.path,
+        extraData: this.repaymenData,
+        envVersion: 'develop',
         success: res => {
-          console.log('跳转垫资还款小程序成功: ' + JSON.stringify(res))
+          console.log('跳转垫资还款小程序成功: ' + this.repaymenData.appId + '' + JSON.stringify(res))
         },
         fail: res => {
-          console.log('跳转垫资还款小程序失败: ' + JSON.stringify(res))
+          console.log('跳转垫资还款小程序失败: ' + this.repaymenData.appId + ' ' + JSON.stringify(res))
+          $Toast({
+            type: 'error',
+            duration: 4,
+            content: `跳转垫资还款小程序失败!`
+          })
         }
       })
     },
@@ -175,7 +180,8 @@ export default {
       'authenticated',
       'mobile',
       'identityId',
-      'repayment'
+      'repayment',
+      'repaymenData'
     ])
   },
   onShareAppMessage () {

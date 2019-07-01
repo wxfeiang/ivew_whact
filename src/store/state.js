@@ -51,7 +51,8 @@ const state = {
       region: '甘肃省-兰州市-城关区'
     }
   },
-  repayment: false
+  repayment: false,
+  repaymenData: {}
 }
 
 export default state

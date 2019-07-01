@@ -48,6 +48,9 @@ const mutations = {
   },
   [types.SYSTEM_REPAYMENT](state, repayment) {
     state.repayment = repayment
+  },
+  [types.SYSTEM_REPAYMENT_DATA](state, repaymenData) {
+    state.repaymenData = repaymenData
   }
 }
 
