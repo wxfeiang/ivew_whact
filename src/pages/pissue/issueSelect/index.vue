@@ -75,7 +75,7 @@ export default {
           id: 1001,
           isCollapse: false,
           name: '微信车主会员',
-          type: 'wx',
+          type: 'wechat',
           title: '开通车主会员',
           stitle: '0-3天拿到设备',
           tail: '永不过期',
@@ -127,7 +127,7 @@ export default {
           id: 1003,
           isCollapse: false,
           name: '工商银行联名卡',
-          type: 'gs',
+          type: 'icbc',
           title: '办工商银行联名卡',
           stitle: '5-7天拿到设备',
           tail: '限新用户,可选腾讯视频会员或海陆空意外险',
@@ -301,8 +301,12 @@ export default {
       this.tSelect = this.bankList.filter(item => item.isSelected)
       console.log('选择的项目: ' + JSON.stringify(this.tSelect[0]))
       if (this.tSelect[0] && this.tSelect.length > 0) {
-        if (this.tSelect[0].type === 'wx') {
+        if (this.tSelect[0].type === 'wechat') {
           this.toCarService()
+        } else if (this.tSelect[0].type === 'icbc') {
+          wx.navigateTo({
+            url: `../issueIcbc/main?applyId=${this.baseData.applyId}`
+          })
         } else {
           this.showMask = true
           this.mContent = this.tSelect[0].name
@@ -321,8 +325,8 @@ export default {
     })
   },
   mounted () {
-    this.baseData.applyId = this.$root.$mp.query.applyId || '9527'
-    this.baseData.plateNo = this.$root.$mp.query.plateNo || '甘ANS109'
+    this.baseData.applyId = this.$root.$mp.query.applyId || ''
+    this.baseData.plateNo = this.$root.$mp.query.plateNo || ''
   },
   onShow() {
     if (this.reBack) {
@@ -353,7 +357,7 @@ export default {
     font-size 20px
     font-weight 700
   .istb
-    width 10%
+    width 50%
     height 3px
     background-color main-color
     border-radius 5px
@@ -509,13 +513,13 @@ export default {
   height 100px
 .cbutton
   width 100%
-  height 90px
+  height 75px
   background-color white-color
   position fixed
   bottom 0
   display flex
   flex-flow column nowrap
-  justify-content center
+  justify-content flex-start
   align-items center
 .rbutton
   width 90%
@@ -524,6 +528,7 @@ export default {
   flex-flow column nowrap
   justify-content center
   align-items center
+  padding-top 10px
 .bbutton
   width 100%
   height 100%

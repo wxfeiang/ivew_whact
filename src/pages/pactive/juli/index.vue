@@ -23,7 +23,6 @@ import { $Toast } from '@/utils/iview'
 import global from '../../../utils/global'
 import * as JLObuSDK from '../../../../static/js/jl/JLObuSDK'
 import * as n from '../../../../static/js/gbk'
-import * as util from '../../../utils/index'
 import { getTMAC, getObuCount, saveObuFinish } from '@/api/etc'
 import { mapState } from 'vuex'
 export default {
@@ -79,7 +78,7 @@ export default {
         if (res.code === 0) {
           that.cardInfo.cardNo = res.data.substring(20, 40)
           that.cardInfo.carNo = that.convertLisenceNo(res.data.substring(56, 80)) || ''
-          that.cardInfo.licencseColor = parseInt(res.data.substring(res.data.length - 4), 16) || '0'
+          that.cardInfo.licencseColor = parseInt(res.data.substr(82, 2), 16) || '0'
           that.bleText = '查询成功'
           console.log('卡信息: ' + JSON.stringify(that.cardInfo))
           that.toActive()
@@ -119,8 +118,8 @@ export default {
         let iMac = this.validateTMAC(iReturn)
         let ia = '04D6811A0501' + iMac + ''
         console.log('>>>>>> 激活指令:   ' + JSON.stringify(ia))
-        // let iFinish = await this.writeSystem(ia)
-        // console.log('>>>>>> 激活结果: ' + JSON.stringify(iFinish))
+        let iFinish = await this.writeSystem(ia)
+        console.log('>>>>>> 激活结果: ' + JSON.stringify(iFinish))
         $Toast({
           type: 'success',
           duration: 5,

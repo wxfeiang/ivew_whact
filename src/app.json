@@ -30,7 +30,8 @@
         "issueAddress/main",
         "issueCredit/main",
         "issueSelect/main",
-        "issueUpload/main"
+        "issueUpload/main",
+        "issueIcbc/main"
       ]
     },
     {
