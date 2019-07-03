@@ -1,6 +1,9 @@
-import { $Toast } from '@/utils/iview';
 <template>
   <div class="iselect">
+    <section class="sec-nav">
+      <navigation-bar
+      :back-visible="true"></navigation-bar>
+    </section>
     <div class="istitle">
       <span class="istt">选择以下方式，免费办ETC</span>
       <span class="istb"></span>
@@ -58,7 +61,12 @@ import {
 } from '@/api/car'
 import { mapState, mapMutations } from 'vuex'
 import * as types from '@/store/mutation-types'
+import navigationBar from '@/components/navigationBar.vue'
+
 export default {
+  components: {
+    navigationBar
+  },
   data() {
     return {
       reBack: false,

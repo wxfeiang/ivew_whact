@@ -1,5 +1,6 @@
 {
   "navigationBarTitleText": "选择办理方式",
+  "navigationStyle": "custom",
   "usingComponents": {
     "i-toast": "/iview/toast/index",
     "i-modal": "/iview/modal/index"

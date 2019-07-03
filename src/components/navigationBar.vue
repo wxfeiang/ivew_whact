@@ -10,36 +10,38 @@
             <div class="nav-titlebar" :style="{height: titleBarHeight + 'px' }">
                 <!-- home及后退键 -->
                 <div class="bar-options">
-                    <div v-if="backVisible" class="opt opt-back" @click="backClick()">
-                    <image class="back-image" src="/static/images/back.png"></image>
+                    <div v-if="backVisible" class="opt opt-back" @click="backClick">
+                    <image class="back-image" src="/static/images/left.png"></image>
                     </div>
                     <div class="line" v-if="backVisible && homePath"></div>
-                    <div v-if="homePath" class="opt opt-home" @click="homeClick()">
-                    <image class="home-image" src="/static/images/home.png"></image>
+                    <div v-if="homePath" class="opt opt-home" @click="homeClick">
+                    <image class="home-image" src="/static/images/ihome.png"></image>
                     </div>
                 </div>
                 <!-- 标题 -->
                 <div class="bar-title" :style="[{color:titleColor}]">{{title}}</div>
             </div>
         </div>
+        <i-toast id="toast"/>
     </div>
 </template>
 
 <script>
+import { $Toast } from '@/utils/iview'
 export default {
   props: {
     // 导航栏背景色
     navBackgroundColor: {
-      default: '#ffffff'
+      default: '#009efb'
     },
     // 标题颜色
     titleColor: {
-      default: '#000000'
+      default: '#ffffff'
     },
     // 标题文字
     title: {
       required: false,
-      default: '来画大世界'
+      default: '选择办理方式'
     },
     // 是否显示后退按钮
     backVisible: {
@@ -49,7 +51,7 @@ export default {
     // home按钮的路径
     homePath: {
       required: false,
-      default: ''
+      default: '/pages/index/main'
     }
   },
   data() {
@@ -97,11 +99,19 @@ export default {
       //   })
       // }
       wx.navigateBack({
-        delta: 1
+        delta: 1,
+        fail: function (res) {
+          $Toast({
+            type: 'warning',
+            duration: 4,
+            content: '请完成办理方式选择或返回主页面!'
+          })
+        }
       })
     },
     homeClick() {
-      wx.redirectTo({
+      console.log('homeClick')
+      wx.switchTab({
         url: this.homePath
       })
     }
@@ -134,7 +144,7 @@ export default {
         left: 7px
         display: flex
         align-items: center
-        background: hsla(0, 0%, 100%, 0.6)
+        background-color: #1788d4
         border-radius: 27px
         padding-right: 5rpx
         .opt
@@ -151,7 +161,7 @@ export default {
           display: block
           height: 30rpx
           width: 1px
-          background-color: gray
+          background-color: #4da6de
         .opt-home
           .home-image
             width: 36rpx

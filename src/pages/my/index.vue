@@ -179,7 +179,7 @@ export default {
               appId: iReturn.data.app_id,
               path: iReturn.data.app_id === 'wx71ed9a74b2a75c42' ? 'pages/index/main' : 'pages/invest_list/invest_list',
               extraData: iReturn.data,
-              envVersion: 'develop',
+              envVersion: 'trial',
               success: res => {
                 console.log('跳转垫资还款小程序成功: ' + iReturn.data.app_id + '' + JSON.stringify(res))
               },
