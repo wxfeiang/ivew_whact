@@ -9,7 +9,7 @@ import { $Toast } from '@/utils/iview';
       </swiper>
     </div>
     <div class="pbtn">
-      <button @click="selectOBU" class="btns">连接设备</button>
+      <button @click="selectOBU" class="btns">连接并激活</button>
     </div>
     <i-toast id="toast"/>
   </div>
@@ -160,7 +160,6 @@ export default {
             },
             fail: function (res) {
               wx.hideLoading()
-              that.bleText = '连接失败'
               $Toast({
                 type: 'warning',
                 duration: 3,
@@ -170,11 +169,10 @@ export default {
           })
         } else if (code === '1') {
           wx.hideLoading()
-          that.bleText = '连接失败'
           $Toast({
             type: 'warning',
             duration: 3,
-            content: `手机蓝牙未打开或手机不支持蓝牙!`
+            content: `未搜索到金溢设备!`
           })
         }
       })
@@ -200,7 +198,7 @@ export default {
           $Toast({
             type: 'warning',
             duration: 5,
-            content: `未找到聚利设备 ${res.err_msg}`
+            content: `未搜索到聚利设备!`
           })
         }
       })
@@ -210,6 +208,7 @@ export default {
       let that = this
       wx.showLoading({title: '正在搜索设备', mask: true})
       wjBleAPI.connectDevice(function (serviceResult) {
+        console.log('connectDevice:  ' + JSON.stringify(serviceResult))
         if (serviceResult.serviceCode === 0) {
           that.wjGetDeviceInfo()
         } else {
@@ -599,7 +598,7 @@ export default {
         mobile: this.mobile,
         obuId: obuId,
         obuSn: this.cardInfo.obuSN,
-        plateNumber: this.cardInfo.carNo,
+        plateNumber: this.cardInfo.carNo.replace(/(^\s*)|(\s*$)/g, '') || this.cardInfo.carNo,
         plateColor: this.cardInfo.licencseColor,
         cardId: this.cardInfo.cardNo,
         terminalNo: global.mobileInfo.model || '手机'

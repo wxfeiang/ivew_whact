@@ -410,7 +410,7 @@ export default {
   .select
     width 100%
     height 40px
-    background-color bg-color
+    background-color white-color
     display flex
     flex-flow row nowrap
     justify-content center
@@ -426,8 +426,8 @@ export default {
       justify-content center
       align-items center
       .picker
-        width 90%
-        height 60%
+        width 100%
+        height 100%
         color main-color
         font-size 15px
         display flex
@@ -435,7 +435,7 @@ export default {
         justify-content center
         align-items center
         .show
-          width 100%
+          width 130px
           height 100%
           display flex
           flex-flow row nowrap
@@ -447,7 +447,7 @@ export default {
             font-size 15px
             display flex
             flex-flow row nowrap
-            justify-content space-around
+            justify-content center
             align-items center
             .title
               width 90%
@@ -499,7 +499,7 @@ export default {
           font-size 17px
           color main-font
         .tsub
-          width 20%
+          width 30%
           height 100%
           display flex
           flex-flow row nowrap
@@ -517,7 +517,7 @@ export default {
             justify-content center
             align-items center
           .othermark
-            width 80%
+            width 90%
             height 60%
             font-size 12px
             color #009efb

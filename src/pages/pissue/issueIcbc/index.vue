@@ -6,7 +6,7 @@ import { $Toast } from '@/utils/iview';
         <div class="ipctitle">请选择</div>
         <div class="ipcitem" @click="toSelect('yes')">
           <div class="ipcileft">
-            <img class="ipcimg" src="/static/images/banks/gs.png" alt="">
+            <img class="ipcimg" src="/static/images/icbc.png" alt="">
           </div>
           <div class="ipciright">
             <span class="ipcititle">持有工商银行卡</span>
