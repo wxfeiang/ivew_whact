@@ -216,7 +216,7 @@ export default {
           $Toast({
             type: 'warning',
             duration: 5,
-            content: `未找到万集设备 ${serviceResult.serviceInfo}`
+            content: `未搜索到万集设备!`
           })
         }
       })
