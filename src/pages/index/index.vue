@@ -88,7 +88,7 @@ export default {
       let dest = {
         'car': '../pcore/bindMain/main',
         'recharge': '../pcore/recharge/main',
-        'active': '../pactive/select/main',
+        'active': '../pactive/active/main',
         'issue': '../pissue/issue/main'
       }
       // cp.isLogin(() => {

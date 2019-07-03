@@ -1,7 +1,7 @@
 {
+  "navigationBarTitleText": "在线激活",
   "usingComponents": {
     "i-modal": "/iview/modal/index",
     "i-toast": "/iview/toast/index"
-  },
-  "navigationBarTitleText": "聚利激活"
+  }
 }

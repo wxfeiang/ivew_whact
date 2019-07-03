@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "i-modal": "/iview/modal/index",
-    "i-toast": "/iview/toast/index"
-  },
-  "navigationBarTitleText": "金溢激活"
-}

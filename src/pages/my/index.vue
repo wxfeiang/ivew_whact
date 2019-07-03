@@ -164,6 +164,7 @@ export default {
       }
     },
     async queryRepapment() {
+      wx.showLoading({title: '正在查询', mask: true})
       try {
         let iparam = {
           channel: 'wx_repay',
@@ -173,6 +174,7 @@ export default {
         console.log('垫资还款返回:  ' + JSON.stringify(iReturn))
         if (iReturn.status === 200 && iReturn.data) {
           if (iReturn.data !== -1) {
+            wx.hideLoading()
             wx.navigateToMiniProgram({
               appId: iReturn.data.app_id,
               path: iReturn.data.app_id === 'wx71ed9a74b2a75c42' ? 'pages/index/main' : 'pages/invest_list/invest_list',
@@ -191,6 +193,7 @@ export default {
               }
             })
           } else {
+            wx.hideLoading()
             $Toast({
               type: 'success',
               duration: 4,
@@ -198,10 +201,22 @@ export default {
             })
           }
         } else {
+          wx.hideLoading()
           console.log('查询垫资欠费失败: ' + JSON.stringify(iReturn))
+          $Toast({
+            type: 'success',
+            duration: 4,
+            content: '查询垫资欠费失败,请稍后重试!'
+          })
         }
       } catch (err) {
+        wx.hideLoading()
         console.log('查询垫资欠费异常: ' + JSON.stringify(err))
+        $Toast({
+          type: 'success',
+          duration: 4,
+          content: '查询垫资欠费异常,请稍后重试!'
+        })
       }
     }
   }

@@ -19,8 +19,7 @@
         "etcSupply/main",
         "etcDetail/main",
         "orderDetail/main",
-        "userInfo/main",
-        "wallet/main"
+        "userInfo/main"
       ]
     },
     {
@@ -36,7 +35,7 @@
     },
     {
       "root": "pages/pactive/",
-      "pages": ["select/main", "genvict/main", "wanji/main", "juli/main"]
+      "pages": ["active/main"]
     }
   ],
   "permission": {
