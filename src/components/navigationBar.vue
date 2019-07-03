@@ -88,26 +88,17 @@ export default {
   methods: {
     backClick() {
       // eslint-disable-next-line no-undef
-      // if (getCurrentPages().length === 1) {
-      //   // 打开分享卡片无法回退
-      //   wx.redirectTo({
-      //     url: this.homePath
-      //   })
-      // } else {
-      //   wx.navigateBack({
-      //     delta: 1
-      //   })
-      // }
-      wx.navigateBack({
-        delta: 1,
-        fail: function (res) {
-          $Toast({
-            type: 'warning',
-            duration: 4,
-            content: '请完成办理方式选择或返回主页面!'
-          })
-        }
-      })
+      if (getCurrentPages().length > 1) {
+        wx.navigateBack({
+          delta: 1
+        })
+      } else {
+        $Toast({
+          type: 'warning',
+          duration: 4,
+          content: '请完成办理方式选择或返回主页面!'
+        })
+      }
     },
     homeClick() {
       console.log('homeClick')
