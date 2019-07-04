@@ -32,39 +32,31 @@ export default {
       imgList: [
         {
           id: 1001,
-          imgUrl: '/static/images/active/etc1.png'
+          imgUrl: '/static/images/active/etc1.jpg'
         },
         {
           id: 1002,
-          imgUrl: '/static/images/active/etc2.png'
+          imgUrl: '/static/images/active/etc2.jpg'
         },
         {
           id: 1003,
-          imgUrl: '/static/images/active/etc3_1.png'
+          imgUrl: '/static/images/active/etc3.jpg'
         },
         {
           id: 1004,
-          imgUrl: '/static/images/active/etc3_2.png'
+          imgUrl: '/static/images/active/etc4.jpg'
         },
         {
           id: 1005,
-          imgUrl: '/static/images/active/etc3_3.png'
+          imgUrl: '/static/images/active/etc5.jpg'
         },
         {
           id: 1006,
-          imgUrl: '/static/images/active/etc4.png'
+          imgUrl: '/static/images/active/etc6.jpg'
         },
         {
           id: 1007,
-          imgUrl: '/static/images/active/etc5.png'
-        },
-        {
-          id: 1008,
-          imgUrl: '/static/images/active/etc6.png'
-        },
-        {
-          id: 1009,
-          imgUrl: '/static/images/active/etcps.png'
+          imgUrl: '/static/images/active/etc7.jpg'
         }
       ],
       cardInfo: {
@@ -263,9 +255,9 @@ export default {
         console.log('进入ESAM目录成功： ' + JSON.stringify(aaa))
         let bbb = await this.jyEnterESAM('20', ['00B081001B'])
         console.log('读取系统防拆为和合同序列号成功： ' + JSON.stringify(bbb))
-        let hth = bbb[0].substring(20, 36)
+        let hth = bbb[0].substring(20, 36) || 'JY999999'
         console.log('合同序列号: ' + hth)
-        // let qc = await this.queryCount(hth)
+        let qc = await this.queryCount(hth)
         let ccc = await this.jyEnterESAM('20', ['0084000004'])
         console.log('读取随机数成功： ' + JSON.stringify(ccc))
         let radm = ccc[0].substr(0, 8)
@@ -285,10 +277,10 @@ export default {
           duration: 5,
           content: `激活成功!`
         })
-        this.obuFinish(hth)
+        wx.hideLoading()
+        this.obuFinish(hth, 'Genvict')
         const poCode = await this.powerOff()
         this.jyCloseBlue()
-        wx.hideLoading()
       } catch (err) {
         console.log('激活失败' + err)
         wx.hideLoading()
@@ -357,9 +349,9 @@ export default {
       try {
         console.log('>>>>>> 开始激活')
         let aaa = await this.wjReadSystem()
-        let hth = aaa.contractSerialNumber
+        let hth = aaa.contractSerialNumber || 'WJ999999'
         console.log('>>>>>> 合同序列号: ' + hth)
-        // let qc = await this.queryCount(hth)
+        let qc = await this.queryCount(hth)
         let bbb = await this.wjReadSystemRand()
         let rand = bbb.rand
         console.log('>>>>>> 读取随机数成功： ' + rand)
@@ -370,14 +362,14 @@ export default {
         console.log('>>>>>> 激活指令:   ' + JSON.stringify(ia))
         let iFinish = await this.wjWriteSystem(ia)
         console.log('>>>>>> 激活结果: ' + JSON.stringify(iFinish))
+        wx.hideLoading()
         $Toast({
           type: 'success',
           duration: 5,
           content: `激活成功!`
         })
-        this.obuFinish(hth)
+        this.obuFinish(hth, 'Wanji')
         this.wjCloseBlue()
-        wx.hideLoading()
       } catch (err) {
         console.log('激活失败' + err)
         wx.hideLoading()
@@ -463,7 +455,7 @@ export default {
         console.log('>>>>>> 开始激活')
         let aaa = await this.jlReadSystem()
         console.log('>>>>>> 读取系统防拆为和合同序列号成功： ' + JSON.stringify(aaa))
-        let hth = aaa.substring(20, 36)
+        let hth = aaa.substring(20, 36) || 'JL999999'
         console.log('>>>>>> 合同序列号: ' + hth)
         let qc = await this.queryCount(hth)
         let bbb = await this.JLReadSystemRand()
@@ -475,14 +467,14 @@ export default {
         console.log('>>>>>> 激活指令:   ' + JSON.stringify(ia))
         let iFinish = await this.jlWriteSystem(ia)
         console.log('>>>>>> 激活结果: ' + JSON.stringify(iFinish))
+        wx.hideLoading()
         $Toast({
           type: 'success',
           duration: 5,
           content: `激活成功!`
         })
-        this.obuFinish(hth)
+        this.obuFinish(hth, 'Juli')
         this.jlCloseBlue()
-        wx.hideLoading()
       } catch (err) {
         console.log('激活失败' + JSON.stringify(err))
         wx.hideLoading()
@@ -582,20 +574,21 @@ export default {
         getObuCount(params).then(res => {
           console.log('getObuCount: ' + JSON.stringify(res))
           if (res.status === 200 && res.data) {
-            res.data === '0' ? reject('同一标签一天只能激活3次!') : resolve('ok')
+            res.data === '0' ? reject('同一标签只能激活3次!') : resolve('ok')
           } else {
-            reject('同一标签一天只能激活3次!')
+            reject('同一标签只能激活3次!')
           }
         }).catch(err => {
-          reject('同一标签一天只能激活3次!')
-          console.log(`同一标签一天只能激活3次! ${err}`)
+          reject('同一标签设备只能激活3次!')
+          console.log(`同一标签只能激活3次! ${err}`)
         })
       })
     },
-    async obuFinish(obuId) {
+    async obuFinish(obuId, obuBrand) {
       let params = {
         userId: this.openid,
         mobile: this.mobile,
+        obuBrand: obuBrand || 'default',
         obuId: obuId,
         obuSn: this.cardInfo.obuSN,
         plateNumber: this.cardInfo.carNo.replace(/(^\s*)|(\s*$)/g, '') || this.cardInfo.carNo,
@@ -666,7 +659,7 @@ export default {
   align-items center
   .pswiper
     width 100%
-    height 60%
+    height 70%
     display flex
     flex-flow row nowrap
     justify-content center
@@ -679,10 +672,10 @@ export default {
         height 100%
   .pbtn
     width 100%
-    height 40%
+    height 30%
     display flex
     flex-flow column nowrap
-    justify-content flex-start
+    justify-content center
     align-items center
     .btns
       width 90%
@@ -691,9 +684,10 @@ export default {
       flex-flow row nowrap
       justify-content center
       align-items center
-      background-color main-color
       font-size 15px
       color white-color
       border-radius 20px
-      margin-top 40px
+      border 1px main-color solid
+      background-color main-color
+      box-shadow 0 3px 12px rgba(0, 158, 251, 0.8)
 </style>
