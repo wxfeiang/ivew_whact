@@ -67,6 +67,9 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState(['openid', 'mobile'])
+  },
   methods: {
     selectOBU() {
       var that = this
