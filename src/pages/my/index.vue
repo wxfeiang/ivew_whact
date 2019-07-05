@@ -45,19 +45,19 @@
       </div> -->
       <div class="splice"></div>
       <div class="item" @click="gotoNavi('consum')">
-        <div class="icon packet"><i class="icon iconfont icon-yiliaozhuanruchaxun img"></i></div>
+        <div class="icon packet"><i class="icon iconfont icon-caiwubaobiao img"></i></div>
         <div class="content">消费记录</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
       <div class="splice"></div>
       <div class="item" @click="gotoNavi('order')">
-        <div class="icon order"><i class="icon iconfont icon-gerenjibenxinxichaxunxiugai img"></i></div>
+        <div class="icon order"><i class="icon iconfont icon-yewubaobiao img"></i></div>
         <div class="content">我的订单</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
       <div class="splice"></div>
       <div class="item" @click="gotoNavi('debet')">
-        <div class="icon debet"><i class="icon iconfont icon-yibaoyue img"></i></div>
+        <div class="icon debet"><i class="icon iconfont icon-piliangrenzheng img"></i></div>
         <div class="content">垫资还款</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
@@ -73,7 +73,7 @@
 
     <div class="help">
       <div class="item" @click="gotoNavi('about')">
-        <div class="icon about"><i class="icon iconfont icon-moduanwangdian img"></i></div>
+        <div class="icon about"><i class="icon iconfont icon-customerservice-fill img"></i></div>
         <div class="content">关于我们</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>

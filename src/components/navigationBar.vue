@@ -96,7 +96,7 @@ export default {
         $Toast({
           type: 'warning',
           duration: 4,
-          content: '请完成办理方式选择或返回主页面!'
+          content: '请完成办理方式选择!'
         })
       }
     },
@@ -126,7 +126,7 @@ export default {
       position: relative
       .bar-options
         width: 170rpx
-        height: 60rpx
+        height: 62rpx
         display: flex
         box-sizing: border-box
         align-items: center
@@ -146,8 +146,8 @@ export default {
           align-items: center
         .opt-back
           .back-image
-            width: 16rpx
-            height: 28rpx
+            width: 28rpx
+            height: 30rpx
         .line
           display: block
           height: 30rpx
@@ -155,8 +155,8 @@ export default {
           background-color: #4da6de
         .opt-home
           .home-image
-            width: 36rpx
-            height: 34rpx
+            width: 40rpx
+            height: 40rpx
       .bar-title
         width: 45%
         font-size: 14px

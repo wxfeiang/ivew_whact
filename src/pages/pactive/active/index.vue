@@ -688,7 +688,6 @@ export default {
       font-size 15px
       color white-color
       border-radius 20px
-      border 1px main-color solid
       background-color main-color
       box-shadow 0 3px 12px rgba(0, 158, 251, 0.8)
 </style>

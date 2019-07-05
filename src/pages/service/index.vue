@@ -378,6 +378,7 @@ export default {
   flex-flow column nowrap
   justify-content flex-start
   align-items center
+  position relative
   .query
     width 100%
     height 50px
@@ -417,6 +418,8 @@ export default {
     align-items center
     z-index 10
     position fixed
+    top 0
+    left 0
     border-bottom 1px #efefef solid
     .date
       width 100%
@@ -467,6 +470,7 @@ export default {
     flex-flow row nowrap
     justify-content center
     align-items center
+    margin-top 40px
   .content
     width 100%
     flex 1
