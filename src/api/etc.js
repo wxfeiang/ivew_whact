@@ -67,9 +67,9 @@ export function epayEnd(data) {
 
 // OBU激活取3mac数据
 export function getTMAC(data) {
-  return fly.request('', data, {
-    method: 'POST',
-    baseURL: 'http://61.178.107.23/test/esb/2000/'
+  return fly.request('busi/etcencry/obuactive', data, {
+    method: 'POST'
+    // baseURL: 'http://61.178.107.23/test/esb/2000/'
   })
 }
 

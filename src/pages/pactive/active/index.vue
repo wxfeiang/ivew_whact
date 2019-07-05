@@ -527,29 +527,17 @@ export default {
     },
     getMac(coa, radm) {
       let aParams = {
-        head: {
-          channel: '20eh15',
-          timestamp: new Date().getTime() + '',
-          type: 'post'
-        },
-        body: {
-          degree: '00',
-          obuID: coa,
-          initMAC: radm.toUpperCase() + '00000000',
-          macLength: '0006',
-          mac: '04D6811A0501'
-        }
+        degree: '00',
+        obuID: coa,
+        initMAC: radm.toUpperCase() + '00000000',
+        macLength: '0006',
+        mac: '04D6811A0501'
       }
-      console.log(`请求参数: ${JSON.stringify(aParams)}`)
       return new Promise((resolve, reject) => {
         getTMAC(aParams).then(res => {
-          if (res.status === 0 && res.message && JSON.parse(res.message).data) {
-            let ipp = JSON.parse(res.message).data
-            if (ipp.substr(0, 2) === '41') {
-              resolve(JSON.parse(res.message).data)
-            } else {
-              reject('获取3mac失败!')
-            }
+          console.log('>>>>>>>>>>获取3MAC: ' + JSON.stringify(res))
+          if (res.status === 200 && res.data && res.data !== '500') {
+            resolve(res.data)
           } else {
             reject('获取3mac失败!')
           }
