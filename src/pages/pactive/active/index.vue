@@ -225,10 +225,8 @@ export default {
           console.log('>>>>>>>> obuSN: ' + that.cardInfo.obuSN)
           genUtils.getICCInfo(function (code, res) {
             if (code === '0') {
-              console.log('车牌号hex:  ' + res.vehicleNumber)
               that.cardInfo.cardNo = res.cardId
               that.cardInfo.carNo = that.convertLisenceNo(res.vehicleNumber)
-              console.log('车牌号: ' + that.cardInfo.carNo + '')
               that.cardInfo.licencseColor = parseInt(res.plateColor, 16) || '0'
               that.jyActive()
             } else {
@@ -324,7 +322,7 @@ export default {
         if (serviceResult.serviceCode === 0) {
           wjBleAPI.getCardInfo(function (serviceResult) {
             if (serviceResult.serviceCode === 0) {
-              that.cardInfo.cardNo = serviceResult.serviceData.cardNo
+              that.cardInfo.cardNo = serviceResult.serviceData.roadswebID + '' + serviceResult.serviceData.cardNo
               that.cardInfo.carNo = that.convertLisenceNo(serviceResult.serviceData.bindedPlate) || ''
               that.cardInfo.licencseColor = parseInt(serviceResult.serviceData.vehColor, 16) || '0'
               that.wjActive()
@@ -594,7 +592,7 @@ export default {
         obuBrand: obuBrand || 'default',
         obuId: obuId,
         obuSn: this.cardInfo.obuSN,
-        plateNumber: this.cardInfo.carNo.replace(/(^\s*)|(\s*$)/g, '') || this.cardInfo.carNo,
+        plateNumber: this.cardInfo.carNo.replace(/[^\u4e00-\u9fa5\w]/g, '') || '车牌读取失败',
         plateColor: this.cardInfo.licencseColor,
         cardId: this.cardInfo.cardNo,
         terminalNo: global.mobileInfo.model || '手机'
