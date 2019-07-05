@@ -1,4 +1,5 @@
 import fly from '@/http/http'
+import qs from 'query-string'
 
 // 校验mac1的接口
 export function loadMacCheck(data) {
@@ -61,5 +62,27 @@ export function epayEnd(data) {
   return fly.request('', data, {
     method: 'POST',
     baseURL: 'http://61.178.107.23/test/esb/3000/'
+  })
+}
+
+// OBU激活取3mac数据
+export function getTMAC(data) {
+  return fly.request('', data, {
+    method: 'POST',
+    baseURL: 'http://61.178.107.23/test/esb/2000/'
+  })
+}
+
+// OBU激活次数查询
+export function getObuCount(data) {
+  return fly.request('busi/etcobu/acount', qs.stringify(data), {
+    method: 'GET'
+  })
+}
+
+// 激活成功保存激活信息
+export function saveObuFinish(data) {
+  return fly.request('busi/etcobu/save', data, {
+    method: 'POST'
   })
 }

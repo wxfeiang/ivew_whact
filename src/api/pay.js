@@ -77,3 +77,10 @@ export function entrustOpen(data) {
     method: 'POST'
   })
 }
+
+// 查询是否有垫付欠款
+export function queryDebt(data) {
+  return fly.request('/busi/repayment/info', data, {
+    method: 'POST'
+  })
+}

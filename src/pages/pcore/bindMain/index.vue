@@ -27,8 +27,8 @@
             <div class="bind-carnumber-content-item-title-func">
               <switch
                 @change="openChange(item, index)"
-                :checked = "item.parkService"
-                :disabled = "item.parkService"
+                :checked = "item.etcService"
+                :disabled = "item.etcService"
                 class="bind-carnumber-content-item-title-func-switch"
               />
             </div>
@@ -46,8 +46,8 @@
         </div>
         <div class="bind-carnumber-content-item-sub">
           <div class="bind-carnumber-content-item-sub-release">
-            <div class="bind-carnumber-content-item-sub-release-title" @click="cardList(item)">
-              <i class="icon iconfont icon-cheliangxinxi imgs"></i>
+            <div class="bind-carnumber-content-item-sub-release-title">
+              <!-- <i class="icon iconfont icon-cheliangxinxi imgs"></i> -->
             </div>
             <div class="bind-carnumber-content-item-sub-release-func" @click="carRelease(item)">
               <i class="icon iconfont icon-lajitong imgs"></i>
@@ -146,7 +146,7 @@ export default {
       })
     },
     openChange(item, index) {
-      if (!item.parkService) {
+      if (!item.etcService) {
         this.isOpenCarService(this.car[index].plateNo) // e.mp.detail.value
       }
     },
@@ -219,9 +219,10 @@ export default {
     async isOpenCarService(plateNo) {
       wx.showLoading({ title: '加载中', mask: true })
       let params = {
-        tradeScene: 'PARKING',
+        tradeScene: 'HIGHWAY',
         subOpenid: this.openid || '',
-        plateNumber: plateNo || ''
+        plateNumber: plateNo || '',
+        channelType: 'ETC'
       }
       try {
         let iReturn = await carServices(params)
@@ -280,7 +281,7 @@ export default {
     },
     async carNotify(plateNo) {
       let params = {
-        tradeScene: 'PARKING',
+        tradeScene: 'HIGHWAY',
         subOpenid: this.openid,
         plateNumber: plateNo
       }

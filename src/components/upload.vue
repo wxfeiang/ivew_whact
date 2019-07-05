@@ -38,7 +38,7 @@ export default {
     },
     setTitle: {
       type: String,
-      default: '上传',
+      default: '拍照',
       required: true
     }
   },

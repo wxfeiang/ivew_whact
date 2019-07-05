@@ -43,8 +43,8 @@ const mutations = {
   [types.SYSTEM_PLATENO](state, plateNo) {
     state.plateNo = plateNo
   },
-  [types.SYSTEM_OCRDATA](state, ocrData) {
-    state.ocrData = ocrData
+  [types.SYSTEM_ISSUEDATA](state, issueData) {
+    state.issueData = issueData
   }
 }
 

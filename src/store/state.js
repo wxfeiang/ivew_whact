@@ -13,7 +13,44 @@ const state = {
   sessionKey: '',
   car: [],
   plateNo: '',
-  ocrData: {}
+  issueData: {
+    uFront: null,
+    vehicleMain: null,
+    vehicleSub: null,
+    carHead: null,
+    idcard: {
+      name: '',
+      idNo: '',
+      imageId: ''
+    },
+    vehicle: {
+      plateNo: '',
+      vehicleType: '',
+      owner: '',
+      address: '',
+      useCharacter: '',
+      model: '',
+      vin: '',
+      engineNo: '',
+      registerDate: '',
+      issueDate: '',
+      approvedCount: '',
+      vehicleImgOriId: '',
+      vehicleImgDupId: '',
+      splateNo: ''
+    },
+    car: {
+      carHeadPlateNo: '',
+      plateNoColor: '',
+      carImgId: ''
+    },
+    address: {
+      tel: '',
+      post: '',
+      detail: '',
+      region: '甘肃省-兰州市-城关区'
+    }
+  }
 }
 
 export default state

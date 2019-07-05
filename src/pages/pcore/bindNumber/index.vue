@@ -433,12 +433,23 @@ export default {
         $Toast({
           type: 'warning',
           duration: 4,
-          content: '车牌格式有误,重新填写!'
+          content: '车牌格式有误,请重新填写!'
         })
+        return false
       } else {
-        wx.navigateTo({
-          url: `../bindVerify/main?plateNumber=${num}`
-        })
+        console.log(`pHead: ${this.areaName}    cHead: ${this.areaLetter}`)
+        if (this.areaName === '甘' && /^[IOQRSTUVWXYZ]$/.test(this.areaLetter)) {
+          $Toast({
+            type: 'warning',
+            duration: 4,
+            content: '车牌格式有误,请重新填写!'
+          })
+          return false
+        } else {
+          wx.navigateTo({
+            url: `../bindVerify/main?plateNumber=${num}`
+          })
+        }
       }
     }
   }

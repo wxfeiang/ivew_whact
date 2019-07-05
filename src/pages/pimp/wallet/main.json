@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "i-toast": "/iview/toast/index"
-  },
-  "navigationBarTitleText": "我的钱包"
-}

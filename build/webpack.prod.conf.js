@@ -120,7 +120,7 @@ if (useUglifyJs) {
         compress: {
           warnings: false,
           drop_console: true,
-          drop_debugger: false
+          drop_debugger: true
         }
       },
       sourceMap: true

@@ -19,10 +19,10 @@
             </div>
           </div>
         </div>
-        <div class="cright" @click="gotoNavi('load')">
+        <div class="cright" @click="gotoNavi('active')">
           <div class="citem">
             <div class="cimg"><img class="ccimg" src="/static/images/load.png" alt=""></div>
-            <span class="cititle">圈存</span>
+            <span class="cititle">激活</span>
           </div>
         </div>
       </div>
@@ -60,11 +60,10 @@
 
 <script>
 import { $Toast } from '@/utils/iview'
-import {mapState, mapMutations} from 'vuex'
+import {mapState} from 'vuex'
 import * as types from '@/store/mutation-types'
 import global from '../../utils/global'
 import * as cp from '../../utils/handleLogin'
-import {newsInfo} from '@/api/newss'
 import { hasOrder } from '@/api/goods'
 export default {
   data () {
@@ -89,8 +88,8 @@ export default {
       let dest = {
         'car': '../pcore/bindMain/main',
         'recharge': '../pcore/recharge/main',
-        'load': '../pcore/load/main',
-        'issue': '../pcore/issue/main'
+        'active': '../pactive/active/main',
+        'issue': '../pissue/issue/main'
       }
       // cp.isLogin(() => {
       //   // this.modalVisible = true
@@ -104,7 +103,7 @@ export default {
         })
       } else {
         if (which === 'issue') {
-          this.queryHasOrder()
+          this.uHasOrder()
         } else {
           wx.navigateTo({
             url: dest[which]
@@ -112,39 +111,34 @@ export default {
         }
       }
     },
-    async queryHasOrder() {
+    async uHasOrder() {
       try {
-        let params = {
-          userId: this.openid
+        let iparam = {
+          openId: this.openid
         }
-        let iReturn = await hasOrder(params)
-        if (iReturn.status === 200 && iReturn.data) {
-          if (iReturn.data === '1') {
-            // 没申请过
-            wx.navigateTo({
-              url: '../pcore/issue/main'
-            })
-          } else if (iReturn.data === '2') {
-            // 支付过，但还未提交收货信息
-            wx.navigateTo({
-              url: '../pcore/issueUpload/main' // TODO: 提示用户支付过，需要提交信息
-            })
-          } else if (iReturn.data === '3') {
-            // 申请过，直接取审核信息页面
-            wx.navigateTo({
-              url: '../pimp/etcOrder/main'
-            })
+        let iReturn = await hasOrder(iparam)
+        if (iReturn.status === 200 && iReturn.data && iReturn.data.state) {
+          let which = {
+            '0': '../pissue/issue/main', // 0 未提交任何申请
+            '1': `../pimp/etcSupply/main?applyId=${iReturn.data.applyId}`, // 1 etc审核驳回
+            '2': `../pissue/issueSelect/main?applyId=${iReturn.data.applyId}&plateNo=${iReturn.data.plateNo}`, // 2 未申请银行卡
+            '3': '../pimp/etcList/main'// 3 已申请银行卡
           }
-        } else {
-          console.log('查询用户是否下单失败,未返回数据')
           wx.navigateTo({
-            url: '../pcore/issue/main'
+            url: which[iReturn.data.state]
+          })
+        } else {
+          $Toast({
+            type: 'warning',
+            duration: 3,
+            content: '初始化在线申办失败,请稍后重试!'
           })
         }
       } catch (err) {
-        console.log('查询用户是否下单异常: ' + JSON.stringify(err))
-        wx.navigateTo({
-          url: '../pcore/issue/main'
+        $Toast({
+          type: 'warning',
+          duration: 4,
+          content: '初始化在线申办异常,请稍后重试!'
         })
       }
     }

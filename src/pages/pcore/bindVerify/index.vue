@@ -101,9 +101,10 @@ export default {
       // 车主服务
       wx.showLoading({ title: '加载中', mask: true })
       let params = {
-        tradeScene: 'PARKING',
+        tradeScene: 'HIGHWAY',
         subOpenid: this.openid || '',
-        plateNumber: this.plateNumber || ''
+        plateNumber: this.plateNumber || '',
+        channelType: 'ETC'
       }
       try {
         let iReturn = await carServices(params)

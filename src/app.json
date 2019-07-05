@@ -7,27 +7,35 @@
         "bindMain/main",
         "bindNumber/main",
         "bindVerify/main",
-        "bindUser/main",
-        "load/main",
-        "issue/main",
-        "issueAddress/main",
-        "issueUpload/main",
-        "issuePay/main",
-        "recharge/main"
+        "bindUser/main"
       ]
     },
     {
       "root": "pages/pimp/",
       "pages": [
         "about/main",
-        "card/main",
         "consum/main",
-        "etcOrder/main",
-        "help/main",
+        "etcList/main",
+        "etcSupply/main",
+        "etcDetail/main",
         "orderDetail/main",
-        "userInfo/main",
-        "wallet/main"
+        "userInfo/main"
       ]
+    },
+    {
+      "root": "pages/pissue/",
+      "pages": [
+        "issue/main",
+        "issueAddress/main",
+        "issueCredit/main",
+        "issueSelect/main",
+        "issueUpload/main",
+        "issueIcbc/main"
+      ]
+    },
+    {
+      "root": "pages/pactive/",
+      "pages": ["active/main"]
     }
   ],
   "permission": {
@@ -38,7 +46,8 @@
   "navigateToMiniProgramAppIdList": [
     "wxbcad394b3d99dac9",
     "wxbd687630cd02ce1d",
-    "wx5e73c65404eee268"
+    "wx5e73c65404eee268",
+    "wx71ed9a74b2a75c42"
   ],
   "tabBar": {
     "color": "#666666",

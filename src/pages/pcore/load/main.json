@@ -1,9 +1,0 @@
-{
-  "usingComponents": {
-    "i-steps": "/iview/steps/index",
-    "i-step": "/iview/step/index",
-    "i-modal": "/iview/modal/index",
-    "i-toast": "/iview/toast/index"
-  },
-  "navigationBarTitleText": "ETC圈存"
-}

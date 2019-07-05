@@ -1,8 +1,0 @@
-{
-  "usingComponents": {
-    "i-toast": "/iview/toast/index"
-  },
-  "navigationBarTitleText": "订单详情",
-  "enablePullDownRefresh": true,
-  "backgroundTextStyle": "dark"
-}

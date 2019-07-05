@@ -13,7 +13,10 @@ const global = {
     noticeList: [],
     productList: []
   },
-  model: '0'
+  mobileInfo: {
+    brand: '手机',
+    model: '0'
+  }
 }
 
 export default global

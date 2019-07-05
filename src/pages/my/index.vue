@@ -14,12 +14,12 @@
       <div class="more"><i class="icon iconfont icon-right img"></i></div>
     </div>
     <div class="core">
-      <div class="item" @click="gotoNavi('wallet')">
+      <!-- <div class="item" @click="gotoNavi('wallet')">
         <div class="icon packet"><i class="icon iconfont icon-accountbook-fill img"></i></div>
-        <div class="content">我的钱包</div>
+        <div class="content">在线充值</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
-      <div class="splice"></div>
+      <div class="splice"></div> -->
       <!-- <div class="item" @click="gotoNavi('scan')">
         <div class="icon scan"><i class="icon iconfont icon-fukuanma img"></i></div>
         <div class="content">扫码支付</div>
@@ -37,31 +37,43 @@
         <div class="content">我的车辆</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
-      <div class="splice"></div>
+      <!-- <div class="splice"></div>
       <div class="item" @click="gotoNavi('card')">
         <div class="icon card"><i class="icon iconfont icon-creditcard-fill img"></i></div>
         <div class="content">我的ETC卡</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
+      </div> -->
+      <div class="splice"></div>
+      <div class="item" @click="gotoNavi('consum')">
+        <div class="icon packet"><i class="icon iconfont icon-caiwubaobiao img"></i></div>
+        <div class="content">消费记录</div>
+        <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
       <div class="splice"></div>
       <div class="item" @click="gotoNavi('order')">
-        <div class="icon order"><i class="icon iconfont icon-number1 img"></i></div>
+        <div class="icon order"><i class="icon iconfont icon-yewubaobiao img"></i></div>
         <div class="content">我的订单</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
-    </div>
-
-    <div class="record">
-      <div class="item" @click="gotoNavi('consum')">
-        <div class="icon consum"><i class="icon iconfont icon-Dollar-circle-fill img"></i></div>
-        <div class="content">圈存记录</div>
+      <div class="splice"></div>
+      <div class="item" @click="gotoNavi('debet')">
+        <div class="icon debet"><i class="icon iconfont icon-piliangrenzheng img"></i></div>
+        <div class="content">垫资还款</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
     </div>
 
+    <!-- <div class="record">
+      <div class="item" @click="gotoNavi('consum')">
+        <div class="icon consum"><i class="icon iconfont icon-number1 img"></i></div>
+        <div class="content">我的订单</div>
+        <div class="more"><i class="icon iconfont icon-right img"></i></div>
+      </div>
+    </div> -->
+
     <div class="help">
       <div class="item" @click="gotoNavi('about')">
-        <div class="icon about"><i class="icon iconfont icon-moduanwangdian img"></i></div>
+        <div class="icon about"><i class="icon iconfont icon-customerservice-fill img"></i></div>
         <div class="content">关于我们</div>
         <div class="more"><i class="icon iconfont icon-right img"></i></div>
       </div>
@@ -79,6 +91,7 @@ import { $Toast } from '@/utils/iview'
 import {mapState} from 'vuex'
 import * as types from '@/store/mutation-types'
 import * as cp from '../../utils/handleLogin'
+import { queryDebt } from '@/api/pay'
 export default {
   data () {
     return {
@@ -124,7 +137,8 @@ export default {
         'help': '../pimp/help/main',
         'about': '../pimp/about/main',
         'issue': '../pimp/issue/main',
-        'order': '../pimp/etcOrder/main'
+        'order': '../pimp/etcList/main',
+        'debet': ''
       }
       // cp.isLogin(() => {
       // wx.navigateTo({
@@ -140,11 +154,69 @@ export default {
           wx.navigateTo({
             url: '../pimp/traffic/main?type=all'
           })
+        } else if (which === 'debet') {
+          this.queryRepapment()
         } else {
           wx.navigateTo({
             url: dest[which]
           })
         }
+      }
+    },
+    async queryRepapment() {
+      wx.showLoading({title: '正在查询', mask: true})
+      try {
+        let iparam = {
+          channel: 'wx_repay',
+          openid: this.openid
+        }
+        let iReturn = await queryDebt(iparam)
+        console.log('垫资还款返回:  ' + JSON.stringify(iReturn))
+        if (iReturn.status === 200 && iReturn.data) {
+          if (iReturn.data !== -1) {
+            wx.hideLoading()
+            wx.navigateToMiniProgram({
+              appId: iReturn.data.app_id,
+              path: iReturn.data.app_id === 'wx71ed9a74b2a75c42' ? 'pages/index/main' : 'pages/invest_list/invest_list',
+              extraData: iReturn.data,
+              envVersion: 'trial',
+              success: res => {
+                console.log('跳转垫资还款小程序成功: ' + iReturn.data.app_id + '' + JSON.stringify(res))
+              },
+              fail: res => {
+                console.log('跳转垫资还款小程序失败: ' + iReturn.data.app_id + ' ' + JSON.stringify(res))
+                $Toast({
+                  type: 'warning',
+                  duration: 4,
+                  content: `请允许跳转垫资还款小程序!`
+                })
+              }
+            })
+          } else {
+            wx.hideLoading()
+            $Toast({
+              type: 'success',
+              duration: 4,
+              content: '您的信用良好,暂无欠费!'
+            })
+          }
+        } else {
+          wx.hideLoading()
+          console.log('查询垫资欠费失败: ' + JSON.stringify(iReturn))
+          $Toast({
+            type: 'success',
+            duration: 4,
+            content: '查询垫资欠费失败,请稍后重试!'
+          })
+        }
+      } catch (err) {
+        wx.hideLoading()
+        console.log('查询垫资欠费异常: ' + JSON.stringify(err))
+        $Toast({
+          type: 'success',
+          duration: 4,
+          content: '查询垫资欠费异常,请稍后重试!'
+        })
       }
     }
   }
@@ -154,7 +226,6 @@ export default {
 .my
   background-color bg-color
   width 100%
-  height 100%
   display flex
   flex-flow column nowrap
   justify-content flex-start
@@ -215,7 +286,7 @@ export default {
       color #ffffff
   .core
     width 100%
-    height 203px
+    flex 1
     background-color #ffffff
     display flex
     flex-flow column nowrap
@@ -249,6 +320,8 @@ export default {
         &.car
           color #4ba0e0
         &.card
+          color #b196c1
+        &.debet
           color #b196c1
       .content
         width 70%
